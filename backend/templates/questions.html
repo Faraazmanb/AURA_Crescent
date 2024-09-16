@@ -1,0 +1,80 @@
+<!-- templates/questions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        #question-container { margin-bottom: 20px; }
+        #options-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 10px; cursor: pointer; }
+        #result { margin-top: 20px; font-weight: bold; }
+        #score-container { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Quiz Application</h1>
+    <div id="score-container">Score: <span id="score">0</span></div>
+    <div id="question-container"></div>
+    <div id="options-container"></div>
+    <div id="result"></div>
+    <button id="next-button">Next Question</button>
+
+    <script>
+        function updateScore(score) {
+            document.getElementById('score').textContent = score;
+        }
+
+        function loadQuestion() {
+            fetch('/get_question')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('question-container').innerHTML = `<h2>${data.question}</h2>`;
+                    const optionsContainer = document.getElementById('options-container');
+                    optionsContainer.innerHTML = '';
+                    data.options.forEach(option => {
+                        const button = document.createElement('button');
+                        button.textContent = option.slice(3);  // Remove the A), B), etc.
+                        button.onclick = () => checkAnswer(option[0]);  // Use A, B, C, D as the answer
+                        optionsContainer.appendChild(button);
+                    });
+                    document.getElementById('result').innerHTML = '';
+                    document.getElementById('next-button').style.display = 'none';
+                    updateScore(data.score);  // Update the score display
+                });
+        }
+
+        function checkAnswer(answer) {
+            fetch('/check_answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    answer: answer
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultElement = document.getElementById('result');
+                if (data.correct) {
+                    resultElement.innerHTML = 'Correct!';
+                    resultElement.style.color = 'green';
+                } else {
+                    resultElement.innerHTML = `Incorrect. The correct answer is: ${data.correct_answer}`;
+                    resultElement.style.color = 'red';
+                }
+                document.getElementById('next-button').style.display = 'block';
+                updateScore(data.score);  // Update the score display
+            });
+        }
+
+        document.getElementById('next-button').onclick = loadQuestion;
+
+        // Load the first question when the page loads
+        loadQuestion();
+    </script>
+</body>
+</html>
