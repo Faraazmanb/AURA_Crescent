@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Based QA Generator</title>
+</head>
+<body>
+    <h1>Upload PDF and Generate Questions</h1>
+    <form id="qaForm">
+        <label for="pdf">Upload PDF:</label><br>
+        <input type="file" id="pdf" name="pdf" required><br><br>
+
+        <label for="subject">Subject:</label><br>
+        <input type="text" id="subject" name="subject" required><br><br>
+
+        <label for="num_questions">Number of Questions:</label><br>
+        <input type="number" id="num_questions" name="num_questions" required><br><br>
+
+        <label for="difficulty">Difficulty (1-100):</label><br>
+        <input type="number" id="difficulty" name="difficulty" required><br><br>
+
+        <button type="submit">Generate Questions PDF</button>
+    </form>
+
+    <script>
+        document.getElementById('qaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            let formData = new FormData();
+            let pdf = document.getElementById('pdf').files[0];
+            let subject = document.getElementById('subject').value;
+            let num_questions = document.getElementById('num_questions').value;
+            let difficulty = document.getElementById('difficulty').value;
+
+            formData.append('pdf', pdf);
+            formData.append('subject', subject);
+            formData.append('num_questions', num_questions);
+            formData.append('difficulty', difficulty);
+
+            fetch('/question_generator_pdf', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                // Create a link to download the generated PDF
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'generated_questions.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

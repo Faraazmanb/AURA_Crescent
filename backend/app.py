@@ -1,13 +1,18 @@
 import random
 import sys
-from flask import Flask, jsonify, render_template, redirect, session, url_for, request, flash
+import tempfile
+from flask import Flask, Response, jsonify, render_template, redirect, send_from_directory, session, url_for, request, flash, send_file
 from flask_pymongo import PyMongo
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from pypdf import PdfReader
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from functools import wraps
 
+import os
+
 from mcq import generate_mcq_question
+from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
 
 import ssl
 import certifi
@@ -167,42 +172,8 @@ def home():
 ###
 
 
-questions = [
-    {
-        "id": 1,
-        "question": "What is the capital of France?",
-        "options": ["London", "Berlin", "Paris", "Madrid"],
-        "correct_answer": "Paris"
-    },
-    {
-        "id": 2,
-        "question": "Which planet is known as the Red Planet?",
-        "options": ["Venus", "Mars", "Jupiter", "Saturn"],
-        "correct_answer": "Mars"
-    },
-    {
-        "id": 3,
-        "question": "What is the largest mammal in the world?",
-        "options": ["African Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
-        "correct_answer": "Blue Whale"
-    }
-]
-
-# mcq_qa = generate_mcq_question("hitorical figures", 100, "").splitlines()
-# mcq_q = mcq_qa[0]
-# mcq_options = mcq_qa[1:-1]
-# mcq_a = ''.join(mcq_qa[-1])
-
 mcq_a = ""
 
-def generate_mcq_question2(topic, token_length, style):
-    # This is a placeholder function. Replace it with your actual question generation logic.
-    questions = [
-        "Who was the first President of the United States?\nA) George Washington\nB) Thomas Jefferson\nC) John Adams\nD) Benjamin Franklin\nA",
-        "Who painted the Mona Lisa?\nA) Vincent van Gogh\nB) Leonardo da Vinci\nC) Pablo Picasso\nD) Michelangelo\nB",
-        "Who wrote 'Romeo and Juliet'?\nA) Charles Dickens\nB) Jane Austen\nC) William Shakespeare\nD) Mark Twain\nC"
-    ]
-    return random.choice(questions)
 
 @app.route('/questions')
 def quiz_questions():
@@ -249,6 +220,45 @@ def check_answer():
         })
     else:
         return jsonify({"error": "Invalid answer"}), 400
+    
+# Function to extract text from the PDF
+def extract_text_from_pdf(pdf_path):
+    reader = PdfReader(pdf_path)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
+
+
+# Serve the cir_question_gen.html file from the templates folder
+@app.route('/question_form')
+def serve_question_form():
+    return render_template('cir_question_gen.html')
+
+@app.route('/question_generator_pdf', methods=['POST'])
+def question_generator_pdf():
+    file = request.files['pdf']
+    subject = request.form['subject']
+    num_questions = int(request.form['num_questions'])
+    difficulty = int(request.form['difficulty'])
+
+    # Save uploaded PDF
+    pdf_path = os.path.join(tempfile.gettempdir(), file.filename)
+    file.save(pdf_path)
+
+    # Generate questions using the updated ciriculam_based_QA function
+    questions = ciriculam_based_QA(pdf_path, subject, num_questions, difficulty)
+
+    # Generate a new PDF with the questions
+    generated_pdf_path = generate_pdf(questions)
+
+    # Read the generated PDF file to be served in the response
+    with open(generated_pdf_path, 'rb') as pdf_file:
+        pdf_data = pdf_file.read()
+
+    # Serve the PDF inline by setting appropriate headers
+    return Response(pdf_data, mimetype='application/pdf',
+                    headers={"Content-Disposition": "inline; filename=generated_questions.pdf"})
 
 # Run the Flask app
 if __name__ == '__main__':
