@@ -19,6 +19,7 @@ from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
 from admin_dashboard import *
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+from user_dashboard import *
 
 
 import ssl
@@ -321,6 +322,33 @@ admin_dashboard.layout = html.Div([
             dbc.Row([
                 dbc.Col(drawFigure_Network_load(), width=9),
             ], align='center'),
+        ]), color='dark'
+    )
+])
+
+
+user_dashboard = dash.Dash(
+    __name__,
+    server=app,
+    url_base_pathname='/user_dashboard/',
+    external_stylesheets=[dbc.themes.SLATE]
+)
+
+user_dashboard.layout = html.Div([
+    dbc.Card(
+        dbc.CardBody([
+
+            dbc.Row([
+                dbc.Col(drawText_User_Dashbaord(), width=20),
+            ], align='center'),
+
+
+            html.Br(),
+            
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Month(), width=5),
+            ], align='center'),
+
         ]), color='dark'
     )
 ])
