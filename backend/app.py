@@ -14,6 +14,13 @@ import os
 from mcq import generate_mcq_question
 from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
 
+
+## Dashbaord
+from admin_dashboard import *
+import dash_bootstrap_components as dbc
+from dash import dcc, html
+
+
 import ssl
 import certifi
 
@@ -260,6 +267,64 @@ def question_generator_pdf():
     return Response(pdf_data, mimetype='application/pdf',
                     headers={"Content-Disposition": "inline; filename=generated_questions.pdf"})
 
+
+
+## Dashboard starts from here
+
+admin_dashboard = dash.Dash(
+    __name__,
+    server=app,
+    url_base_pathname='/admin_dashboard/',
+    external_stylesheets=[dbc.themes.SLATE]
+)
+
+admin_dashboard.layout = html.Div([
+    dbc.Card(
+        dbc.CardBody([
+
+            
+            dbc.Row([
+                dbc.Col(drawText_Admin_Dashbaord(), width=20),
+            ], align='center'),
+
+
+            html.Br(),
+
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Month(), width=3.5),
+            ], align='center'),
+
+
+            html.Br(),
+            
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Year(), width=4),
+                dbc.Col(drawFigure_Users_Active(), width=3),
+                dbc.Col(drawFigure_Users_Study_Time(), width=5),
+                
+            ]),
+
+            html.Br(),
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_New_Users(), width=5),
+                dbc.Col(drawFigure_Users_Name(), width=4),
+                dbc.Col(drawFigure_Up_Time(), width=3),
+            ],align='center'),
+
+
+            html.Br(),
+
+
+            dbc.Row([
+                dbc.Col(drawFigure_Network_load(), width=9),
+            ], align='center'),
+        ]), color='dark'
+    )
+])
+
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
