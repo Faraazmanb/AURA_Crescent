@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Login & Signup Form</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body,
+      input {
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+      .container {
+        background-color: #fff;
+        width: 400px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .forms-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .form {
+        width: 100%;
+        display: none;
+      }
+      .form.active {
+        display: block;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+      }
+      .title {
+        font-size: 2rem;
+        color: #444;
+        margin-bottom: 20px;
+      }
+      .input-field {
+        width: 100%;
+        background-color: #f0f0f0;
+        margin: 10px 0;
+        height: 55px;
+        border-radius: 55px;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .input-field i {
+        margin-right: 10px;
+        color: #acacac;
+        font-size: 1.1rem;
+      }
+      .input-field input {
+        background: none;
+        outline: none;
+        border: none;
+        flex: 1;
+        font-size: 1.1rem;
+        color: #333;
+      }
+      .input-field input::placeholder {
+        color: #aaa;
+      }
+      .btn {
+        width: 100%;
+        background-color: #1833fc;
+        border: none;
+        outline: none;
+        height: 49px;
+        border-radius: 49px;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .btn:hover {
+        background-color: #1833fc;
+      }
+      .social-text {
+        margin: 15px 0;
+        font-size: 1rem;
+      }
+      .social-media {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .social-icon {
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        border: 2px solid #333;
+        color: #333;
+        font-size: 1.2rem;
+        transition: 0.3s;
+      }
+      .social-icon:hover {
+        color: #1833fc;
+        border-color: #1833fc;
+      }
+      .toggle-link {
+        color: #1833fc;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <!-- Login form -->
+        <div class="form active" id="login-form">
+          <form action="#" class="sign-in-form">
+            <h1>Aura</h1>
+            <h2 class="title">Sign in</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" value="Login" class="btn solid" />
+            <p class="social-text">Or Sign in with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+            <p>
+              Don't have an account?
+              <span class="toggle-link" onclick="showSignup()"
+                >Register here</span
+              >
+            </p>
+          </form>
+        </div>
+
+        <!-- Signup form -->
+        <div class="form" id="signup-form">
+          <form action="#" class="sign-up-form">
+            <h1>Aura</h1>
+            <h2 class="title">Sign up</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" class="btn" value="Sign up" />
+            <p class="social-text">Or Sign up with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+            <p>
+              Already have an account?
+              <span class="toggle-link" onclick="showLogin()">Sign in</span>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Function to show the signup form and hide the login form
+      function showSignup() {
+        document.getElementById("login-form").classList.remove("active");
+        document.getElementById("signup-form").classList.add("active");
+      }
+
+      // Function to show the login form and hide the signup form
+      function showLogin() {
+        document.getElementById("signup-form").classList.remove("active");
+        document.getElementById("login-form").classList.add("active");
+      }
+    </script>
+  </body>
+</html>

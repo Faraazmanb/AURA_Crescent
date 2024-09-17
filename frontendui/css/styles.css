@@ -1,0 +1,372 @@
+:root {
+    font-size: 16px;
+    font-family: 'Open Sans';
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-primary: #23232e;
+    --bg-secondary: #141418;
+    --transition-speed: 600ms;
+}
+  
+body {
+    color: black;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+  
+body::-webkit-scrollbar {
+    width: 0.25rem;
+}
+  
+body::-webkit-scrollbar-track {
+    background: #1e1e24;
+}
+  
+body::-webkit-scrollbar-thumb {
+    background: #6649b8;
+}
+  
+main {
+    margin-left: 5rem;
+    padding: 1rem;
+}
+  
+.navbar {
+    position: fixed;
+    background-color: var(--bg-primary);
+    transition: width 600ms ease;
+    overflow: hidden;
+}
+  
+.navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+  
+.nav-item {
+    width: 100%;
+}
+  
+  .nav-item:last-child {
+    margin-top: auto;
+}
+  
+.nav-link {
+    display: flex;
+    align-items: center;
+    height: 5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    filter: grayscale(100%) opacity(0.7);
+    transition: var(--transition-speed);
+}
+  
+.nav-link:hover {
+    filter: grayscale(0%) opacity(1);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+  
+.link-text {
+    display: none;
+    margin-left: 1rem;
+}
+  
+.nav-link svg {
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 1.5rem;
+}
+  
+.fa-primary {
+    color: #ff7eee;
+}
+  
+.fa-secondary {
+    color: #df49a6;
+}
+  
+.fa-primary,
+.fa-secondary {
+    transition: var(--transition-speed);
+}
+  
+.logo {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    font-size: 1.5rem;
+    letter-spacing: 0.3ch;
+    width: 100%;
+}
+  
+.logo svg {
+    transform: rotate(0deg);
+    transition: var(--transition-speed);
+}
+  
+.logo-text {
+    display: inline;
+    position: absolute;
+    left: -999px;
+    transition: var(--transition-speed);
+}
+  
+.navbar:hover .logo svg {
+    transform: rotate(-180deg);
+}
+  
+  /* Small screens */
+@media only screen and (max-width: 600px) {
+    .navbar {
+      bottom: 0;
+      width: 100vw;
+      height: 5rem;
+    }
+  
+    .logo {
+      display: none;
+    }
+  
+    .navbar-nav {
+      flex-direction: row;
+    }
+  
+    .nav-link {
+      justify-content: center;
+    }
+  
+    main {
+      margin: 0;
+    }
+  }
+  
+  /* Large screens */
+@media only screen and (min-width: 600px) {
+    .navbar {
+      top: 0;
+      width: 5rem;
+      height: 100vh;
+    }
+  
+    .navbar:hover {
+      width: 16rem;
+    }
+  
+    .navbar:hover .link-text {
+      display: inline;
+    }
+  
+    .navbar:hover .logo svg
+    {
+      margin-left: 11rem;
+    }
+  
+    .navbar:hover .logo-text
+    {
+      left: 0px;
+    }
+  }
+  
+.dark {
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-primary: #23232e;
+    --bg-secondary: #141418;
+}
+  
+.light {
+    --text-primary: #1f1f1f;
+    --text-secondary: #000000;
+    --bg-primary: #ffffff;
+    --bg-secondary: #e4e4e4;
+}
+  
+.solar {
+    --text-primary: #576e75;
+    --text-secondary: #35535c;
+    --bg-primary: #fdf6e3;
+    --bg-secondary: #f5e5b8;
+}
+  
+.theme-icon {
+    display: none;
+}
+  
+.dark #darkIcon {
+    display: block;
+}
+  
+.light #lightIcon {
+    display: block;
+}
+  
+.solar #solarIcon {
+    display: block;
+}
+
+.button {
+    padding: 6px 24px;
+    border: 2px solid #fff;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.button:active {
+    transform: scale(0.98);
+}
+  /* Home */
+.home {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+.home::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease-out;
+}
+.home.show::before {
+    opacity: 1;
+    pointer-events: auto;
+}
+  /* From */
+.form_container {
+    position: fixed;
+    max-width: 320px;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 101;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease-out;
+}
+.home.show .form_container {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+.signup_form {
+    display: none;
+}
+.form_container.active .signup_form {
+    display: block;
+}
+.form_container.active .login_form {
+    display: none;
+}
+.form_close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #0b0217;
+    font-size: 22px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+.form_container h2 {
+    font-size: 22px;
+    color: #0b0217;
+    text-align: center;
+}
+.input_box {
+    position: relative;
+    margin-top: 30px;
+    width: 100%;
+    height: 40px;
+}
+.input_box input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0 30px;
+    color: #333;
+    transition: all 0.2s ease;
+    border-bottom: 1.5px solid #aaaaaa;
+}
+.input_box input:focus {
+    border-color: #7d2ae8;
+}
+.input_box i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #707070;
+}
+.input_box i.email,
+.input_box i.password {
+    left: 0;
+}
+.input_box input:focus ~ i.email,
+.input_box input:focus ~ i.password {
+    color: #7d2ae8;
+}
+.input_box i.pw_hide {
+    right: 0;
+    font-size: 18px;
+    cursor: pointer;
+}
+.option_field {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.form_container a {
+    color: #7d2ae8;
+    font-size: 12px;
+}
+.form_container a:hover {
+    text-decoration: underline;
+}
+.checkbox {
+    display: flex;
+    column-gap: 8px;
+    white-space: nowrap;
+}
+.checkbox input {
+    accent-color: #7d2ae8;
+}
+.checkbox label {
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+    color: #0b0217;
+}
+.form_container .button {
+    background: #7d2ae8;
+    margin-top: 30px;
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 10px;
+}
+.login_signup {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 15px;
+}
