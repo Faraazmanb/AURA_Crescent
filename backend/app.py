@@ -334,6 +334,7 @@ user_dashboard = dash.Dash(
     external_stylesheets=[dbc.themes.SLATE]
 )
 
+
 user_dashboard.layout = html.Div([
     dbc.Card(
         dbc.CardBody([
@@ -346,17 +347,18 @@ user_dashboard.layout = html.Div([
             html.Br(),
             
             dbc.Row([
+                dbc.Col(drawFigure_Test_Insight(), width=3),
                 dbc.Col(drawFigure_Users_Month(), width=5),
                 dbc.Col(drawFigure_Correct_Incorrect(), width=4),
-                dbc.Col(drawFigure_Average(), width=3),
 
             ], align='center'),
 
             html.Br(),
 
             dbc.Row([
-                dbc.Col(drawFigure_User_activity(), width=3),
-                dbc.Col(drawFigure_Leaderbaord(), width=5),
+                dbc.Col(drawFigure_Average(), width=4),
+                dbc.Col(drawFigure_User_activity(), width=10),
+                dbc.Col(drawFigure_Leaderbaord(), width=6),
 
             ], align='center'),
 

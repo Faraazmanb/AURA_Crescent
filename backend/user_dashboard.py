@@ -86,3 +86,13 @@ def drawFigure_Leaderbaord():
     )
     return return_html(fig)
 
+
+def drawFigure_Test_Insight():
+    fig = test_insight()
+    fig.update_layout(
+        template='plotly_dark',
+        plot_bgcolor='rgba(0, 0, 0, 0)',
+        paper_bgcolor='rgba(0, 0, 0, 0)',
+    )
+    return return_html(fig)
+

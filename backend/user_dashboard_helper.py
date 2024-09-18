@@ -62,7 +62,7 @@ def avg_score():
         value = 200,
         title="Average Score since last Month",
         domain = {'x': [0, 1], 'y': [0, 1]},
-        delta = {'reference': 40, 'relative': True, 'position' : "bottom"}))
+        delta = {'reference': 100, 'relative': True, 'position' : "bottom"}))
     return fig
 
 def user_activity():
@@ -100,35 +100,39 @@ def leaderbaord():
     fig = px.bar(leader, x='Name', y='Points')
     return fig
 
-# def users_year():
-#     users = pd.DataFrame(
-#         [["example",  datetime.date(random.randint(2021, 2024), random.randint(1, 12), random.randint(1, 28))] for i in range(1000)],
-#         columns=['Name', 'Join']
-#     )
-#     users['Join'] = pd.to_datetime(users['Join'])
-#     user_count_by_year = users.groupby(pd.Grouper(key='Join', freq='Y')).size().reset_index(name='Number of Users')
-#     fig = px.bar(user_count_by_year, x='Join', y='Number of Users', title='Number of Users Joined Over Time (Monthly Aggregation)')
-#     return fig
+def test_insight():
+    # Sample user data
+    sample_size = 100
+    user_data = pd.DataFrame({
+        "User Name": [f"test_{i}" for i in range(1, sample_size+1)],
+        "Assessment Score": [random.randint(50, 100) for _ in range(sample_size)],
+    })
 
-# def active_users():
-#     active_users = pd.DataFrame(
-#         [["example", random.choice(["active", "not active", "long time inactive"])] for i in range(100)],
-#         columns=['Name', 'Active']
-#     )
-#     user_count_by_active = active_users.groupby("Active").size().reset_index(name='Count')
-#     colors = {
-#         "active": "green",
-#         "not active": "orange",
-#         "long time inactive": "red"
-#     }
+    # Create a table
+    fig = go.Figure(data=[go.Table(
+        header=dict(
+            values=list(user_data.columns),
+            # fill_color='paleturquoise',
+            fill_color='rgba(10,10,10,0.5)',
+            align='left',
+            font=dict(color='gray', size=20)  # Set header text to black and increase font size
+        ),
+        cells=dict(
+            values=[user_data[col] for col in user_data.columns],
+            fill_color='rgba(2,2,2,0.2)',
+            align='left',
+            font=dict(color='gray', size=15)  # Set cell text to black and increase font size
+        )
+    )])
 
-#     fig=px.pie(
-#             user_count_by_active, 
-#             names='Active', 
-#             values='Count',
-#             title='Distribution of User Activity Status',
-#             color='Active',
-#             color_discrete_map=colors,
-#             hole=0.6 
-#             )
-#     return fig
+    # Update layout to add title and make the table bigger
+    fig.update_layout(
+        title="User Insights Table",
+        title_font=dict(size=24),  # Bigger title font
+        height=450,  # Increase height of the table for more space
+        width=500,   # Increase width for better visibility
+        margin=dict(l=50, r=50, t=50, b=50),  # Add margins to ensure the table is not too close to the edges
+        autosize=True,  # Ensure that the layout adjusts automatically
+    )
+
+    return fig
