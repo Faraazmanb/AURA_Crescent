@@ -16,9 +16,9 @@ from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
 
 
 ## Dashbaord
-from admin_dashboard import *
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+from admin_dashboard import *
 from user_dashboard import *
 
 
@@ -347,7 +347,20 @@ user_dashboard.layout = html.Div([
             
             dbc.Row([
                 dbc.Col(drawFigure_Users_Month(), width=5),
+                dbc.Col(drawFigure_Correct_Incorrect(), width=4),
+                dbc.Col(drawFigure_Average(), width=3),
+
             ], align='center'),
+
+            html.Br(),
+
+            dbc.Row([
+                dbc.Col(drawFigure_User_activity(), width=3),
+                dbc.Col(drawFigure_Leaderbaord(), width=5),
+
+            ], align='center'),
+
+            html.Br(),
 
         ]), color='dark'
     )

@@ -13,6 +13,20 @@ from plotly.subplots import make_subplots
 
 from admin_dashboard_helper import network_load, user_names, new_users, users_month, users_year, active_users, study_time
 
+def return_html(figure):
+    return html.Div([
+            dbc.Card(
+                dbc.CardBody([
+                    dcc.Graph(
+                        figure=figure,
+                        config={
+                            'displayModeBar': False
+                        }
+                    )
+                ])
+            ),
+        ])
+
 
 def drawFigure_Users_Month():
     fig = users_month()

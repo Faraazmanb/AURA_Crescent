@@ -25,6 +25,81 @@ def questions_attempt():
     )
     
     return fig
+
+def correct_incorrect():
+    correct_incorrect = pd.DataFrame(
+        [["example", random.choice(["Correct", "Incorrect", "Skipped"])] for i in range(100)],
+        columns=['Name', 'Correct or Incorrect']
+    )
+
+    # Count the number of occurrences for each status
+    user_count_by_correct = correct_incorrect.groupby("Correct or Incorrect").size().reset_index(name='Count')
+
+    # Define colors for each activity status
+    colors = {
+        "Correct": "green",
+        "Incorrect": "orange",
+        "Skipped": "red"
+    }
+
+    # Create the donut chart
+    fig = px.pie(
+        user_count_by_correct,  # Use the grouped data with counts
+        names='Correct or Incorrect', 
+        values='Count',  # Reference the 'Count' column for the values
+        title='Distribution of User Activity Status',
+        color='Correct or Incorrect',
+        color_discrete_map=colors,
+        hole=0.6  # Set the size of the hole in the center of the donut
+    )
+    return fig
+
+def avg_score():
+    fig = go.Figure()
+
+    fig.add_trace(go.Indicator(
+        mode = "number+delta",
+        value = 200,
+        title="Average Score since last Month",
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        delta = {'reference': 40, 'relative': True, 'position' : "bottom"}))
+    return fig
+
+def user_activity():
+    def generate_random_time():
+        hour = random.choice(list(range(0, 8)) + list(range(12, 24)))
+        minute = random.randint(0, 59)
+        return datetime.time(hour=hour, minute=minute)
+    user_activity = pd.DataFrame(
+        [["example", generate_random_time()] for _ in range(100)],
+        columns=['Name', 'Active Time']
+    )
+    user_activity['Active Time'] = pd.to_datetime(user_activity['Active Time'], format='%H:%M:%S').dt.time
+    user_activity['Hour'] = pd.to_datetime(user_activity['Active Time'].astype(str)).dt.hour
+    activity_by_hour = user_activity.groupby('Hour').size().reset_index(name='User Activity Count')
+    figure = px.line(
+        activity_by_hour, 
+        x='Hour', 
+        y='User Activity Count', 
+        title='User Activity Throughout the Day',
+        markers=True
+    )
+    return figure
+
+def leaderbaord():
+    leader = pd.DataFrame([
+        ["Rahoul", 560],
+        ["Ronak", 234],
+        ["Joe", 154],
+        ["Tony", 123],
+        ["Shane", 112],
+        ["Gillis", 83],
+        ["Kam", 83],
+        ["Patterson", 81],
+    ], columns=["Name", "Points"])
+    fig = px.bar(leader, x='Name', y='Points')
+    return fig
+
 # def users_year():
 #     users = pd.DataFrame(
 #         [["example",  datetime.date(random.randint(2021, 2024), random.randint(1, 12), random.randint(1, 28))] for i in range(1000)],
