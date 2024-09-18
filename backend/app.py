@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from functools import wraps
 
+from time import time
 import os
 
 from mcq import generate_mcq_question
@@ -180,7 +181,7 @@ def quiz_questions():
     session['score'] = 0
     return render_template('questions.html')
 
-asked = []
+asked_questions = []
 
 
 @app.route('/start_quiz', methods=['POST'])
@@ -199,6 +200,8 @@ def start_quiz():
 
     return jsonify({"message": "Quiz started", "subject": subject, "hardness_level": hardness_level})
 
+points = []
+time_taken = []
 
 @app.route('/get_question')
 def get_question():
@@ -211,9 +214,10 @@ def get_question():
         return jsonify({"redirect": "/report"})  # Redirect to the report page if done
 
     global mcq_a
-    mcq_qa = generate_mcq_question(subject, hardness_level, "\n".join(asked)).splitlines()
+    mcq_qa = generate_mcq_question(subject, hardness_level, "\n".join(asked_questions)).splitlines()
     mcq_q = mcq_qa[0]
     asked.append(mcq_q)
+    asked_questions.append(mcq_q)
     mcq_options = mcq_qa[1:-1]
     mcq_a = mcq_qa[-1].strip()  # Remove any whitespace
 
@@ -225,18 +229,26 @@ def get_question():
         "score": session.get('score', 0)  # Include the current score in the response
     })
 
+
 @app.route('/check_answer', methods=['POST'])
 def check_answer():
+    print("points: ",points)
+    print("time_taken: ",time_taken)
+    print("asked: ", asked_questions)
+
     global mcq_a
     data = request.json
+    start = time()
     user_answer = data.get('answer')
+    end = time()
     
     if user_answer:
-        print(user_answer)
-        print(mcq_a)
+        time_taken.append(end-start)
         is_correct = user_answer == mcq_a[0]
         if is_correct:
             session['score'] = session.get('score', 0) + 1
+            points.append(1)
+        else: points.append(0)
         return jsonify({
             "correct": is_correct,
             "correct_answer": mcq_a,
