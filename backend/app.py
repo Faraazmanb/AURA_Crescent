@@ -14,14 +14,6 @@ import os
 from mcq import generate_mcq_question
 from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
 
-
-## Dashbaord
-import dash_bootstrap_components as dbc
-from dash import dcc, html
-from admin_dashboard import *
-from user_dashboard import *
-
-
 import ssl
 import certifi
 
@@ -190,19 +182,43 @@ def quiz_questions():
 
 asked = []
 
+
+@app.route('/start_quiz', methods=['POST'])
+def start_quiz():
+    data = request.json
+    subject = data.get('subject')
+    hardness_level = data.get('hardness_level')
+    num_questions = data.get('num_questions', 10)  # Default to 10 if not provided
+
+    # Store values in session or other storage
+    session['subject'] = subject
+    session['hardness_level'] = hardness_level
+    session['total_questions'] = num_questions
+    session['asked'] = []
+    session['score'] = 0
+
+    return jsonify({"message": "Quiz started", "subject": subject, "hardness_level": hardness_level})
+
+
 @app.route('/get_question')
 def get_question():
+    subject = session.get('subject', "default_subject")
+    hardness_level = session.get('hardness_level', 1)
+    num_questions = session.get('total_questions', 10)
+    asked = session.get('asked', [])
+
+    if len(asked) >= num_questions:
+        return jsonify({"redirect": "/report"})  # Redirect to the report page if done
+
     global mcq_a
-    mcq_qa = generate_mcq_question("historical figures", 100, "\n".join(asked)).splitlines()
+    mcq_qa = generate_mcq_question(subject, hardness_level, "\n".join(asked)).splitlines()
     mcq_q = mcq_qa[0]
     asked.append(mcq_q)
     mcq_options = mcq_qa[1:-1]
     mcq_a = mcq_qa[-1].strip()  # Remove any whitespace
 
-    print(mcq_q)
-    print(mcq_options)
-    print(mcq_a)
-    
+    session['asked'] = asked  # Update the asked questions list
+
     return jsonify({
         "question": mcq_q,
         "options": mcq_options,
@@ -228,6 +244,12 @@ def check_answer():
         })
     else:
         return jsonify({"error": "Invalid answer"}), 400
+    
+@app.route('/report')
+def report():
+    score = session.get('score', 0)
+    total_questions = session.get('total_questions', 0)
+    return render_template('report.html', score=score, total_questions=total_questions)
     
 # Function to extract text from the PDF
 def extract_text_from_pdf(pdf_path):
@@ -268,106 +290,6 @@ def question_generator_pdf():
     return Response(pdf_data, mimetype='application/pdf',
                     headers={"Content-Disposition": "inline; filename=generated_questions.pdf"})
 
-
-
-## Dashboard starts from here
-
-admin_dashboard = dash.Dash(
-    __name__,
-    server=app,
-    url_base_pathname='/admin_dashboard/',
-    external_stylesheets=[dbc.themes.SLATE]
-)
-
-admin_dashboard.layout = html.Div([
-    dbc.Card(
-        dbc.CardBody([
-
-            
-            dbc.Row([
-                dbc.Col(drawText_Admin_Dashbaord(), width=20),
-            ], align='center'),
-
-
-            html.Br(),
-
-
-            dbc.Row([
-                dbc.Col(drawFigure_Users_Month(), width=3.5),
-            ], align='center'),
-
-
-            html.Br(),
-            
-
-            dbc.Row([
-                dbc.Col(drawFigure_Users_Year(), width=4),
-                dbc.Col(drawFigure_Users_Active(), width=3),
-                dbc.Col(drawFigure_Users_Study_Time(), width=5),
-                
-            ]),
-
-            html.Br(),
-
-            dbc.Row([
-                dbc.Col(drawFigure_Users_New_Users(), width=5),
-                dbc.Col(drawFigure_Users_Name(), width=4),
-                dbc.Col(drawFigure_Up_Time(), width=3),
-            ],align='center'),
-
-
-            html.Br(),
-
-
-            dbc.Row([
-                dbc.Col(drawFigure_Network_load(), width=9),
-            ], align='center'),
-        ]), color='dark'
-    )
-])
-
-
-user_dashboard = dash.Dash(
-    __name__,
-    server=app,
-    url_base_pathname='/user_dashboard/',
-    external_stylesheets=[dbc.themes.SLATE]
-)
-
-
-user_dashboard.layout = html.Div([
-    dbc.Card(
-        dbc.CardBody([
-
-            dbc.Row([
-                dbc.Col(drawText_User_Dashbaord(), width=20),
-            ], align='center'),
-
-
-            html.Br(),
-            
-            dbc.Row([
-                dbc.Col(drawFigure_Test_Insight(), width=3),
-                dbc.Col(drawFigure_Users_Month(), width=5),
-                dbc.Col(drawFigure_Correct_Incorrect(), width=4),
-
-            ], align='center'),
-
-            html.Br(),
-
-            dbc.Row([
-                dbc.Col(drawFigure_Average(), width=4),
-                dbc.Col(drawFigure_User_activity(), width=10),
-                dbc.Col(drawFigure_Leaderbaord(), width=6),
-
-            ], align='center'),
-
-            html.Br(),
-
-        ]), color='dark'
-    )
-])
-
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True)

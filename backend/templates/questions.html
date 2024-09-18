@@ -1,4 +1,3 @@
-<!-- templates/questions.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,17 +11,61 @@
         button { padding: 10px; cursor: pointer; }
         #result { margin-top: 20px; font-weight: bold; }
         #score-container { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+        #start-form { margin-bottom: 20px; }
+        #report-button { margin-top: 20px; }
     </style>
 </head>
 <body>
     <h1>Quiz Application</h1>
-    <div id="score-container">Score: <span id="score">0</span></div>
+
+    <!-- Start Quiz Form -->
+    <div id="start-form">
+        <h2>Start Quiz</h2>
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+        <br>
+        <label for="hardness_level">Hardness Level (1-10):</label>
+        <input type="number" id="hardness_level" name="hardness_level" min="1" max="10" required>
+        <br>
+        <label for="num_questions">Number of Questions:</label>
+        <input type="number" id="num_questions" name="num_questions" min="1" required>
+        <br>
+        <button id="start-button">Start Quiz</button>
+    </div>
+
+    <div id="score-container" style="display: none;">Score: <span id="score">0</span></div>
     <div id="question-container"></div>
     <div id="options-container"></div>
     <div id="result"></div>
-    <button id="next-button">Next Question</button>
+    <button id="next-button" style="display: none;">Next Question</button>
+    <button id="report-button" style="display: none;" onclick="goToReport()">Go to Report</button>
 
     <script>
+        document.getElementById('start-button').onclick = () => {
+            const subject = document.getElementById('subject').value;
+            const hardness_level = document.getElementById('hardness_level').value;
+            const num_questions = document.getElementById('num_questions').value;
+
+            fetch('/start_quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: subject,
+                    hardness_level: parseInt(hardness_level),
+                    num_questions: parseInt(num_questions)
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('start-form').style.display = 'none';
+                document.getElementById('score-container').style.display = 'block';
+                document.getElementById('report-button').style.display = 'block';  // Show the report button
+                loadQuestion();  // Start loading questions after the quiz starts
+            });
+        };
+
         function updateScore(score) {
             document.getElementById('score').textContent = score;
         }
@@ -31,6 +74,10 @@
             fetch('/get_question')
                 .then(response => response.json())
                 .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;  // Redirect to the report page
+                        return;
+                    }
                     document.getElementById('question-container').innerHTML = `<h2>${data.question}</h2>`;
                     const optionsContainer = document.getElementById('options-container');
                     optionsContainer.innerHTML = '';
@@ -42,7 +89,6 @@
                     });
                     document.getElementById('result').innerHTML = '';
                     document.getElementById('next-button').style.display = 'none';
-                    updateScore(data.score);  // Update the score display
                 });
         }
 
@@ -73,8 +119,11 @@
 
         document.getElementById('next-button').onclick = loadQuestion;
 
-        // Load the first question when the page loads
-        loadQuestion();
+        function goToReport() {
+            window.location.href = '/report';  // Redirect to the report page
+        }
+
+        // Optionally, load the first question when the page loads if the quiz is started
     </script>
 </body>
 </html>
