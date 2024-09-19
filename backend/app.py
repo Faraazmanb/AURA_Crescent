@@ -356,11 +356,11 @@ def check_answer():
         return jsonify({"error": "Invalid answer"}), 400
 
 
-@app.route('/report')
-def report():
-    score = session.get('score', 0)
-    total_questions = session.get('total_questions', 0)
-    return render_template('report.html', score=score, total_questions=total_questions)
+# @app.route('/report')
+# def report():
+#     score = session.get('score', 0)
+#     total_questions = session.get('total_questions', 0)
+#     return render_template('report.html', score=score, total_questions=total_questions)
     
 # Function to extract text from the PDF
 def extract_text_from_pdf(pdf_path):
@@ -410,6 +410,8 @@ admin_dashboard = dash.Dash(
     url_base_pathname='/admin_dashboard/',
     external_stylesheets=[dbc.themes.SLATE]
 )
+from flask import redirect, url_for
+
 
 
 user_dashboard = dash.Dash(
@@ -512,30 +514,30 @@ user_dashboard.layout = html.Div([
 
 data_quiz_from_endpoint = pd.DataFrame(columns=['Time Taken (seconds)', 'Points', 'Correct or Incorrect'])
 
-dummy = pd.DataFrame({
-        'Time Taken (seconds)': time_taken,
-        'Points': points,  # 0 = Correct, 1 = Incorrect
-    })
-dummy['Correct or Incorrect'] = dummy['Points'].map({0: 'Correct', 1: 'Incorrect'})
+# dummy = pd.DataFrame({
+#         'Time Taken (seconds)': time_taken,
+#         'Points': points,  # 0 = Correct, 1 = Incorrect
+#     })
+# dummy['Correct or Incorrect'] = dummy['Points'].map({0: 'Correct', 1: 'Incorrect'})
 
 
+# Callback to run hello() function and update content
 report_dashboard.layout = html.Div([
     dbc.Card(
         dbc.CardBody([
-
             dbc.Row([
                 dbc.Col(drawText_Report_Dashbaord(), width=20),
             ], align='center'),
-
 
             html.Br(),
             
             dbc.Row([
                 dcc.Interval(id='interval-component', interval=10*1000, n_intervals=0),
-                dbc.Col(drawFigure_Correct_incorrect(retrieve_data()), width=3),
-                dbc.Col(drawFigure_Average_score_Report(retrieve_data()), width=3),
-                dbc.Col(drawFigure_Time_Taken(retrieve_data()), width=3),
-                dbc.Col(drawFigure_Leaderbaord_Report(), width=3),
+
+                dbc.Col(dcc.Loading(id='loading-figure-1', children=[html.Div(id='figure-correct-incorrect')]), width=3),
+                dbc.Col(dcc.Loading(id='loading-figure-2', children=[html.Div(id='figure-average-score')]), width=3),
+                dbc.Col(dcc.Loading(id='loading-figure-3', children=[html.Div(id='figure-time-taken')]), width=3),
+                dbc.Col(dcc.Loading(id='loading-figure-4', children=[html.Div(id='figure-leaderboard')]), width=3),
             ], align='center'),
 
             html.Br(),
@@ -543,37 +545,41 @@ report_dashboard.layout = html.Div([
     )
 ])
 
-
+# Define callback to update figures
 @report_dashboard.callback(
-    [
-        Output('figure-correct-incorrect', 'children'),
-        Output('figure-average-score', 'children'),
-        Output('figure-time-taken', 'children')
-    ],
-    [Input('url', 'pathname')]
+    Output('figure-correct-incorrect', 'children'),
+    Output('figure-average-score', 'children'),
+    Output('figure-time-taken', 'children'),
+    Output('figure-leaderboard', 'children'),
+    Input('interval-component', 'n_intervals')
 )
-def update_report_dashboard(pathname):
-    """
-    Update the dashboard figures whenever the /report/ URL is accessed.
+def update_figures(n_intervals):
+    data = retrieve_data()  # Fetch the latest data
+    return (
+        drawFigure_Correct_incorrect(data),
+        drawFigure_Average_score_Report(data),
+        drawFigure_Time_Taken(data),
+        drawFigure_Leaderbaord_Report()
+    )
+# Callback to update figures on interval
+# @report_dashboard.callback(
+#     [Output('correct-incorrect-fig', 'figure'),
+#      Output('average-score-fig', 'figure'),
+#      Output('time-taken-fig', 'figure'),
+#      Output('leaderboard-fig', 'figure')],
+#     [Input('interval-component', 'n_intervals')]  # Triggered by the interval component
+# )
+# def update_figures(n):
+#     # Fetch fresh data
+#     data = retrieve_data()
 
-    :param pathname: The current URL path
-    :return: Updated figures for the report dashboard
-    """
-    # Check if the current URL path is /report/
-    if pathname == '/report/':
-        # Retrieve data dynamically
-        data = retrieve_data()
-
-        # Update figures based on the new data
-        return (
-            drawFigure_Correct_incorrect(data),
-            drawFigure_Average_score_Report(data),
-            drawFigure_Time_Taken(data)
-        )
-
-    # Return empty children if not on the /report/ page
-    return (None, None, None)
-
+#     # Generate and return updated figures
+#     return (
+#         drawFigure_Correct_incorrect(data),
+#         drawFigure_Average_score_Report(data),
+#         drawFigure_Time_Taken(data),
+#         drawFigure_Leaderbaord_Report()
+#     )
 
 # Run the Flask app
 if __name__ == '__main__':
