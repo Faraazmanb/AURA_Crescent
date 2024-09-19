@@ -20,11 +20,21 @@ import certifi
 
 ssl._create_default_https_context = ssl.create_default_context(cafile=certifi.where())
 
+import plotly.graph_objects as go
+import plotly.express as px
+import dash_bootstrap_components as dbc
+import dash
+from dash.dependencies import Input, Output
+
+from admin_dashboard import *
+from user_dashboard import *
+from report_dashboard import *
+
+
 app=Flask(__name__)
 
-
 # Other cluster until hamdan gives access
-app.config['SECRET_KEY']="hexawareSecretKey"
+app.config['SECRET_KEY']=str(random.random())
 app.config['MONGO_URI']="mongodb+srv://arxiv:Dorem%40n101@arxiv.21plqx0.mongodb.net/users"
 
 
@@ -172,7 +182,7 @@ def home():
 
 ###
 
-
+all = []
 mcq_a = ""
 
 
@@ -198,10 +208,14 @@ def start_quiz():
     session['asked'] = []
     session['score'] = 0
 
+
     return jsonify({"message": "Quiz started", "subject": subject, "hardness_level": hardness_level})
 
 points = []
 time_taken = []
+all.append([points, time_taken])
+
+p = []
 
 @app.route('/get_question')
 def get_question():
@@ -211,7 +225,7 @@ def get_question():
     asked = session.get('asked', [])
 
     if len(asked) >= num_questions:
-        return jsonify({"redirect": "/report"})  # Redirect to the report page if done
+        return jsonify({"redirect": "/report/"})  # Redirect to the report page if done
 
     global mcq_a
     mcq_qa = generate_mcq_question(subject, hardness_level, "\n".join(asked_questions)).splitlines()
@@ -230,25 +244,109 @@ def get_question():
     })
 
 
+def update_or_insert_score(score, points, time_spent):
+    # Define the filter to find the document
+    filter_query = {"_id": "your_unique_id"}  # Replace with the appropriate unique identifier
+
+    # Get the collection
+    collection = mongo.db.scores  # Collection name
+
+    # Step 1: Delete the existing document if it exists
+    delete_result = collection.delete_one(filter_query)
+
+    # Step 2: Insert a new document with the updated values
+    new_data = {
+        "_id": "your_unique_id",  # Replace with the same unique identifier
+        "score": score,
+        "points": points,
+        "time_spent": time_spent
+    }
+
+    insert_result = collection.insert_one(new_data)
+
+    # Return a message based on the result
+    if insert_result.inserted_id:
+        return f'Inserted new document with ID: {insert_result.inserted_id}'
+    else:
+        return 'Failed to insert new document'
+    
+
+def retrieve_data(unique_id="your_unique_id"):
+    """
+    Retrieve a document from the MongoDB collection based on the unique ID.
+    If the document is not found, return a dummy data set.
+
+    :param unique_id: The unique identifier for the document
+    :return: A DataFrame containing the document data or dummy data if not found
+    """
+    # Get the collection
+    collection = mongo.db.scores  # Collection name
+
+    # Define the query
+    query = {"_id": unique_id}  # Replace with your unique identifier field if different
+
+    # Retrieve the document
+    document = collection.find_one(query)
+
+    # If the document is not found, create dummy data
+    if document is None:
+        document = {
+            "_id": unique_id,
+            "points": [0, 1, 1],  # Example data: 0 = Correct, 1 = Incorrect
+            "score": 2,           # Example score
+            "time_spent": [2, 3, 4]  # Example time spent on questions
+        }
+
+    # Create a DataFrame from the document data
+    data = pd.DataFrame({
+        'Time Taken (seconds)': document['time_spent'],
+        'Points': document['points'],  # 0 = Correct, 1 = Incorrect
+    })
+
+    # Add a new column for correctness
+    data['Correct or Incorrect'] = data['Points'].map({0: 'Correct', 1: 'Incorrect'})
+
+    print(document)
+    return data
+    
+
 @app.route('/check_answer', methods=['POST'])
 def check_answer():
-    print("points: ",points)
-    print("time_taken: ",time_taken)
-    print("asked: ", asked_questions)
+    # Ensure 'points' and 'time_taken' are in the session
+    if 'points' not in session:
+        session['points'] = []
+    if 'time_taken' not in session:
+        session['time_taken'] = []
 
-    global mcq_a
     data = request.json
     start = time()
     user_answer = data.get('answer')
     end = time()
-    
+
     if user_answer:
-        time_taken.append(end-start)
+        # Calculate time taken for the question
+        time_spent = end - start
+        session['time_taken'].append(time_spent)
+        
+        # Debugging: Print session data
+        print('Updated time_taken:', session['time_taken'])
+
+        # Check if the answer is correct
         is_correct = user_answer == mcq_a[0]
         if is_correct:
             session['score'] = session.get('score', 0) + 1
-            points.append(1)
-        else: points.append(0)
+            session['points'].append(1)
+        else:
+            session['points'].append(0)
+
+        # Debugging: Print session data
+        print('Updated points:', session['points'])
+
+        # Save the session changes
+        session.modified = True
+
+        update_or_insert_score(session['score'], session['points'], session['time_taken'])
+
         return jsonify({
             "correct": is_correct,
             "correct_answer": mcq_a,
@@ -256,7 +354,8 @@ def check_answer():
         })
     else:
         return jsonify({"error": "Invalid answer"}), 400
-    
+
+
 @app.route('/report')
 def report():
     score = session.get('score', 0)
@@ -301,6 +400,180 @@ def question_generator_pdf():
     # Serve the PDF inline by setting appropriate headers
     return Response(pdf_data, mimetype='application/pdf',
                     headers={"Content-Disposition": "inline; filename=generated_questions.pdf"})
+
+### Dashbaord
+
+# Create the first Dash app for the admin dashboard
+admin_dashboard = dash.Dash(
+    __name__,
+    server=app,
+    url_base_pathname='/admin_dashboard/',
+    external_stylesheets=[dbc.themes.SLATE]
+)
+
+
+user_dashboard = dash.Dash(
+    __name__,
+    server=app,
+    url_base_pathname='/user_dashboard/',
+    external_stylesheets=[dbc.themes.SLATE]
+)
+
+report_dashboard = dash.Dash(
+    __name__,
+    server=app,
+    url_base_pathname='/report/',
+    external_stylesheets=[dbc.themes.SLATE]
+)
+
+# Build App Layout
+admin_dashboard.layout = html.Div([
+    dbc.Card(
+        dbc.CardBody([
+
+            
+            dbc.Row([
+                dbc.Col(drawText_Admin_Dashbaord(), width=20),
+            ], align='center'),
+
+
+            html.Br(),
+
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Month(), width=3.5),
+            ], align='center'),
+
+
+            html.Br(),
+            
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Year(), width=4),
+                dbc.Col(drawFigure_Users_Active(), width=3),
+                dbc.Col(drawFigure_Users_Study_Time(), width=5),
+                
+            ]),
+
+            html.Br(),
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_New_Users(), width=5),
+                dbc.Col(drawFigure_Users_Name(), width=4),
+                dbc.Col(drawFigure_Up_Time(), width=3),
+            ],align='center'),
+
+
+            html.Br(),
+
+
+            dbc.Row([
+                dbc.Col(drawFigure_Network_load(), width=9),
+            ], align='center'),
+        ]), color='dark'
+    )
+])
+
+
+
+
+user_dashboard.layout = html.Div([
+    dbc.Card(
+        dbc.CardBody([
+
+            dbc.Row([
+                dbc.Col(drawText_User_Dashbaord(), width=20),
+            ], align='center'),
+
+
+            html.Br(),
+            
+            dbc.Row([
+                dbc.Col(drawFigure_Test_Insight(), width=3),
+                dbc.Col(drawFigure_Users_Month(), width=5),
+                dbc.Col(drawFigure_Correct_Incorrect(), width=4),
+
+            ], align='center'),
+
+            html.Br(),
+
+            dbc.Row([
+                dbc.Col(drawFigure_Average(), width=3),
+                dbc.Col(drawFigure_User_activity(), width=3),
+                dbc.Col(drawFigure_Leaderbaord(), width=5),
+
+            ], align='center'),
+
+            html.Br(),
+
+        ]), color='dark'
+    )
+])
+
+data_quiz_from_endpoint = pd.DataFrame(columns=['Time Taken (seconds)', 'Points', 'Correct or Incorrect'])
+
+dummy = pd.DataFrame({
+        'Time Taken (seconds)': time_taken,
+        'Points': points,  # 0 = Correct, 1 = Incorrect
+    })
+dummy['Correct or Incorrect'] = dummy['Points'].map({0: 'Correct', 1: 'Incorrect'})
+
+
+report_dashboard.layout = html.Div([
+    dbc.Card(
+        dbc.CardBody([
+
+            dbc.Row([
+                dbc.Col(drawText_Report_Dashbaord(), width=20),
+            ], align='center'),
+
+
+            html.Br(),
+            
+            dbc.Row([
+                dcc.Interval(id='interval-component', interval=10*1000, n_intervals=0),
+                dbc.Col(drawFigure_Correct_incorrect(retrieve_data()), width=3),
+                dbc.Col(drawFigure_Average_score_Report(retrieve_data()), width=3),
+                dbc.Col(drawFigure_Time_Taken(retrieve_data()), width=3),
+                dbc.Col(drawFigure_Leaderbaord_Report(), width=3),
+            ], align='center'),
+
+            html.Br(),
+        ]), color='dark'
+    )
+])
+
+
+@report_dashboard.callback(
+    [
+        Output('figure-correct-incorrect', 'children'),
+        Output('figure-average-score', 'children'),
+        Output('figure-time-taken', 'children')
+    ],
+    [Input('url', 'pathname')]
+)
+def update_report_dashboard(pathname):
+    """
+    Update the dashboard figures whenever the /report/ URL is accessed.
+
+    :param pathname: The current URL path
+    :return: Updated figures for the report dashboard
+    """
+    # Check if the current URL path is /report/
+    if pathname == '/report/':
+        # Retrieve data dynamically
+        data = retrieve_data()
+
+        # Update figures based on the new data
+        return (
+            drawFigure_Correct_incorrect(data),
+            drawFigure_Average_score_Report(data),
+            drawFigure_Time_Taken(data)
+        )
+
+    # Return empty children if not on the /report/ page
+    return (None, None, None)
+
 
 # Run the Flask app
 if __name__ == '__main__':
