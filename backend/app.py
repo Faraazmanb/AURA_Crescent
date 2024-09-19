@@ -8,6 +8,8 @@ from pypdf import PdfReader
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from functools import wraps
+from flask_mail import Mail, Message
+import json
 
 from time import time
 import os
@@ -36,6 +38,15 @@ app=Flask(__name__)
 # Other cluster until hamdan gives access
 app.config['SECRET_KEY']=str(random.random())
 app.config['MONGO_URI']="mongodb+srv://arxiv:Dorem%40n101@arxiv.21plqx0.mongodb.net/users"
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = '4tpurpose101@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ocgm npgr urtl sbaf'
+
+mail = Mail(app)
 
 
 # app.config['MONGO_URI']="mongodb+srv://hamdanaveed07:hexaware@cluster0.gew2p.mongodb.net/users"
@@ -400,6 +411,32 @@ def question_generator_pdf():
     # Serve the PDF inline by setting appropriate headers
     return Response(pdf_data, mimetype='application/pdf',
                     headers={"Content-Disposition": "inline; filename=generated_questions.pdf"})
+
+mail = Mail(app)
+
+@app.route('/send_pdf_emails', methods=['POST'])
+def send_pdf_emails():
+    # Get the list of recipient emails from the request
+    emails = json.loads(request.form['emails'])
+    
+    # Get the PDF file from the request
+    if 'pdf' not in request.files:
+        return jsonify({'message': 'No PDF file in the request'}), 400
+    pdf_file = request.files['pdf']
+    
+    # Send email to each recipient
+    for email in emails:
+        msg = Message("Generated Questions PDF",
+                      sender="your_email@example.com",
+                      recipients=[email])
+        msg.body = "Please find attached the generated questions PDF."
+        msg.attach("generated_questions.pdf", "application/pdf", pdf_file.read())
+        mail.send(msg)
+        pdf_file.seek(0)  # Reset file pointer for the next iteration
+    
+    return jsonify({'message': f'Emails sent successfully to {len(emails)} recipients'}), 200
+
+
 
 ### Dashbaord
 

@@ -4,35 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curriculum Based QA Generator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <h1>Upload PDF and Generate Questions</h1>
     <form id="qaForm">
         <label for="pdf">Upload PDF:</label><br>
         <input type="file" id="pdf" name="pdf" required><br><br>
-
         <label for="subject">Subject:</label><br>
         <input type="text" id="subject" name="subject" required><br><br>
-
         <label for="num_questions">Number of Questions:</label><br>
         <input type="number" id="num_questions" name="num_questions" required><br><br>
-
         <label for="difficulty">Difficulty (1-100):</label><br>
         <input type="number" id="difficulty" name="difficulty" required><br><br>
-
         <button type="submit">Generate Questions PDF</button>
     </form>
 
+    <h2>Recipients</h2>
+    <table id="recipientsTable">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="email" class="email" required></td>
+                <td><input type="checkbox" class="select"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="addRow">Add Row</button>
+    <button id="sendEmails" style="display:none;">Send PDF to Email</button>
+
     <script>
+        let generatedPdfBlob = null;
+
         document.getElementById('qaForm').addEventListener('submit', function (event) {
             event.preventDefault();
-
             let formData = new FormData();
             let pdf = document.getElementById('pdf').files[0];
             let subject = document.getElementById('subject').value;
             let num_questions = document.getElementById('num_questions').value;
             let difficulty = document.getElementById('difficulty').value;
-
             formData.append('pdf', pdf);
             formData.append('subject', subject);
             formData.append('num_questions', num_questions);
@@ -44,7 +73,7 @@
             })
             .then(response => response.blob())
             .then(blob => {
-                // Create a link to download the generated PDF
+                generatedPdfBlob = blob;
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
@@ -53,8 +82,61 @@
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
+                document.getElementById('sendEmails').style.display = 'block';
             })
             .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('addRow').addEventListener('click', function() {
+            const tbody = document.querySelector('#recipientsTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="email" class="email" required></td>
+                <td><input type="checkbox" class="select"></td>
+            `;
+            tbody.appendChild(newRow);
+        });
+
+        document.getElementById('sendEmails').addEventListener('click', function() {
+            if (!generatedPdfBlob) {
+                alert('Please generate a PDF first.');
+                return;
+            }
+
+            const selectedEmails = [];
+            const rows = document.querySelectorAll('#recipientsTable tbody tr');
+            rows.forEach(row => {
+                const checkbox = row.querySelector('.select');
+                if (checkbox.checked) {
+                    const email = row.querySelector('.email').value;
+                    if (email) {
+                        selectedEmails.push(email);
+                    }
+                }
+            });
+
+            if (selectedEmails.length === 0) {
+                alert('Please select at least one recipient.');
+                return;
+            }
+
+            // Create a FormData object to send both the PDF and the email list
+            const formData = new FormData();
+            formData.append('pdf', generatedPdfBlob, 'generated_questions.pdf');
+            formData.append('emails', JSON.stringify(selectedEmails));
+
+            fetch('/send_pdf_emails', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while sending emails.');
+            });
         });
     </script>
 </body>
