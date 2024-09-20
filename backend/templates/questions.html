@@ -1,129 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz Application</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        #question-container { margin-bottom: 20px; }
-        #options-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { padding: 10px; cursor: pointer; }
-        #result { margin-top: 20px; font-weight: bold; }
-        #score-container { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
-        #start-form { margin-bottom: 20px; }
-        #report-button { margin-top: 20px; }
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #f0f4f8, #d9e3f0);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        color: #333;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+      }
+      h1 {
+        text-align: center;
+        color: #1c3f72;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+      h2 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 5px;
+      }
+      #start-form {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+      }
+      #start-form:hover {
+        transform: translateY(-5px);
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin: 10px 0 5px;
+        font-size: 1.1rem;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        transition: border-color 0.3s;
+        font-size: 1rem;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #3498db;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+      }
+      #options-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+      }
+      #options-container button {
+        background-color: #2ecc71;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+      #options-container button:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-align: center;
+      }
+      #score-container {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      #report-button {
+        background-color: #f39c12;
+      }
+      #report-button:hover {
+        background-color: #e67e22;
+      }
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 2rem;
+        }
+        h2 {
+          font-size: 1.5rem;
+        }
+        button {
+          font-size: 1rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Quiz Application</h1>
 
     <!-- Start Quiz Form -->
     <div id="start-form">
-        <h2>Start Quiz</h2>
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required>
-        <br>
-        <label for="hardness_level">Hardness Level (1-10):</label>
-        <input type="number" id="hardness_level" name="hardness_level" min="1" max="10" required>
-        <br>
-        <label for="num_questions">Number of Questions:</label>
-        <input type="number" id="num_questions" name="num_questions" min="1" required>
-        <br>
-        <button id="start-button">Start Quiz</button>
+      <h2>Start Quiz</h2>
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" name="subject" required />
+
+      <label for="hardness_level">Hardness Level (1-10):</label>
+      <input
+        type="number"
+        id="hardness_level"
+        name="hardness_level"
+        min="1"
+        max="10"
+        required
+      />
+
+      <label for="num_questions">Number of Questions:</label>
+      <input
+        type="number"
+        id="num_questions"
+        name="num_questions"
+        min="1"
+        required
+      />
+
+      <button id="start-button">Start Quiz</button>
     </div>
 
-    <div id="score-container" style="display: none;">Score: <span id="score">0</span></div>
+    <div id="score-container" style="display: none">
+      Score: <span id="score">0</span>
+    </div>
     <div id="question-container"></div>
     <div id="options-container"></div>
     <div id="result"></div>
-    <button id="next-button" style="display: none;">Next Question</button>
-    <button id="report-button" style="display: none;" onclick="goToReport()">Go to Report</button>
+    <button id="next-button" style="display: none">Next Question</button>
+    <button id="report-button" style="display: none" onclick="goToReport()">
+      Go to Report
+    </button>
 
     <script>
-        document.getElementById('start-button').onclick = () => {
-            const subject = document.getElementById('subject').value;
-            const hardness_level = document.getElementById('hardness_level').value;
-            const num_questions = document.getElementById('num_questions').value;
+      document.getElementById("start-button").onclick = () => {
+        const subject = document.getElementById("subject").value;
+        const hardness_level = document.getElementById("hardness_level").value;
+        const num_questions = document.getElementById("num_questions").value;
 
-            fetch('/start_quiz', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    subject: subject,
-                    hardness_level: parseInt(hardness_level),
-                    num_questions: parseInt(num_questions)
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('start-form').style.display = 'none';
-                document.getElementById('score-container').style.display = 'block';
-                document.getElementById('report-button').style.display = 'block';  // Show the report button
-                loadQuestion();  // Start loading questions after the quiz starts
+        fetch("/start_quiz", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            subject: subject,
+            hardness_level: parseInt(hardness_level),
+            num_questions: parseInt(num_questions),
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("start-form").style.display = "none";
+            document.getElementById("score-container").style.display = "block";
+            document.getElementById("report-button").style.display = "block";
+            loadQuestion();
+          });
+      };
+
+      function updateScore(score) {
+        document.getElementById("score").textContent = score;
+      }
+
+      function loadQuestion() {
+        fetch("/get_question")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.redirect) {
+              window.location.href = data.redirect;
+              return;
+            }
+            document.getElementById(
+              "question-container"
+            ).innerHTML = `<h2>${data.question}</h2>`;
+            const optionsContainer =
+              document.getElementById("options-container");
+            optionsContainer.innerHTML = ""; // Clear existing options
+
+            // Filter out any empty or undefined options
+            const validOptions = data.options.filter((option) => option);
+
+            validOptions.forEach((option) => {
+              const button = document.createElement("button");
+              button.textContent = option.slice(3); // Remove the prefix (A), B, C, etc.
+              button.onclick = () => checkAnswer(option[0]);
+              optionsContainer.appendChild(button);
             });
-        };
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("next-button").style.display = "none";
+          });
+      }
 
-        function updateScore(score) {
-            document.getElementById('score').textContent = score;
-        }
+      function checkAnswer(answer) {
+        fetch("/check_answer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            answer: answer,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const resultElement = document.getElementById("result");
+            if (data.correct) {
+              resultElement.innerHTML = "Correct!";
+              resultElement.style.color = "green";
+            } else {
+              resultElement.innerHTML = `Incorrect. The correct answer is: ${data.correct_answer}`;
+              resultElement.style.color = "red";
+            }
+            document.getElementById("next-button").style.display = "block";
+            updateScore(data.score);
+          });
+      }
 
-        function loadQuestion() {
-            fetch('/get_question')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirect) {
-                        window.location.href = data.redirect;  // Redirect to the report page
-                        return;
-                    }
-                    document.getElementById('question-container').innerHTML = `<h2>${data.question}</h2>`;
-                    const optionsContainer = document.getElementById('options-container');
-                    optionsContainer.innerHTML = '';
-                    data.options.forEach(option => {
-                        const button = document.createElement('button');
-                        button.textContent = option.slice(3);  // Remove the A), B), etc.
-                        button.onclick = () => checkAnswer(option[0]);  // Use A, B, C, D as the answer
-                        optionsContainer.appendChild(button);
-                    });
-                    document.getElementById('result').innerHTML = '';
-                    document.getElementById('next-button').style.display = 'none';
-                });
-        }
+      document.getElementById("next-button").onclick = loadQuestion;
 
-        function checkAnswer(answer) {
-            fetch('/check_answer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    answer: answer
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                const resultElement = document.getElementById('result');
-                if (data.correct) {
-                    resultElement.innerHTML = 'Correct!';
-                    resultElement.style.color = 'green';
-                } else {
-                    resultElement.innerHTML = `Incorrect. The correct answer is: ${data.correct_answer}`;
-                    resultElement.style.color = 'red';
-                }
-                document.getElementById('next-button').style.display = 'block';
-                updateScore(data.score);  // Update the score display
-            });
-        }
-
-        document.getElementById('next-button').onclick = loadQuestion;
-
-        function goToReport() {
-            window.location.href = '/report';  // Redirect to the report page
-        }
-
-        // Optionally, load the first question when the page loads if the quiz is started
+      function goToReport() {
+        window.location.href = "/report";
+      }
     </script>
-</body>
+  </body>
 </html>

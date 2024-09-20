@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"
+      integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS"
+      crossorigin="anonymous"
+    />
+    <!--  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+-->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index2.css') }}"
+    />
+    <title>Responsive sidebar submenus</title>
+  </head>
+
+  <body>
+    <!--========== HEADER ==========-->
+    <header class="header">
+      <div class="header_container">
+        <div class="none"></div>
+        <div class="search">
+          <input type="search" placeholder="Search" />
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <div class="user">
+          <div class="icon">
+            <i class="fa-solid fa-bell"></i>
+            <form
+              action="{{ url_for('logout') }}"
+              method="POST"
+              style="display: inline"
+              onsubmit="return confirmLogout()"
+            >
+              <button type="submit" class="logout btn btn-danger">
+                Logout
+              </button>
+            </form>
+          </div>
+          <div class="img">
+            <img src="images/logo.png" />
+          </div>
+        </div>
+
+        <div class="toggle">
+          <i class="fa-solid fa-bars" id="header-toggle"></i>
+        </div>
+      </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    <section class="nav" id="navbar">
+      <nav class="nav_container">
+        <div>
+          <a href="#" class="nav_link nav_logo">
+            <i class="fa-solid fa-bars nav_icon"></i>
+            <span class="logo_name">
+              <img src="images/logo.png" />
+            </span>
+          </a>
+
+          <div class="nav_list">
+            <div class="nav_items navtop">
+              <a href="#" class="nav_link active">
+                <i class="fa fa-house nav_icon"></i>
+                <span class="nav_name">Dashboard</span>
+              </a>
+
+              <a href="#" class="nav_link">
+                <i class="fa fa-compass nav_icon"></i>
+                <span class="nav_name">Statistics</span>
+              </a>
+
+              <a href="#" class="nav_link">
+                <i class="fa-solid fa-users nav_icon"></i>
+                <span class="nav_name">Accounts </span>
+              </a>
+
+              <a href="#" class="nav_link">
+                <i class="fa-solid fa-clock-rotate-left nav_icon"></i>
+                <span class="nav_name">Data History </span>
+              </a>
+
+              <div class="nav_dropdown">
+                <a href="#" class="nav_link">
+                  <i class="bx bx-message-rounded nav_icon"></i>
+                  <span class="nav_name">Messages</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </section>
+
+    <!--========== CONTENTS ==========-->
+    <main>
+      <section>
+        <div class="container">
+          <h1>Hello, {{ username }}!</h1>
+          <p>You are logged in as a {{ role }}.</p>
+          <a href="/{{ role.capitalize() }}_dashboard/" class="btn btn-primary">
+            Go to {{ role.capitalize() }} Dashboard
+          </a>
+        </div>
+
+        {% if role == 'Administrator' %}
+        <!-- Admin-specific content -->
+
+        <!-- Admin-specific content -->
+        <p>
+          Welcome to the admin section where you can manage users and settings.
+        </p>
+
+        {% elif role == 'Trainer' %}
+
+        <p style="color: white; font-size: 1.4rem">
+          Welcome to the {{role}} section where you can Upload Curriculum and
+          Generate Question Bank.
+        </p>
+        <a
+          style="padding: 0.5rem"
+          class="btn btn-primary"
+          href="{{ url_for('serve_question_form') }}"
+          class="btn btn-primary"
+        >
+          Generate Question Bank
+        </a>
+
+        {% elif role == 'Employee' %}
+
+        <p style="color: white; font-size: 1.4rem">
+          Welcome to the {{role}} section where you can Upload Curriculum and
+          Generate Question Bank.
+        </p>
+        <a
+          style="padding: 0.5rem"
+          class="btn btn-primary"
+          href="{{ url_for('quiz_questions') }}"
+          class="btn btn-primary"
+        >
+          Self Assessment
+        </a>
+
+        {% else %}
+        <p>You have an unknown role. Please contact support.</p>
+        {% endif %}
+
+        <p>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel
+          illum fuga unde cum, voluptates magni molestias eveniet culpa autem
+          ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?
+        </p>
+        <p>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel
+          illum fuga unde cum, voluptates magni molestias eveniet culpa autem
+          ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?
+        </p>
+      </section>
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

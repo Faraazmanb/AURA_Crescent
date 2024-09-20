@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>AURA</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <!-- Assuming your CSS is in styles.css -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="coast">
+        <div class="wave-rel-wrap">
+          <div class="wave"></div>
+        </div>
+      </div>
+      <div class="coast delay">
+        <div class="wave-rel-wrap">
+          <div class="wave delay"></div>
+        </div>
+      </div>
+      <div class="text text-w">a</div>
+      <div class="text text-a">u</div>
+      <div class="text text-v">r</div>
+      <div class="text text-e">a</div>
+    </div>
+
+    <script>
+      // Redirecta to indexlogin.html after 3 seconds
+      setTimeout(function () {
+        window.location.href = "{{ url_for('dashboard') }}";
+      }, 3000);
+    </script>
+  </body>
+</html>

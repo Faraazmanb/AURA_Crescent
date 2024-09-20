@@ -60,7 +60,7 @@ except Exception as e:
     raise SystemExit(f"Error connecting to MongoDB: {e}")
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view = '/'
 
 
 class User(UserMixin):
@@ -124,8 +124,11 @@ def role_required(role):
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', username=current_user.username, role=current_user.role)
+    return render_template('index2.html', username=current_user.username, role=current_user.role)
     
+
+
+
 
 # Admin dashboard (restricted to 'Administrator')
 @app.route('/admin')
@@ -187,7 +190,7 @@ def employee_dashboard():
 #     return render_template('login.html')
 
 # Logout route
-@app.route('/logout')
+@app.route('/logout',methods=['POST'])
 @login_required
 def logout():
     logout_user()
@@ -229,8 +232,9 @@ def home():
             
             if user and user.check_password(password):
                 login_user(user)
-                flash('Logged in successfully!', 'success')
-                return redirect(url_for('dashboard'))
+                # flash('Logged in successfully!', 'success')
+                return render_template('index.html', username=current_user.username, role=current_user.role)
+                # return redirect(url_for('dashboard'))
             else:
                 flash('Invalid username or password', 'error')
                 return redirect(url_for('home'))
@@ -500,7 +504,7 @@ def send_pdf_emails():
 admin_dashboard = dash.Dash(
     __name__,
     server=app,
-    url_base_pathname='/admin_dashboard/',
+    url_base_pathname='/Administrator_dashboard/',
     external_stylesheets=[dbc.themes.SLATE]
 )
 from flask import redirect, url_for
@@ -510,7 +514,7 @@ from flask import redirect, url_for
 user_dashboard = dash.Dash(
     __name__,
     server=app,
-    url_base_pathname='/user_dashboard/',
+    url_base_pathname='/Employee_dashboard/',
     external_stylesheets=[dbc.themes.SLATE]
 )
 

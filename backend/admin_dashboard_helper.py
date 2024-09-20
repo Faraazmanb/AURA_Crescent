@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 def network_load():
     # Generate 1000 random time points and percentages for active users and network load
     sample_size = 500
-    time = pd.date_range(start='2023-09-17 06:00', periods=sample_size, freq='H')
+    time = pd.date_range(start='2023-09-17 06:00', periods=sample_size, freq='h')
     active_users = np.random.randint(2, 100, size=sample_size)  # Random active users percentage
     network_load = np.random.randint(5, 100, size=sample_size)    # Random network load percentage
 
@@ -141,7 +141,7 @@ def users_month():
         columns=['Name', 'Join']
     )
     users['Join'] = pd.to_datetime(users['Join'])
-    user_count_by_month = users.groupby(pd.Grouper(key='Join', freq='M')).size().reset_index(name='Number of Users')
+    user_count_by_month = users.groupby(pd.Grouper(key='Join', freq='ME')).size().reset_index(name='Number of Users')
     fig=px.bar(user_count_by_month, x='Join', y='Number of Users', title='Number of Users Joined Over Time (Monthly Aggregation)')
     return fig
 
@@ -151,7 +151,7 @@ def users_year():
         columns=['Name', 'Join']
     )
     users['Join'] = pd.to_datetime(users['Join'])
-    user_count_by_year = users.groupby(pd.Grouper(key='Join', freq='Y')).size().reset_index(name='Number of Users')
+    user_count_by_year = users.groupby(pd.Grouper(key='Join', freq='YE')).size().reset_index(name='Number of Users')
     fig = px.bar(user_count_by_year, x='Join', y='Number of Users', title='Number of Users Joined Over Time (Monthly Aggregation)')
     return fig
 

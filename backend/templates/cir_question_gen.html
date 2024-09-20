@@ -1,143 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Curriculum Based QA Generator</title>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #e9f5fb;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+      h1 {
+        color: #1c3f72;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+      }
+      h2 {
+        color: #34495e;
+        margin-top: 40px;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+      }
+      form {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 0 auto 40px;
+        max-width: 600px;
+      }
+      label {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #1c3f72;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      input[type="file"] {
+        width: calc(100% - 22px);
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        transition: border-color 0.3s;
+      }
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="number"]:focus,
+      input[type="file"]:focus {
+        border-color: #3498db;
+        outline: none;
+      }
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        margin-top: 10px;
+        transition: background-color 0.3s, transform 0.2s;
+        width: 100%;
+      }
+      button:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+      }
+      .spinner {
+        display: none;
+        border: 4px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+        100% {
+          transform: rotate(360deg);
         }
-        th {
-            background-color: #f2f2f2;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #3498db;
+        color: white;
+        font-size: 1.2rem;
+      }
+      #pdfOptions {
+        display: none;
+        margin-top: 20px;
+      }
+      #pdfOptions button {
+        background-color: #27ae60;
+      }
+      #pdfOptions button:hover {
+        background-color: #219653;
+      }
+      #addRow {
+        margin-top: 10px;
+        background-color: #f39c12;
+        font-size: 1rem;
+      }
+      #addRow:hover {
+        background-color: #e67e22;
+      }
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 2rem;
         }
+        h2 {
+          font-size: 1.5rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Upload PDF and Generate Questions</h1>
     <form id="qaForm">
-        <label for="pdf">Upload PDF:</label><br>
-        <input type="file" id="pdf" name="pdf" required><br><br>
-        <label for="subject">Subject:</label><br>
-        <input type="text" id="subject" name="subject" required><br><br>
-        <label for="num_questions">Number of Questions:</label><br>
-        <input type="number" id="num_questions" name="num_questions" required><br><br>
-        <label for="difficulty">Difficulty (1-100):</label><br>
-        <input type="number" id="difficulty" name="difficulty" required><br><br>
-        <button type="submit">Generate Questions PDF</button>
+      <label for="pdf">Upload PDF:</label>
+      <input type="file" id="pdf" name="pdf" required />
+
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" name="subject" required />
+
+      <label for="num_questions">Number of Questions:</label>
+      <input type="number" id="num_questions" name="num_questions" required />
+
+      <label for="difficulty">Difficulty (1-100):</label>
+      <input type="number" id="difficulty" name="difficulty" required />
+
+      <button type="submit">Generate Questions PDF</button>
     </form>
+
+    <div class="spinner" id="spinner"></div>
+
+    <div id="pdfOptions">
+      <button id="viewPdf">View PDF</button>
+      <button id="downloadPdf">Download PDF</button>
+    </div>
 
     <h2>Recipients</h2>
     <table id="recipientsTable">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Select</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="email" class="email" required></td>
-                <td><input type="checkbox" class="select"></td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Select</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="email" class="email" required /></td>
+          <td><input type="checkbox" class="select" /></td>
+        </tr>
+      </tbody>
     </table>
     <button id="addRow">Add Row</button>
-    <button id="sendEmails" style="display:none;">Send PDF to Email</button>
+    <button id="sendEmails" style="display: none">Send PDF to Email</button>
 
     <script>
-        let generatedPdfBlob = null;
+      let generatedPdfBlob = null;
 
-        document.getElementById('qaForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            let formData = new FormData();
-            let pdf = document.getElementById('pdf').files[0];
-            let subject = document.getElementById('subject').value;
-            let num_questions = document.getElementById('num_questions').value;
-            let difficulty = document.getElementById('difficulty').value;
-            formData.append('pdf', pdf);
-            formData.append('subject', subject);
-            formData.append('num_questions', num_questions);
-            formData.append('difficulty', difficulty);
+      document
+        .getElementById("qaForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
 
-            fetch('/question_generator_pdf', {
-                method: 'POST',
-                body: formData
+          document.getElementById("spinner").style.display = "block";
+
+          let formData = new FormData();
+          let pdf = document.getElementById("pdf").files[0];
+          let subject = document.getElementById("subject").value;
+          let num_questions = document.getElementById("num_questions").value;
+          let difficulty = document.getElementById("difficulty").value;
+          formData.append("pdf", pdf);
+          formData.append("subject", subject);
+          formData.append("num_questions", num_questions);
+          formData.append("difficulty", difficulty);
+
+          fetch("/question_generator_pdf", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.blob())
+            .then((blob) => {
+              generatedPdfBlob = blob;
+
+              document.getElementById("spinner").style.display = "none";
+              document.getElementById("pdfOptions").style.display = "block";
+              document.getElementById("sendEmails").style.display = "block";
+
+              const url = window.URL.createObjectURL(blob);
+
+              document
+                .getElementById("viewPdf")
+                .addEventListener("click", function () {
+                  window.open(url, "_blank");
+                });
+
+              document
+                .getElementById("downloadPdf")
+                .addEventListener("click", function () {
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = "generated_questions.pdf";
+                  document.body.appendChild(a);
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                });
             })
-            .then(response => response.blob())
-            .then(blob => {
-                generatedPdfBlob = blob;
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'generated_questions.pdf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.getElementById('sendEmails').style.display = 'block';
-            })
-            .catch(error => console.error('Error:', error));
+            .catch((error) => {
+              console.error("Error:", error);
+              document.getElementById("spinner").style.display = "none";
+            });
         });
 
-        document.getElementById('addRow').addEventListener('click', function() {
-            const tbody = document.querySelector('#recipientsTable tbody');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
+      document.getElementById("addRow").addEventListener("click", function () {
+        const tbody = document.querySelector("#recipientsTable tbody");
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
                 <td><input type="email" class="email" required></td>
                 <td><input type="checkbox" class="select"></td>
             `;
-            tbody.appendChild(newRow);
-        });
+        tbody.appendChild(newRow);
+      });
 
-        document.getElementById('sendEmails').addEventListener('click', function() {
-            if (!generatedPdfBlob) {
-                alert('Please generate a PDF first.');
-                return;
+      document
+        .getElementById("sendEmails")
+        .addEventListener("click", function () {
+          if (!generatedPdfBlob) {
+            alert("Please generate a PDF first.");
+            return;
+          }
+
+          const selectedEmails = [];
+          const rows = document.querySelectorAll("#recipientsTable tbody tr");
+          rows.forEach((row) => {
+            const checkbox = row.querySelector(".select");
+            if (checkbox.checked) {
+              const email = row.querySelector(".email").value;
+              if (email) {
+                selectedEmails.push(email);
+              }
             }
+          });
 
-            const selectedEmails = [];
-            const rows = document.querySelectorAll('#recipientsTable tbody tr');
-            rows.forEach(row => {
-                const checkbox = row.querySelector('.select');
-                if (checkbox.checked) {
-                    const email = row.querySelector('.email').value;
-                    if (email) {
-                        selectedEmails.push(email);
-                    }
-                }
-            });
+          if (selectedEmails.length === 0) {
+            alert("Please select at least one recipient.");
+            return;
+          }
 
-            if (selectedEmails.length === 0) {
-                alert('Please select at least one recipient.');
-                return;
-            }
+          const formData = new FormData();
+          formData.append("pdf", generatedPdfBlob, "generated_questions.pdf");
+          formData.append("emails", JSON.stringify(selectedEmails));
 
-            // Create a FormData object to send both the PDF and the email list
-            const formData = new FormData();
-            formData.append('pdf', generatedPdfBlob, 'generated_questions.pdf');
-            formData.append('emails', JSON.stringify(selectedEmails));
-
-            fetch('/send_pdf_emails', {
-                method: 'POST',
-                body: formData
+          fetch("/send_pdf_emails", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert(data.message);
             })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while sending emails.');
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred while sending emails.");
             });
         });
     </script>
-</body>
+  </body>
 </html>
