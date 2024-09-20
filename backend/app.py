@@ -37,7 +37,7 @@ app=Flask(__name__)
 
 # Other cluster until hamdan gives access
 app.config['SECRET_KEY']=str(random.random())
-app.config['MONGO_URI']="mongodb+srv://arxiv:Dorem%40n101@arxiv.21plqx0.mongodb.net/users"
+app.config['MONGO_URI']="mongodb+srv://hamdanaveed07:hexaware@cluster0.gew2p.mongodb.net/users"
 
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -64,31 +64,37 @@ login_manager.login_view = 'login'
 
 
 class User(UserMixin):
-    def __init__(self, username,role,password,user_id=None):
+    def __init__(self, username,role,email=None,user_id=None):
         self.username = username
         self.role=role
-        self.password_hash=password
+        self.email=email
         self.id=user_id
 
     @staticmethod
     def find_by_username(username):
         user_data = mongo.db.users.find_one({"username": username})
         if user_data:
-            return User(user_data['username'], user_data['role'], user_data['password'], str(user_data['_id']))
+            return User(user_data['username'], user_data['role'], user_data['email'], str(user_data['_id']))
         return None
     @staticmethod
-    def register_user(username, password, role):
+    def register_user(username,email, password, role):
         hashed_password = generate_password_hash(password)
-        user_data = {"username": username, "password": hashed_password, "role": role}
+        user_data = {"username": username, "email":email, "password": hashed_password, "role": role}
         mongo.db.users.insert_one(user_data)
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        # This method can now access the stored hashed password directly from the database
+        user_data = mongo.db.users.find_one({"username": self.username})
+        if user_data:
+            return check_password_hash(user_data['password'], password)
+        return False
     
 
     @login_manager.user_loader
     def load_user(user_id):
 
+        if user_id is None:
+            return None
         user_data = mongo.db.users.find_one({"_id": ObjectId(user_id)})
         if user_data:
 
@@ -118,7 +124,8 @@ def role_required(role):
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return f"Hello, {current_user.username}! You are logged in as a {current_user.role}"
+    return render_template('dashboard.html', username=current_user.username, role=current_user.role)
+    
 
 # Admin dashboard (restricted to 'Administrator')
 @app.route('/admin')
@@ -141,55 +148,104 @@ def trainer_dashboard():
 def employee_dashboard():
     return "Welcome to the Employee Dashboard"
 
-# Registration route
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        role = request.form.get('role')  # 'Administrator', 'Trainer', or 'Employee'
+# # Registration route
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         username = request.form.get('username')
+#         password = request.form.get('password')
+#         role = request.form.get('role')  # 'Administrator', 'Trainer', or 'Employee'
 
-        # Check if user already exists
-        if User.find_by_username(username):
-            flash('Username already exists')
-            return redirect(url_for('register'))
+#         # Check if user already exists
+#         if User.find_by_username(username):
+#             flash('Username already exists')
+#             return redirect(url_for('register'))
         
-        # Register new user
-        User.register_user(username, password, role)
-        flash('User registered successfully')
-        return redirect(url_for('login'))
+#         # Register new user
+#         User.register_user(username, password, role)
+#         flash('User registered successfully')
+#         return redirect(url_for('login'))
 
-    return render_template('register.html')
+#     return render_template('register.html')
 
-# Login route
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        user = User.find_by_username(username)
+# # Login route
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form.get('username')
+#         password = request.form.get('password')
+#         user = User.find_by_username(username)
         
-        if user and user.check_password(password):
-            login_user(user)
-            flash('Logged in successfully!', 'success')
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Invalid username or password','error')
-            return redirect(url_for('login'))
+#         if user and user.check_password(password):
+#             login_user(user)
+#             flash('Logged in successfully!', 'success')
+#             return redirect(url_for('dashboard'))
+#         else:
+#             flash('Invalid username or password','error')
+#             return redirect(url_for('login'))
 
-    return render_template('login.html')
+#     return render_template('login.html')
 
 # Logout route
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
+
+
+
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        # Determine which form was submitted based on the presence of 'email'
+        if 'email' in request.form:
+            # Registration form was submitted
+            username = request.form.get('username')
+            email = request.form.get('email')
+            password = request.form.get('password')
+            role = request.form.get('role')  # 'Administrator', 'Trainer', or 'Employee'
+            if not username or not email or not password or not role:
+                flash('Please fill out all fields.', 'error')
+                return redirect(url_for('home'))
+
+            # Check if user already exists
+            if User.find_by_username(username):
+                flash('Username already exists', 'error')
+                return redirect(url_for('home'))
+
+            # Register new user
+            User.register_user(username, email, password, role)
+            flash('User registered successfully! You can now log in.', 'success')
+            return redirect(url_for('home'))
+
+        
+        else:
+            # Login form was submitted
+            username = request.form.get('username')
+            password = request.form.get('password')
+            user = User.find_by_username(username)
+            
+            if user and user.check_password(password):
+                login_user(user)
+                flash('Logged in successfully!', 'success')
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Invalid username or password', 'error')
+                return redirect(url_for('home'))
+
+    # GET request renders the combined form
+    return render_template('loginreg.html')
+
+
+
+
 
 # Default route for starting the app
-@app.route('/')
-def home():
-    return redirect(url_for('login'))
+# @app.route('/')
+# def home():
+#     return redirect(url_for('login'))
 
 ###
 
