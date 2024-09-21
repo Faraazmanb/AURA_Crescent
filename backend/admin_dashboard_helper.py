@@ -151,7 +151,7 @@ def users_year():
         columns=['Name', 'Join']
     )
     users['Join'] = pd.to_datetime(users['Join'])
-    user_count_by_year = users.groupby(pd.Grouper(key='Join', freq='YE')).size().reset_index(name='Number of Users')
+    user_count_by_year = users.groupby(pd.Grouper(key='Join', freq='Y')).size().reset_index(name='Number of Users')
     fig = px.bar(user_count_by_year, x='Join', y='Number of Users', title='Number of Users Joined Over Time (Monthly Aggregation)')
     return fig
 
