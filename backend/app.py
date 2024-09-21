@@ -798,12 +798,17 @@ def create_plotly_figure(weeks_start, weeks_end, module, descriptions):
 # 3.Tallest building in the world"""
 
 filter_query = {"id": "standard_id"}
-doc = mongo.db.trainer_question.find_one(filter_query)['question']
-all_questions = doc.splitlines()
-num_questions = len(all_questions)
+# doc = mongo.db.trainer_question.find_one(filter_query)['question']
+# all_questions = doc.splitlines()
+# num_questions = len(all_questions)
 
 @app.route('/test')
 def index():
+    global num_questions, all_questions
+    print("now")
+    doc = mongo.db.trainer_question.find_one(filter_query)['question']
+    all_questions = doc.splitlines()
+    num_questions = len(all_questions)
     return render_template('test.html')
 
 
