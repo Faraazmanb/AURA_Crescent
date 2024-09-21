@@ -4,12 +4,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = OpenAI(
-    api_key= os.getenv('OPENAI'),
-    )
+client_openrouter = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=os.getenv('OPENAI_OPENROUTER')
+)
 
 def chat_with_gpt(prompt):
-    chat_completion = client.chat.completions.create(
+    chat_completion = client_openrouter.chat.completions.create(
         messages=[
             {
                 "role": "user",
@@ -21,7 +22,7 @@ def chat_with_gpt(prompt):
     return chat_completion.choices[0].message.content.strip()
 
 def chatgpt_for_qa_cir(prompt):
-    response = client.chat.completions.create(
+    response = client_openrouter.chat.completions.create(
         model="gpt-3.5-turbo",
          messages=[
                     {"role": "system", "content": "You are a helpful assistant."},

@@ -10,6 +10,18 @@ import os
 from openai_conv import chatgpt_for_qa_cir
 from dotenv import load_dotenv
 
+import ssl
+import certifi
+
+ssl._create_default_https_context = ssl.create_default_context(cafile=certifi.where())
+
+from pymongo import MongoClient
+
+# Connect to MongoDB
+client = MongoClient('mongodb+srv://hamdanaveed07:hexaware@cluster0.gew2p.mongodb.net', tlsCAFile=certifi.where())  
+db = client['users'] 
+collection = db['trainer_question']
+
 load_dotenv()
 
 import ssl
@@ -160,6 +172,23 @@ def ciriculam_based_QA(filepath, subject, ques_number, difficulty):
     return questions
     # generator.save_questions(questions, pdforexcel)
 
+def save_question(text):
+
+    if not text:
+        raise ValueError("Text cannot be empty")
+
+    # Create a document
+    question_document = {
+        "id": "standard_id",
+        "question": text
+    }
+    
+    # Insert the document into the collection
+    collection.insert_one(question_document)
+    
+    return {"id": "standard_id", "question": text}
+
+all_questions = []
 def generate_pdf(questions):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -167,12 +196,15 @@ def generate_pdf(questions):
     pdf.set_font("Arial", size=12)
     
     for question in questions:
+        all_questions.append(question)
         pdf.multi_cell(200, 10, question)
         pdf.ln()
 
     # Save to a temporary file
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     pdf.output(temp_file.name)
+    print("\n".join(all_questions))
+    save_question("\n".join(all_questions))
     return temp_file.name
 
 

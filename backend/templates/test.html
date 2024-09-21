@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        #question {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        #options {
+            display: flex;
+            flex-direction: column;
+        }
+        button {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #score {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #report-button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #report-button:hover {
+            background-color: #d35400;
+        }
+    </style>
+</head>
+<body>
+    <h1>MCQ Quiz</h1>
+    <div id="score">Score: 0</div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="feedback"></div>
+    <button id="report-button" onclick="goToReport()">Go to Report</button>
+
+    <script>
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const feedbackEl = document.getElementById('feedback');
+        const scoreEl = document.getElementById('score');
+
+        let currentQuestion = null;
+
+        async function loadQuestion() {
+            try {
+                const response = await axios.get('/admin_get_question');
+                if (response.data.redirect) {
+                    // No need to handle the button visibility here
+                    return;
+                }
+                currentQuestion = response.data;
+                displayQuestion();
+            } catch (error) {
+                console.error('Error loading question:', error);
+            }
+        }
+
+        function displayQuestion() {
+            questionEl.textContent = currentQuestion.question;
+            optionsEl.innerHTML = '';
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = () => submitAnswer(option);
+                optionsEl.appendChild(button);
+            });
+            scoreEl.textContent = `Score: ${currentQuestion.score}`;
+            feedbackEl.textContent = '';
+        }
+
+        async function submitAnswer(answer) {
+            try {
+                const response = await axios.post('/submit_answer', { answer });
+                const { is_correct, correct_answer, score } = response.data;
+                feedbackEl.textContent = is_correct ? 'Correct!' : `Incorrect. The correct answer was: ${correct_answer}`;
+                scoreEl.textContent = `Score: ${score}`;
+                setTimeout(loadQuestion, 2000); // Load next question after a short delay
+            } catch (error) {
+                console.error('Error submitting answer:', error);
+            }
+        }
+
+        function goToReport() {
+            window.location.href = "/report/"; // Redirect to report page
+        }
+
+        loadQuestion(); // Initial call to load the first question
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@ import json
 from time import time
 import os
 
-from mcq import generate_mcq_question
+from mcq import generate_mcq_options, generate_mcq_question
 from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
 
 import ssl
@@ -788,6 +788,120 @@ def create_plotly_figure(weeks_start, weeks_end, module, descriptions):
     fig = go.Figure(data=data, layout=layout)
 
     return fig
+
+
+### Trainer Based MCQ
+sample_doc = """1. How does the incorporation of Flynn's Taxonomy in the design of High-Performance Computing (HPC) Clusters impact the scalability and efficiency of parallel processing in distributed systems? Provide a detailed analysis of how key properties of HPC architectures such as vectorization, pipelining, and the Master-Slave architecture contribute to achieving high performance in distributed computing environments.
+2. How can the concept of parallelism be effectively utilized within computer clusters to achieve high performance computing, and what are the key challenges that need to be addressed when designing and optimizing parallel algorithms for such HPC clusters?
+3.Tallest building in the world"""
+
+all_questions = sample_doc.splitlines()
+num_questions = len(all_questions)
+
+@app.route('/test')
+def index():
+    return render_template('test.html')
+
+
+def admin_generate_question():
+    # Get number of questions asked from session
+    number_asked_ques = session.get('number_asked_ques', 0)
+
+    if number_asked_ques >= num_questions:
+        return None  # Quiz is complete
+    
+    mcq_qa = generate_mcq_options(all_questions[number_asked_ques]).splitlines()
+    mcq_qa = [i for i in mcq_qa if i.strip() != '']
+    mcq_q = all_questions[number_asked_ques]
+    mcq_options = mcq_qa[1:5]
+    mcq_options = [i for i in mcq_options if i.strip() != '']
+    mcq_a = mcq_qa[-1].strip()
+
+    current_question = {
+        "question": mcq_q,
+        "options": mcq_options,
+        "answer": mcq_a,
+    }
+
+    # Increment the number of asked questions in session
+    session['number_asked_ques'] = number_asked_ques + 1
+    session['start_time'] = time()  # Store start time in session
+
+    return current_question
+
+
+@app.route('/admin_get_question', methods=['GET'])
+def serve_question():
+    # Retrieve or generate the current question
+    current_question = session.get('current_question')
+
+    if current_question is None:
+        current_question = admin_generate_question()
+
+    if current_question is None:
+        print("lol")
+        return jsonify({"redirect": "/report/"})
+    
+    session['current_question'] = current_question  # Store the current question in session
+
+    return jsonify({
+        "question": current_question["question"],
+        "options": current_question["options"][:4],
+        "score": session.get('admin_score', 0)
+    })
+
+
+@app.route('/submit_answer', methods=['POST'])
+def submit_answer():
+    # Get session data
+    current_question = session.get('current_question')
+    if not current_question:
+        return jsonify({"error": "No current question available"}), 400
+    
+    data = request.json
+    user_answer = data.get('answer')
+    if not user_answer:
+        return jsonify({"error": "No answer provided"}), 400
+    
+    # Validate the answer
+    correct_answer = current_question["answer"]
+    is_correct = user_answer.lower().strip()[0] == correct_answer.lower().strip()[0]
+
+    # Update the score in session
+    admin_score = session.get('admin_score', 0)
+    admin_points = session.get('admin_points', [])
+    admin_time_taken = session.get('admin_time_taken', [])
+    start_time = session.get('start_time', time())
+
+    if is_correct:
+        admin_score += 1
+        admin_points.append(1)
+    else:
+        admin_points.append(0)
+
+    end_time = time()
+    admin_time_taken.append(round(end_time - start_time, 1))
+
+    # Store updated data back in session
+    session['admin_score'] = admin_score
+    session['admin_points'] = admin_points
+    session['admin_time_taken'] = admin_time_taken
+    session['current_question'] = None  # Reset current question
+
+    # Optionally update the score in the database or perform some other action
+    update_or_insert_score(admin_score, admin_points, admin_time_taken)
+
+    number_asked_ques = session.get('number_asked_ques', 0)
+    if number_asked_ques >= num_questions:
+        print("lol")
+        return jsonify({"redirect": "/report/"})
+    
+    return jsonify({
+        "is_correct": is_correct,
+        "correct_answer": correct_answer,
+        "score": admin_score
+    })
+
 
 # Run the Flask app
 if __name__ == '__main__':

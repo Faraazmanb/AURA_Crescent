@@ -8,21 +8,26 @@ client = OpenAI(
     api_key= os.getenv('OPENAI'),
     )
 
+client_openrouter = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=os.getenv('OPENAI_OPENROUTER')
+)
+
 def chat_with_gpt(prompt):
-    chat_completion = client.chat.completions.create(
+    chat_completion = client_openrouter.chat.completions.create(
         messages=[
             {
                 "role": "user",
                 "content": prompt,
             }
         ],
-        model="gpt-3.5-turbo",
+        model="openai/gpt-3.5-turbo",
     )
     return chat_completion.choices[0].message.content.strip()
 
 def chatgpt_for_qa_cir(prompt):
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+    response = client_openrouter.chat.completions.create(
+        model="openai/gpt-3.5-turbo",
          messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
                     {"role": "user", "content": prompt}
@@ -48,6 +53,19 @@ a.Newton
 dont ask:
 {asked}
                     """)
+
+def generate_mcq_options(question, *_):
+    """Generates mcq"""
+    return chat_with_gpt(f"""generate an MCQ on the given question: {question}, give 4 options, label options a,b,c,d; the last line must contain the correct option only [eg: a.Newton]
+                    example:
+                    
+What is the unit of force in the International System of Units?
+a.Newton
+b.Joule
+c.Watt
+d.Amps
+                         
+a.Newton""")
 
 if __name__ == '__main__':
     mcq_qa = generate_mcq_question("hitorical figures", 100, "").splitlines()
