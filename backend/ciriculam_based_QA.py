@@ -174,8 +174,8 @@ def ciriculam_based_QA(filepath, subject, ques_number, difficulty):
 
 def save_question(text):
 
-    if not text:
-        raise ValueError("Text cannot be empty")
+    filter_query = {"id": "standard_id"}
+    delete_result = collection.delete_one(filter_query)
 
     # Create a document
     question_document = {

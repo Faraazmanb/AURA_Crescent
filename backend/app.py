@@ -791,11 +791,15 @@ def create_plotly_figure(weeks_start, weeks_end, module, descriptions):
 
 
 ### Trainer Based MCQ
-sample_doc = """1. How does the incorporation of Flynn's Taxonomy in the design of High-Performance Computing (HPC) Clusters impact the scalability and efficiency of parallel processing in distributed systems? Provide a detailed analysis of how key properties of HPC architectures such as vectorization, pipelining, and the Master-Slave architecture contribute to achieving high performance in distributed computing environments.
-2. How can the concept of parallelism be effectively utilized within computer clusters to achieve high performance computing, and what are the key challenges that need to be addressed when designing and optimizing parallel algorithms for such HPC clusters?
-3.Tallest building in the world"""
 
-all_questions = sample_doc.splitlines()
+
+# sample_doc = """1. How does the incorporation of Flynn's Taxonomy in the design of High-Performance Computing (HPC) Clusters impact the scalability and efficiency of parallel processing in distributed systems? Provide a detailed analysis of how key properties of HPC architectures such as vectorization, pipelining, and the Master-Slave architecture contribute to achieving high performance in distributed computing environments.
+# 2. How can the concept of parallelism be effectively utilized within computer clusters to achieve high performance computing, and what are the key challenges that need to be addressed when designing and optimizing parallel algorithms for such HPC clusters?
+# 3.Tallest building in the world"""
+
+filter_query = {"id": "standard_id"}
+doc = mongo.db.trainer_question.find_one(filter_query)['question']
+all_questions = doc.splitlines()
 num_questions = len(all_questions)
 
 @app.route('/test')
