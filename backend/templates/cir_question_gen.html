@@ -185,6 +185,31 @@
     <script>
       let generatedPdfBlob = null;
 
+      // Automatically fill the first n rows of email with employee emails
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch('/get_employee_emails')
+          .then(response => response.json())
+          .then(data => {
+            const emails = data.employee_emails;
+            const tbody = document.querySelector("#recipientsTable tbody");
+
+            // Define the number of rows to autofill, or use the length of emails list
+            const rowsToFill = Math.min(emails.length, 5); // Fill the first 5 rows
+
+            for (let i = 0; i < rowsToFill; i++) {
+              const newRow = document.createElement("tr");
+              newRow.innerHTML = `
+                <td><input type="email" class="email" value="${emails[i]}" required></td>
+                <td><input type="checkbox" class="select"></td>
+              `;
+              tbody.appendChild(newRow);
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching employee emails:", error);
+          });
+      });
+      
       document
         .getElementById("qaForm")
         .addEventListener("submit", function (event) {
@@ -248,7 +273,7 @@
             `;
         tbody.appendChild(newRow);
       });
-
+      
       document
         .getElementById("sendEmails")
         .addEventListener("click", function () {
