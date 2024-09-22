@@ -4,122 +4,221 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz Application</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      /* Global Styles */
       body {
-        font-family: "Arial", sans-serif;
-        background: linear-gradient(135deg, #f0f4f8, #d9e3f0);
-        max-width: 800px;
+        font-family: "Poppins", sans-serif;
+        background: #121212;
+        color: #e0e0e0;
+        max-width: 900px;
         margin: 0 auto;
-        padding: 20px;
-        color: #333;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 12px;
+        padding: 30px;
       }
+
+      /* Container Styles */
+      .container {
+        background: #1e1e1e;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        padding: 40px;
+        margin-bottom: 30px;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      /* Heading Styles */
       h1 {
         text-align: center;
-        color: #1c3f72;
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-        letter-spacing: 1px;
+        color: #ffffff;
+        font-size: 3rem;
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
       }
+
       h2 {
-        color: #2c3e50;
+        color: #1abc9c; /* Updated to Teal */
         font-size: 2rem;
-        margin-bottom: 15px;
-        border-bottom: 2px solid #3498db;
-        padding-bottom: 5px;
-      }
-      #start-form {
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        padding: 30px;
         margin-bottom: 20px;
-        transition: transform 0.2s;
+        border-bottom: 2px solid #1abc9c; /* Updated to Teal */
+        padding-bottom: 10px;
       }
-      #start-form:hover {
-        transform: translateY(-5px);
-      }
-      label {
-        font-weight: bold;
+
+      /* Form Styles */
+      #start-form label {
+        font-weight: 600;
         display: block;
-        margin: 10px 0 5px;
+        margin: 15px 0 8px;
         font-size: 1.1rem;
       }
-      input[type="text"],
-      input[type="number"] {
+
+      #start-form input[type="text"],
+      #start-form input[type="number"] {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
+        padding: 14px;
+        border: 1px solid #333;
         border-radius: 8px;
-        margin-bottom: 15px;
-        transition: border-color 0.3s;
+        margin-bottom: 20px;
+        background: #2c2c2c;
+        color: #e0e0e0;
+        transition: border-color 0.3s, background 0.3s;
         font-size: 1rem;
       }
-      input[type="text"]:focus,
-      input[type="number"]:focus {
-        border-color: #3498db;
-        outline: none;
-        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+
+      #start-form input[type="text"]::placeholder,
+      #start-form input[type="number"]::placeholder {
+        color: #757575;
       }
+
+      #start-form input[type="text"]:focus,
+      #start-form input[type="number"]:focus {
+        border-color: #1abc9c; /* Updated to Teal */
+        background: #3a3a3a;
+        outline: none;
+        box-shadow: 0 0 8px rgba(26, 188, 156, 0.5); /* Updated to Teal */
+      }
+
+      /* Button Styles */
       button {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         border: none;
         border-radius: 8px;
-        background-color: #3498db;
-        color: white;
+        background-color: #1abc9c; /* Updated to Teal */
+        color: #121212;
         font-size: 1.2rem;
         cursor: pointer;
         transition: background-color 0.3s, transform 0.2s;
-        margin-top: 10px;
+        margin-top: 15px;
+        font-weight: 600;
       }
+
       button:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
+        background-color: #16a085; /* Darker Teal */
+        transform: translateY(-3px);
       }
+
+      /* Options Container */
       #options-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 20px;
+        gap: 15px;
+        margin-top: 25px;
       }
+
       #options-container button {
-        background-color: #2ecc71;
+        background-color: #03dac6;
+        color: #121212;
         transition: background-color 0.3s, transform 0.2s;
       }
+
       #options-container button:hover {
-        background-color: #27ae60;
+        background-color: #018786;
         transform: translateY(-2px);
       }
+
+      /* Result and Score */
       #result {
-        margin-top: 20px;
+        margin-top: 25px;
         font-weight: bold;
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         text-align: center;
+        min-height: 1.4rem; /* Ensures space is reserved even when empty */
       }
+
       #score-container {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         text-align: center;
       }
+
+      /* Report Button */
       #report-button {
-        background-color: #f39c12;
+        background-color: #ff9800;
+        margin-top: 20px;
       }
+
       #report-button:hover {
-        background-color: #e67e22;
+        background-color: #fb8c00;
       }
+
+      /* Animations */
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-15px);
+        }
+        60% {
+          transform: translateY(-7px);
+        }
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        50% {
+          transform: translateX(5px);
+        }
+        75% {
+          transform: translateX(-5px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .animate-bounce {
+        animation: bounce 0.6s;
+      }
+
+      .animate-shake {
+        animation: shake 0.5s;
+      }
+
+      /* Responsive Design */
       @media (max-width: 600px) {
         h1 {
-          font-size: 2rem;
+          font-size: 2.5rem;
         }
         h2 {
-          font-size: 1.5rem;
+          font-size: 1.7rem;
         }
         button {
           font-size: 1rem;
         }
+        #options-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Hide Elements Initially */
+      #question-container,
+      #options-container,
+      #result,
+      #next-button,
+      #score-container,
+      #report-button {
+        display: none;
       }
     </style>
   </head>
@@ -127,18 +226,25 @@
     <h1>Quiz Application</h1>
 
     <!-- Start Quiz Form -->
-    <div id="start-form">
+    <div class="container" id="start-form">
       <h2>Start Quiz</h2>
       <label for="subject">Subject:</label>
-      <input type="text" id="subject" name="subject" required />
+      <input
+        type="text"
+        id="subject"
+        name="subject"
+        placeholder="e.g., Mathematics"
+        required
+      />
 
-      <label for="hardness_level">Hardness Level (1-10):</label>
+      <label for="hardness_level">Difficulty Level (1-10):</label>
       <input
         type="number"
         id="hardness_level"
         name="hardness_level"
         min="1"
         max="10"
+        placeholder="Select difficulty"
         required
       />
 
@@ -148,28 +254,57 @@
         id="num_questions"
         name="num_questions"
         min="1"
+        placeholder="e.g., 10"
         required
       />
 
       <button id="start-button">Start Quiz</button>
     </div>
 
-    <div id="score-container" style="display: none">
+    <!-- Score Display -->
+    <div class="container" id="score-container">
       Score: <span id="score">0</span>
     </div>
-    <div id="question-container"></div>
-    <div id="options-container"></div>
-    <div id="result"></div>
-    <button id="next-button" style="display: none">Next Question</button>
-    <button id="report-button" style="display: none" onclick="goToReport()">
-      Go to Report
-    </button>
+
+    <!-- Question Display -->
+    <div class="container" id="question-container"></div>
+
+    <!-- Options Display -->
+    <div class="container" id="options-container"></div>
+
+    <!-- Result Display -->
+    <div class="container" id="result"></div>
+
+    <!-- Navigation Buttons -->
+    <button id="next-button">Next Question</button>
+    <button id="report-button" onclick="goToReport()">Go to Report</button>
 
     <script>
+      let currentQuestionNumber = 1; // Initialize question number
+      let totalQuestions = 0; // To track the total number of questions
+
+      // Function to show an element
+      function showElement(elementId) {
+        document.getElementById(elementId).style.display = "block";
+      }
+
+      // Function to hide an element
+      function hideElement(elementId) {
+        document.getElementById(elementId).style.display = "none";
+      }
+
       document.getElementById("start-button").onclick = () => {
-        const subject = document.getElementById("subject").value;
+        const subject = document.getElementById("subject").value.trim();
         const hardness_level = document.getElementById("hardness_level").value;
         const num_questions = document.getElementById("num_questions").value;
+
+        // Basic validation
+        if (!subject || !hardness_level || !num_questions) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        totalQuestions = parseInt(num_questions); // Set total number of questions
 
         fetch("/start_quiz", {
           method: "POST",
@@ -179,15 +314,26 @@
           body: JSON.stringify({
             subject: subject,
             hardness_level: parseInt(hardness_level),
-            num_questions: parseInt(num_questions),
+            num_questions: totalQuestions,
           }),
         })
           .then((response) => response.json())
           .then((data) => {
-            document.getElementById("start-form").style.display = "none";
-            document.getElementById("score-container").style.display = "block";
-            document.getElementById("report-button").style.display = "block";
+            if (data.error) {
+              alert(data.error);
+              return;
+            }
+            hideElement("start-form");
+            showElement("score-container");
+            showElement("report-button");
+            showElement("question-container");
+            showElement("options-container");
+            showElement("result");
             loadQuestion();
+          })
+          .catch((error) => {
+            console.error("Error starting quiz:", error);
+            alert("An error occurred while starting the quiz.");
           });
       };
 
@@ -203,9 +349,16 @@
               window.location.href = data.redirect;
               return;
             }
+            if (data.error) {
+              alert(data.error);
+              return;
+            }
+
+            // Display current question number and question text
             document.getElementById(
               "question-container"
-            ).innerHTML = `<h2>${data.question}</h2>`;
+            ).innerHTML = `<h2>Question ${currentQuestionNumber} of ${totalQuestions}</h2><p>${data.question}</p>`;
+
             const optionsContainer =
               document.getElementById("options-container");
             optionsContainer.innerHTML = ""; // Clear existing options
@@ -219,8 +372,16 @@
               button.onclick = () => checkAnswer(option[0]);
               optionsContainer.appendChild(button);
             });
+
             document.getElementById("result").innerHTML = "";
-            document.getElementById("next-button").style.display = "none";
+            document
+              .getElementById("result")
+              .classList.remove("animate-bounce", "animate-shake");
+            hideElement("next-button");
+          })
+          .catch((error) => {
+            console.error("Error loading question:", error);
+            alert("An error occurred while loading the question.");
           });
       }
 
@@ -236,20 +397,39 @@
         })
           .then((response) => response.json())
           .then((data) => {
+            if (data.error) {
+              alert(data.error);
+              return;
+            }
+
             const resultElement = document.getElementById("result");
             if (data.correct) {
               resultElement.innerHTML = "Correct!";
-              resultElement.style.color = "green";
+              resultElement.style.color = "#4caf50"; // Green
+              resultElement.classList.add("animate-bounce"); // Add bounce animation
             } else {
               resultElement.innerHTML = `Incorrect. The correct answer is: ${data.correct_answer}`;
-              resultElement.style.color = "red";
+              resultElement.style.color = "#f44336"; // Red
+              resultElement.classList.add("animate-shake"); // Add shake animation
             }
-            document.getElementById("next-button").style.display = "block";
+            showElement("next-button");
             updateScore(data.score);
+          })
+          .catch((error) => {
+            console.error("Error checking answer:", error);
+            alert("An error occurred while checking the answer.");
           });
       }
 
-      document.getElementById("next-button").onclick = loadQuestion;
+      document.getElementById("next-button").onclick = () => {
+        currentQuestionNumber++; // Increment the question number
+        if (currentQuestionNumber <= totalQuestions) {
+          loadQuestion(); // Load the next question
+        } else {
+          alert("Quiz completed!");
+          hideElement("next-button");
+        }
+      };
 
       function goToReport() {
         window.location.href = "/report";
