@@ -1,15 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload PDF</title>
-</head>
-<body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      h1 {
+        font-size: 2rem;
+        color: #f1f1f1;
+        margin-bottom: 10px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      form {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        position: relative;
+      }
+
+      input[type="file"] {
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      input[type="file"]:hover {
+        background-color: #444;
+      }
+
+      input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #ff6f61;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #ff4b3a;
+      }
+
+      /* Loader animation */
+      .loader {
+        border: 6px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 6px solid #ff6f61;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        display: none;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Display the loader on form submission */
+      .loading .loader {
+        display: block;
+      }
+
+      .loading input[type="submit"] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
     <h1>Upload PDF Document</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".pdf">
-        <input type="submit" value="Upload">
+    <h2
+      style="
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin-bottom: 0.5rem;
+      "
+    >
+      Get Customized TimeTable
+    </h2>
+    <form id="uploadForm" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".pdf" required />
+      <input type="submit" value="Upload" />
+      <div class="loader" id="loader"></div>
     </form>
-</body>
+
+    <script>
+      const form = document.getElementById("uploadForm");
+      const loader = document.getElementById("loader");
+
+      form.addEventListener("submit", function (event) {
+        // Show the loader when the form is submitted
+        form.classList.add("loading");
+      });
+    </script>
+  </body>
 </html>

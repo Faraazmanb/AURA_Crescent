@@ -4,12 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = OpenAI(
-    api_key= os.getenv('OPENAI'),
-    )
 
-client_openrouter = OpenAI(
-  base_url="https://openrouter.ai/api/v1",
+
+client_openrouter = OpenAI(base_url="https://openrouter.ai/api/v1",
   api_key=os.getenv('OPENAI_OPENROUTER')
 )
 

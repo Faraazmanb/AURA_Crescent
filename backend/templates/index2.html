@@ -47,7 +47,7 @@
             </form>
           </div>
           <div class="img">
-            <img src="images/logo.png" />
+            <img src="{{url_for('static',filename='images/logo.png')}}" />
           </div>
         </div>
 
@@ -150,16 +150,20 @@
         >
           Self Assessment
         </a>
-
+        <a
+          style="
+            background-color: antiquewhite;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+          "
+          href="{{url_for('upload_file')}}"
+          >Generate TimeTable</a
+        >
         {% else %}
         <p>You have an unknown role. Please contact support.</p>
         {% endif %}
 
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel
-          illum fuga unde cum, voluptates magni molestias eveniet culpa autem
-          ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?
-        </p>
         <p>
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel
           illum fuga unde cum, voluptates magni molestias eveniet culpa autem
