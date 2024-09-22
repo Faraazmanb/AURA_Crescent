@@ -141,10 +141,33 @@
         <!-- Admin-specific content -->
 
         <!-- Admin-specific content -->
-        <p>
+        <p
+          style="
+            color: white;
+            font-size: 1.4rem;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+          "
+        >
           Welcome to the admin section where you can manage users and settings.
         </p>
-        <a href="/{{ role.capitalize() }}_dashboard/" class="btn btn-primary">
+        <a
+          style="
+            padding: 0.5rem;
+            margin: auto;
+            border-radius: 0.5rem;
+            background-color: #ff0000;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            margin-top: 2rem;
+            outline: none;
+            text-align: center;
+          "
+          href="/{{ role.capitalize() }}_dashboard/"
+        >
           Go to {{ role.capitalize() }} Dashboard
         </a>
         <section class="section-services">
@@ -293,6 +316,24 @@
           Welcome to the {{role}} section where you can Upload Curriculum and
           Generate Question Bank.
         </p>
+        <a
+          style="
+            padding: 0.5rem;
+            margin: auto;
+            border-radius: 0.5rem;
+            background-color: #ff0000;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            margin-top: 2rem;
+            outline: none;
+          "
+          href="/{{ role.capitalize() }}_dashboard/"
+        >
+          Go to {{ role.capitalize() }} Dashboard
+        </a>
         <a
           style="
             padding: 0.5rem;
