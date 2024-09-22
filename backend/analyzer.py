@@ -19,10 +19,13 @@ def read_pdf(file_path):
             text += page.extract_text()
         return text
     
-client = OpenAI(api_key=os.getenv('OPENAI'))
+client_openrouter = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=os.getenv('OPENAI_OPENROUTER')
+)
 
 def analyze_curriculum(curriculum_text, use_turbo=False):
-    model = "gpt-4-turbo" if use_turbo else "gpt-4"
+    model = "gpt-3.5-turbo"
 
     prompt = f"""Analyze the following curriculum and create a study plan:\n\n{curriculum_text}
 
@@ -39,9 +42,9 @@ Focus on the concept of amorphous, single crystals, and polycrystalline material
 
 add how many weeks needed.
 format:
-Week 
-Module
-Description
+Week (no new lines)
+Module (no new lines)
+Description (no new lines)
 
 MAKE SURE THAT:
 Week has a start and end
@@ -49,7 +52,7 @@ Week 1: (NOT ALLOWED)
 Week 0-1 (ALLOWED)
 """
     
-    response = client.chat.completions.create(
+    response = client_openrouter.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "You are an educational planner."},
@@ -72,6 +75,6 @@ def process_curriculum_file(file_path):
 if __name__ == "__main__":
     file_path = input("Please enter the path to your curriculum file (.pdf or .docx): ")
     curriculum_text = process_curriculum_file(file_path)
-    analysis = analyze_curriculum(curriculum_text, use_turbo=True)  # Set use_turbo=False to use regular GPT-4
+    analysis = analyze_curriculum(curriculum_text, use_turbo=False)  # Set use_turbo=False to use regular GPT-4
     create_learning_plan(analysis)
     print("Learning plan document has been created as a PDF.")
