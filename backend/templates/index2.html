@@ -13,13 +13,33 @@
       integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS"
       crossorigin="anonymous"
     />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap"
+      rel="stylesheet"
+    />
     <!--  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/index2.css') }}"
     />
-    <title>Responsive sidebar submenus</title>
+    <title>Aura Automated Question Builder</title>
   </head>
 
   <body>
@@ -70,7 +90,10 @@
 
           <div class="nav_list">
             <div class="nav_items navtop">
-              <a href="#" class="nav_link active">
+              <a
+                href="/{{ role.capitalize() }}_dashboard/"
+                class="nav_link active"
+              >
                 <i class="fa fa-house nav_icon"></i>
                 <span class="nav_name">Dashboard</span>
               </a>
@@ -89,13 +112,6 @@
                 <i class="fa-solid fa-clock-rotate-left nav_icon"></i>
                 <span class="nav_name">Data History </span>
               </a>
-
-              <div class="nav_dropdown">
-                <a href="#" class="nav_link">
-                  <i class="bx bx-message-rounded nav_icon"></i>
-                  <span class="nav_name">Messages</span>
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -106,11 +122,19 @@
     <main>
       <section>
         <div class="container">
-          <h1>Hello, {{ username }}!</h1>
-          <p>You are logged in as a {{ role }}.</p>
-          <a href="/{{ role.capitalize() }}_dashboard/" class="btn btn-primary">
-            Go to {{ role.capitalize() }} Dashboard
-          </a>
+          <h1 style="font-family: 'Poppins', sans-serif; margin-bottom: 0.5rem">
+            Hello,
+            <span style="color: #fd5757; font-family: 'Poppins', sans-serif"
+              >{{ username.capitalize() }}</span
+            >
+            !
+          </h1>
+          <h3 style="margin-bottom: 0.5rem">
+            You are logged in as a
+            <span style="color: #ff0000; font-family: 'Poppins', sans-serif"
+              >{{ role }}</span
+            >.
+          </h3>
         </div>
 
         {% if role == 'Administrator' %}
@@ -120,31 +144,353 @@
         <p>
           Welcome to the admin section where you can manage users and settings.
         </p>
+        <a href="/{{ role.capitalize() }}_dashboard/" class="btn btn-primary">
+          Go to {{ role.capitalize() }} Dashboard
+        </a>
+        <section class="section-services">
+          <div class="container">
+            <div class="row justify-content-center text-center">
+              <div class="col-md-10 col-lg-8">
+                <div class="header-section">
+                  <h2 class="title">Exclusive Services</h2>
+                  <p class="description">
+                    Delivering tailored solutions designed to meet your unique
+                    needs. Experience unparalleled quality and commitment with
+                    every interaction.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-battle-net"></i>
+                    </span>
+                    <h3 class="title">GPT-3.5 Integration</h3>
+                    <p class="description">
+                      Leverage the advanced capabilities of OpenAI's latest
+                      model to create insightful and varied questions
+                      effortlessly.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-asymmetrik"></i>
+                    </span>
+                    <h3 class="title">Customizable Prompts</h3>
+                    <p class="description">
+                      Empower users to input diverse text, enabling the
+                      generation of tailored questions relevant to their
+                      specific needs.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-artstation"></i>
+                    </span>
+                    <h3 class="title">Flexible Use Cases</h3>
+                    <p class="description">
+                      Designed for a wide range of educational applications,
+                      this system can adapt to various subjects and contexts by
+                      simply modifying the input.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-500px"></i>
+                    </span>
+                    <h3 class="title">User-Friendly Interface</h3>
+                    <p class="description">
+                      Enjoy a simple and intuitive design that ensures a smooth
+                      experience for users, making question generation
+                      accessible to everyone.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fas fa-chart-pie"></i>
+                    </span>
+                    <h3 class="title">Secure Management</h3>
+                    <p class="description">
+                      Ensure the safety of your OpenAI API key and other
+                      sensitive information through efficient environment
+                      variable management.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fas fa-laptop-code"></i>
+                    </span>
+                    <h3 class="title">Future Enhancemnt</h3>
+                    <p class="description">
+                      Stay tuned for exciting upgrades and additional features
+                      that will expand functionality and improve user
+                      engagement.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+            </div>
+          </div>
+        </section>
 
         {% elif role == 'Trainer' %}
 
-        <p style="color: white; font-size: 1.4rem">
+        <p
+          style="
+            color: white;
+            font-size: 1.4rem;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+          "
+        >
           Welcome to the {{role}} section where you can Upload Curriculum and
           Generate Question Bank.
         </p>
         <a
-          style="padding: 0.5rem"
-          class="btn btn-primary"
+          style="
+            padding: 0.5rem;
+            margin: auto;
+            border-radius: 0.5rem;
+            background-color: #ff0000;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            margin-top: 2rem;
+          "
+          class="btn-primary"
           href="{{ url_for('serve_question_form') }}"
           class="btn btn-primary"
         >
           Generate Question Bank
         </a>
+        <section class="section-services">
+          <div class="container">
+            <div class="row justify-content-center text-center">
+              <div class="col-md-10 col-lg-8">
+                <div class="header-section">
+                  <h2 class="title">Exclusive Services</h2>
+                  <p class="description">
+                    Delivering tailored solutions designed to meet your unique
+                    needs. Experience unparalleled quality and commitment with
+                    every interaction.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-battle-net"></i>
+                    </span>
+                    <h3 class="title">GPT-3.5 Integration</h3>
+                    <p class="description">
+                      Leverage the advanced capabilities of OpenAI's latest
+                      model to create insightful and varied questions
+                      effortlessly.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-asymmetrik"></i>
+                    </span>
+                    <h3 class="title">Customizable Prompts</h3>
+                    <p class="description">
+                      Empower users to input diverse text, enabling the
+                      generation of tailored questions relevant to their
+                      specific needs.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-artstation"></i>
+                    </span>
+                    <h3 class="title">Flexible Use Cases</h3>
+                    <p class="description">
+                      Designed for a wide range of educational applications,
+                      this system can adapt to various subjects and contexts by
+                      simply modifying the input.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-500px"></i>
+                    </span>
+                    <h3 class="title">User-Friendly Interface</h3>
+                    <p class="description">
+                      Enjoy a simple and intuitive design that ensures a smooth
+                      experience for users, making question generation
+                      accessible to everyone.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fas fa-chart-pie"></i>
+                    </span>
+                    <h3 class="title">Secure Management</h3>
+                    <p class="description">
+                      Ensure the safety of your OpenAI API key and other
+                      sensitive information through efficient environment
+                      variable management.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fas fa-laptop-code"></i>
+                    </span>
+                    <h3 class="title">Future Enhancemnt</h3>
+                    <p class="description">
+                      Stay tuned for exciting upgrades and additional features
+                      that will expand functionality and improve user
+                      engagement.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+            </div>
+          </div>
+        </section>
 
         {% elif role == 'Employee' %}
 
-        <p style="color: white; font-size: 1.4rem">
+        <p
+          style="
+            color: white;
+            font-size: 1.4rem;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+          "
+        >
           Welcome to the {{role}} section where you can Upload Curriculum and
           Generate Question Bank.
         </p>
+
         <a
-          style="padding: 0.5rem"
-          class="btn btn-primary"
+          style="
+            padding: 0.5rem;
+            margin: auto;
+            border-radius: 0.5rem;
+            background-color: #ff0000;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            margin-top: 2rem;
+            outline: none;
+          "
+          href="/{{ role.capitalize() }}_dashboard/"
+        >
+          Go to {{ role.capitalize() }} Dashboard
+        </a>
+        <a
+          style="
+            padding: 0.5rem;
+            margin: auto;
+            border-radius: 0.5rem;
+            background-color: #ff0000;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            margin-top: 2rem;
+          "
+          class=""
           href="{{ url_for('quiz_questions') }}"
           class="btn btn-primary"
         >
@@ -152,25 +498,164 @@
         </a>
         <a
           style="
-            background-color: antiquewhite;
             padding: 0.5rem;
-            border-radius: 0.4rem;
-            cursor: pointer;
+            margin: auto;
+            border-radius: 0.5rem;
+            background-color: #ff0000;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            margin-top: 2rem;
           "
           href="{{url_for('upload_file')}}"
           >Generate TimeTable</a
         >
+        <section class="section-services">
+          <div class="container">
+            <div class="row justify-content-center text-center">
+              <div class="col-md-10 col-lg-8">
+                <div class="header-section">
+                  <h2 class="title">Exclusive Services</h2>
+                  <p class="description">
+                    Delivering tailored solutions designed to meet your unique
+                    needs. Experience unparalleled quality and commitment with
+                    every interaction.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-battle-net"></i>
+                    </span>
+                    <h3 class="title">GPT-3.5 Integration</h3>
+                    <p class="description">
+                      Leverage the advanced capabilities of OpenAI's latest
+                      model to create insightful and varied questions
+                      effortlessly.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-asymmetrik"></i>
+                    </span>
+                    <h3 class="title">Customizable Prompts</h3>
+                    <p class="description">
+                      Empower users to input diverse text, enabling the
+                      generation of tailored questions relevant to their
+                      specific needs.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-artstation"></i>
+                    </span>
+                    <h3 class="title">Flexible Use Cases</h3>
+                    <p class="description">
+                      Designed for a wide range of educational applications,
+                      this system can adapt to various subjects and contexts by
+                      simply modifying the input.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fab fa-500px"></i>
+                    </span>
+                    <h3 class="title">User-Friendly Interface</h3>
+                    <p class="description">
+                      Enjoy a simple and intuitive design that ensures a smooth
+                      experience for users, making question generation
+                      accessible to everyone.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fas fa-chart-pie"></i>
+                    </span>
+                    <h3 class="title">Secure Management</h3>
+                    <p class="description">
+                      Ensure the safety of your OpenAI API key and other
+                      sensitive information through efficient environment
+                      variable management.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+              <!-- Single Service -->
+              <div class="col-md-6 col-lg-4">
+                <div class="single-service">
+                  <div class="content">
+                    <span class="icon">
+                      <i class="fas fa-laptop-code"></i>
+                    </span>
+                    <h3 class="title">Future Enhancemnt</h3>
+                    <p class="description">
+                      Stay tuned for exciting upgrades and additional features
+                      that will expand functionality and improve user
+                      engagement.
+                    </p>
+                    <a href="#" class="learn-more">Learn More</a>
+                  </div>
+                  <span class="circle-before"></span>
+                </div>
+              </div>
+              <!-- / End Single Service -->
+            </div>
+          </div>
+        </section>
         {% else %}
         <p>You have an unknown role. Please contact support.</p>
         {% endif %}
-
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel
-          illum fuga unde cum, voluptates magni molestias eveniet culpa autem
-          ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?
-        </p>
       </section>
     </main>
+
+    <!--FOOTER-->
+    <footer>
+      <div class="top_header"></div>
+      <span class="border-shape"></span>
+      <div class="copyright">Copyright © 2024 AURA - All rights reserved</div>
+    </footer>
 
     <!--========== MAIN JS ==========-->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

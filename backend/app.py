@@ -525,6 +525,14 @@ admin_dashboard = dash.Dash(
     url_base_pathname='/Administrator_dashboard/',
     external_stylesheets=[dbc.themes.SLATE]
 )
+
+
+trainer_dashboard = dash.Dash(
+    __name__,
+    server=app,
+    url_base_pathname='/Trainer_dashboard/',
+    external_stylesheets=[dbc.themes.SLATE]
+)
 from flask import redirect, url_for
 
 
@@ -545,6 +553,55 @@ report_dashboard = dash.Dash(
 
 # Build App Layout
 admin_dashboard.layout = html.Div([
+    dbc.Card(
+        dbc.CardBody([
+
+            
+            dbc.Row([
+                dbc.Col(drawText_Admin_Dashbaord(), width=20),
+            ], align='center'),
+
+
+            html.Br(),
+
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Month(), width=3.5),
+            ], align='center'),
+
+
+            html.Br(),
+            
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_Year(), width=4),
+                dbc.Col(drawFigure_Users_Active(), width=3),
+                dbc.Col(drawFigure_Users_Study_Time(), width=5),
+                
+            ]),
+
+            html.Br(),
+
+            dbc.Row([
+                dbc.Col(drawFigure_Users_New_Users(), width=5),
+                dbc.Col(drawFigure_Users_Name(), width=4),
+                dbc.Col(drawFigure_Up_Time(), width=3),
+            ],align='center'),
+
+
+            html.Br(),
+
+
+            dbc.Row([
+                dbc.Col(drawFigure_Network_load(), width=9),
+            ], align='center'),
+        ]), color='dark'
+    )
+])
+
+
+
+trainer_dashboard.layout = html.Div([
     dbc.Card(
         dbc.CardBody([
 
