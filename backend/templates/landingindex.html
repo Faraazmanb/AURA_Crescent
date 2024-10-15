@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Welcome to Automated Question Builder!</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+</head>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+<link rel="stylesheet" type="text/css" href="icomoon/icomoon.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landingstyle.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.css') }}"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&family=Roboto+Slab&display=swap"
+  rel="stylesheet">
+
+<style>
+    body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode {
+        background-color: #2a2a2a;
+        color: #ffffff;
+    }
+    
+    .dark-mode .card {
+        background-color: #2a2a2a;
+        color: #ffffff;
+    }
+    .dark-mode .navbar {
+        background-color: #2a2a2a;
+    }
+    .dark-mode .nav-link {
+        color: #ffffff;
+    }
+    .dark-mode .btn-outline-dark {
+        color: #ffffff;
+        border-color: #ffffff;
+    }
+    body.dark-mode div {
+    background-color: #2a2a2a; 
+    color: #ffffff;
+}
+    .dark-mode .btn-outline-dark:hover {
+        color: #2a2a2a;
+        background-color: #ffffff;
+    }
+    #darkModeToggle {
+        cursor: pointer;
+    }
+    .navbar-nav.right-aligned {
+        margin-left: auto;
+    }
+
+    body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+/* Dark mode styling for all div elements and their text */
+.dark-mode div,
+ 
+.dark-mode div h1, 
+.dark-mode div h2, 
+.dark-mode div h3, 
+.dark-mode div h4, 
+.dark-mode div h5, 
+.dark-mode div h6, 
+.dark-mode div p, 
+.dark-mode div span, 
+.dark-mode div a, 
+.dark-mode div li, 
+.dark-mode div strong, 
+.dark-mode div em {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+.dark-mode .card {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+.dark-mode .navbar {
+    background-color: #2a2a2a;
+}
+
+.dark-mode .nav-link {
+    color: #ffffff;
+}
+
+.dark-mode .btn-outline-dark {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+.dark-mode .btn-outline-dark:hover {
+    color: #1a1a1a;
+    background-color: #ffffff;
+}
+
+#darkModeToggle {
+    cursor: pointer;
+}
+
+.navbar-nav.right-aligned {
+    margin-left: auto;
+}
+
+/* Ensure that the paragraph text is white in dark mode */
+body.dark-mode .swiper-slide .text-black-50 {
+    color: #ffffff; /* Change text color to white */
+}
+
+.text-muted {
+    --bs-text-opacity: 1;
+    color: var(--bs-secondary-color) !important;
+}
+
+/* Dark mode styles for text-muted */
+body.dark-mode .text-muted {
+    color: #a6a4a4 !important; /* Change text color to white */
+}
+.text-black-50 {
+    --bs-text-opacity: 1;
+    color: rgba(0, 0, 0, .5) !important; /* Original style for light mode */
+}
+
+/* Dark mode styles for text-black-50 */
+body.dark-mode .text-black-50 {
+    color: #989292 !important; /* Change text color to white in dark mode */
+}
+body.dark-mode .achivement-section {
+    background-color: #2a2a2a; /* Dark mode background color */
+}
+#testimonial {
+  background-image: url("static/images/background-img.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Dark mode styles for testimonial section */
+body.dark-mode #testimonial {
+  background-image: url("static/images/darkback.png"); /* Dark background image */
+}
+
+/* Dark mode for text inside testimonial section */
+body.dark-mode #testimonial h2,
+body.dark-mode #testimonial p,
+body.dark-mode #testimonial h5 {
+  color: #ffffff;
+}
+
+body.dark-mode #testimonial .text-black-50 {
+  color: #bbbbbb; /* Light gray for better readability */
+}
+
+.bg-white {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+}
+
+/* Dark mode styles */
+body.dark-mode .bg-white {
+  --bs-bg-opacity: 1;
+  background-color: #2a2a2a !important;
+}
+
+</style>
+
+</head>
+
+<body>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M12 19a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm5 0a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm0-4a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm-5 0a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm7-12h-1V2a1 1 0 0 0-2 0v1H8V2a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3Zm1 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9h16Zm0-11H4V6a1 1 0 0 1 1-1h1v1a1 1 0 0 0 2 0V5h8v1a1 1 0 0 0 2 0V5h1a1 1 0 0 1 1 1ZM7 15a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm0 4a1 1 0 1 0-1-1a1 1 0 0 0 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="arrow-right" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M17.92 11.62a1 1 0 0 0-.21-.33l-5-5a1 1 0 0 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l5-5a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="category" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19 5.5h-6.28l-.32-1a3 3 0 0 0-2.84-2H5a3 3 0 0 0-3 3v13a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-10a3 3 0 0 0-3-3Zm1 13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1h4.56a1 1 0 0 1 .95.68l.54 1.64a1 1 0 0 0 .95.68h7a1 1 0 0 1 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="calendar" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19 4h-2V3a1 1 0 0 0-2 0v1H9V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7h16Zm0-9H4V7a1 1 0 0 1 1-1h2v1a1 1 0 0 0 2 0V6h6v1a1 1 0 0 0 2 0V6h2a1 1 0 0 1 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="plus" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="minus" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19 11H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2Z" />
+      </symbol>
+      
+      <symbol xmlns="http://www.w3.org/2000/svg" id="check" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46l-3.13-3.14A1 1 0 1 0 5.29 13l3.84 3.84a1 1 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="trash" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M10 18a1 1 0 0 0 1-1v-6a1 1 0 0 0-2 0v6a1 1 0 0 0 1 1ZM20 6h-4V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2ZM10 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4Zm7 14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8h10Zm-3-1a1 1 0 0 0 1-1v-6a1 1 0 0 0-2 0v6a1 1 0 0 0 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="star-outline" viewBox="0 0 15 15">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+          d="M7.5 9.804L5.337 11l.413-2.533L4 6.674l2.418-.37L7.5 4l1.082 2.304l2.418.37l-1.75 1.793L9.663 11L7.5 9.804Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="star-solid" viewBox="0 0 15 15">
+        <path fill="currentColor"
+          d="M7.953 3.788a.5.5 0 0 0-.906 0L6.08 5.85l-2.154.33a.5.5 0 0 0-.283.843l1.574 1.613l-.373 2.284a.5.5 0 0 0 .736.518l1.92-1.063l1.921 1.063a.5.5 0 0 0 .736-.519l-.373-2.283l1.574-1.613a.5.5 0 0 0-.283-.844L8.921 5.85l-.968-2.062Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="search" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="user" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M15.71 12.71a6 6 0 1 0-7.42 0a10 10 0 0 0-6.22 8.18a1 1 0 0 0 2 .22a8 8 0 0 1 15.9 0a1 1 0 0 0 1 .89h.11a1 1 0 0 0 .88-1.1a10 10 0 0 0-6.25-8.19ZM12 12a4 4 0 1 1 4-4a4 4 0 0 1-4 4Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 15 15">
+        <path fill="currentColor"
+          d="M7.953 3.788a.5.5 0 0 0-.906 0L6.08 5.85l-2.154.33a.5.5 0 0 0-.283.843l1.574 1.613l-.373 2.284a.5.5 0 0 0 .736.518l1.92-1.063l1.921 1.063a.5.5 0 0 0 .736-.519l-.373-2.283l1.574-1.613a.5.5 0 0 0-.283-.844L8.921 5.85l-.968-2.062Z" />
+      </symbol>
+
+    </defs>
+  </svg>
+
+  <div class="preloader-wrapper">
+    <div class="preloader">
+    </div>
+  </div>
+
+
+  <nav class="main-menu d-flex navbar fixed-top navbar-expand-lg p-2 py-3 p-lg-4 py-lg-4 ">
+    <div class="container-fluid">
+      <div class="main-logo">
+        <a href="index.html">
+          <img src="static/images/logoaura.png" alt="logo" class="img-fluid" style="width: 130px; height: auto;">
+        </a>
+      </div>
+      
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+        <div class="offcanvas-header">
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body justify-content-end">
+
+          <ul class="navbar-nav menu-list list-unstyled align-items-lg-center d-flex gap-md-3 mb-0">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link mx-2 active">Home</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="pages"
+                data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+              <ul class="dropdown-menu" aria-labelledby="pages">
+                <li><a href="about.html" class="dropdown-item">About Us<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+                <li><a href="instructors.html" class="dropdown-item">Trainers<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="events"
+                data-bs-toggle="dropdown" aria-expanded="false">Exam</a>
+              <ul class="dropdown-menu" aria-labelledby="courses">
+                <li><a href="event.html" class="dropdown-item">Subject<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+                <li><a href="event-details.html" class="dropdown-item">Exam Syllabus<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="blog"
+                data-bs-toggle="dropdown" aria-expanded="false">blog</a>
+              <ul class="dropdown-menu" aria-labelledby="blog">
+                <li><a href="blog.html" class="dropdown-item">blog<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+                <li><a href="single-post.html" class="dropdown-item">single post<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="shop"
+                data-bs-toggle="dropdown" aria-expanded="false">Trainer</a>
+              <ul class="dropdown-menu" aria-labelledby="shop">
+                <li><a href="shop.html" class="dropdown-item">College<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+                <li><a href="single-product.html" class="dropdown-item">Other<span
+                      class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a href="contact.html" class="nav-link mx-2">contact</a>
+            </li>
+            
+          </ul>
+
+          
+          <!-- <ul class="navbar-nav right-aligned">
+            <li class="nav-item">
+                <a href="#" id="darkModeToggle" class="nav-link">
+                    <iconify-icon icon="mdi:theme-light-dark" class="fs-4"></iconify-icon>
+                </a>
+            </li>
+        </ul> -->
+
+          <div class="d-none d-lg-flex align-items-center ms-5">
+            <ul class="d-flex justify-content-end  list-unstyled m-0">
+              <li>
+                <a class="btn btn-outline-dark mx-3 p-3" href="{{ url_for('loginreg') }}">Login/Signup</a>
+              </li>
+
+              <ul class="navbar-nav menu-list list-unstyled align-items-lg-center d-flex gap-md-3 mb-0">
+                <li class="nav-item">
+                  <a href="#" id="darkModeToggle" class="nav-link">
+                      <iconify-icon icon="mdi:theme-light-dark" class="fs-4"></iconify-icon>
+                  </a>
+              </li>
+              </ul>
+
+         
+              <ul class="navbar-nav menu-list list-unstyled align-items-lg-center d-flex gap-md-3 mb-0">
+              <li class="nav-item">
+                <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                    <iconify-icon icon="mdi:bell" class="fs-4 position-relative"></iconify-icon>
+                </a>
+            </li>
+            <ul>
+
+            </ul>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="container-fluid d-lg-none">
+      <div class="d-flex  align-items-end mt-3">
+        <ul class="d-flex justify-content-end list-unstyled m-0">
+          
+
+        
+
+          <li class="align-self-end">
+            <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                <iconify-icon icon="mdi:bell" class="fs-4 position-relative"></iconify-icon>
+            </a>
+        </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8 col-lg-3 offset-md-2 padding-large ps-lg-0 pe-lg-5">
+          <h3 class="display-2 fw-semibold">Welcome to Automated Question Builder!</h3>
+          <p class="secondary-font my-4 pb-2">Harness the power of AI to generate dynamic, curriculum-based, and general-purpose questions that can transform the way you learn, teach, and assess knowledge. </p>
+          
+        </div>
+        <div class="col-md-6 col-lg-7 d-block d-md-none d-lg-block p-0">
+          <img id="admin" src="static/images/admin.png" alt="img" style="margin-left: 15rem; border-radius: 2rem; margin-top: 12.5rem; height: 30rem; width: 30rem;">
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <section id="service" class="padding-medium">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="display-5 fw-semibold">Why to <span class="text-primary"> Use</span></h2>
+        <p class="secondary-font">Get started today and revolutionize how you create and explore knowledge!</p>
+      </div>
+
+      <div class="row g-md-4 mt-2">
+        <div class="col-md-4 mt-4">
+          <div class="services-element p-4 rounded-3 d-flex">
+            <div>
+              <iconify-icon class="service-icon fs-1" icon="fluent:notepad-person-24-regular"></iconify-icon>
+            </div>
+
+            <div class="ps-3">
+              <h4 class="py-2 m-0">Generate Contextual Questions</h4>
+              <p>Simply input a topic, and receive relevant, high-quality questions instantly.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-4">
+          <div class="services-element p-4 rounded-3 d-flex">
+            <div>
+              <iconify-icon class="service-icon fs-1" icon="la:certificate"></iconify-icon>
+            </div>
+
+            <div class="ps-3">
+              <h4 class="py-2 m-0">Powered by the Best in AI</h4>
+              <p>Our platform utilizes the state-of-the-art GPT-3.5 Turbo model, offering unmatched accuracy, relevance, and depth in generating questions. You’ll get high-quality results based on the latest in AI technology.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-4">
+          <div class="services-element p-4 rounded-3 d-flex">
+            <div>
+              <iconify-icon class="service-icon fs-1" icon="mdi:virtual-meeting"></iconify-icon>
+            </div>
+
+            <div class="ps-3">
+              <h4 class="py-2 m-0">Effortless Customization</h4>
+              <p>Tailor the AI’s output to suit your specific needs—whether it’s generating curriculum-based questions, practice quizzes, or open-ended inquiries for deeper understanding. Just provide a prompt, and let the AI do the rest.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-4">
+          <div class="services-element p-4 rounded-3 d-flex">
+            <div>
+              <iconify-icon class="service-icon fs-1" icon="mdi:school-online"></iconify-icon>
+            </div>
+
+            <div class="ps-3">
+              <h4 class="py-2 m-0">Boost Efficiency</h4>
+              <p>Save hours of manual work by automating question creation. Whether you're preparing for an exam or designing educational material, our tool generates comprehensive questions in seconds, allowing you to focus on what matters most—learning and teaching.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-4">
+          <div class="services-element p-4 rounded-3 d-flex">
+            <div>
+              <iconify-icon class="service-icon fs-1" icon="uil:notebooks"></iconify-icon>
+            </div>
+
+            <div class="ps-3">
+              <h4 class="py-2 m-0">Versatile for Every Need</h4>
+              <p>From elementary education to advanced topics, our AI can handle a wide range of domains. Whether you're a teacher creating assessments, a student preparing for exams, or a company needing training material, our tool is flexible enough to fit any context.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-4">
+          <div class="services-element p-4 rounded-3 d-flex">
+            <div>
+              <iconify-icon class="service-icon fs-1" icon="uiw:global"></iconify-icon>
+            </div>
+
+            <div class="ps-3">
+              <h4 class="py-2 m-0">Consistent and Reliable</h4>
+              <p>Unlike manual efforts that can be inconsistent, our AI ensures that every question is coherent, grammatically correct, and contextually appropriate. No more second-guessing the quality of your content!</p>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </section>
+
+  <section id="register">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-6 ">
+          <img src="static/images/register-img.png" alt="img" class="img-fluid">
+        </div>
+        <div class="col-md-4 ">
+          <div class="mb-5 mt-5 mt-lg-0">
+            <h2 class="display-5 fw-semibold"><span class="text-primary">Admin Dashboard</span></h2>
+            <p class="secondary-font">Seamlessly manage AI-powered question generation and gain valuable insights through comprehensive reports. Take full control of the learning process, track performance, and make informed decisions that optimize education and drive success.
+            </p>
+          </div>
+
+          <div class="d-flex">
+            <button class="btn btn-primary px-5 py-3 mt-2"> Go to Dashboard</button>  </div>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="achivement" class="achivement-section">
+    <div class="container padding-medium">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="text-center">
+            <img src="static/images/topic.png" alt="img" class="img-fluid">
+            <h4 class="py-2 mt-3 m-0">Time Table</h4>
+            <p class="text">Module Based Schedule</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="text-center">
+            <img src="static/images/student.png" alt="img" class="img-fluid">
+            <h4 class="py-2 mt-3 m-0">Students,Trainers</h4>
+            <p class="text">Get and Lead bright students</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="text-center">
+            <img src="static/images/instruction.png" alt="img" class="img-fluid">
+            <h4 class="py-2 mt-3 m-0">Generate Domain Based</h4>
+            <p class="text">Eg. Data Science</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="text-center">
+            <img src="static/images/award.png" alt="img" class="img-fluid">
+            <h4 class="py-2 mt-3 m-0">Become Topper</h4>
+            <p class="text">Hard Process</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="top-sell" class="padding-medium">
+    <div class="container">
+
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-semibold">Check our <span class="text-primary">Application Features</span></h2>
+        <p class="secondary-font">AI-Powered Question Generation: Smarter Learning, Faster Results.</p>
+      </div>
+      <div class="isotope-container row">
+        <div class="item digital col-md-4 col-lg-3 my-5">
+          <div class="card position-relative">
+            <a href="courses-details.html"><img src="static/images/QuestionBuilder.jpg" class="img-fluid rounded-3" alt="image"></a>
+            <div class="card-body p-0">
+      
+              <a href="courses-details.html">
+                <br>
+                <h5 class="py-2 m-0">Automated Question Builder</h5><br>
+              </a>
+
+              <div class="card-text">
+                <span class="rating d-flex align-items-center mb-2">
+                  <p class="text-muted fw-semibold m-0 me-2">The Automated Question Builder is an AI-powered tool that quickly generates high-quality educational questions from any topic or prompt. Using OpenAI’s GPT-3.5 Turbo, it creates customizable, curriculum-based questions in seconds, making it perfect for educators, students, and professionals. Save time, enhance learning, and create versatile question formats effortlessly with this powerful tool.</p>
+                  </span>
+
+                
+                <div class="d-flex flex-wrap mt-2">
+                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="item web col-md-4 col-lg-3 my-5">
+         
+          <div class="card position-relative">
+            <a href="courses-details.html"><img src="static/images/mcqai.jpg" class="img-fluid rounded-3" alt="image"></a>
+            <div class="card-body p-0">
+
+              <!-- <span class="badge text-muted bg-success mt-3 mb-1">Expert</span> -->
+
+              <a href="courses-details.html"><br>
+                <h5 class="py-2 m-0">Multiple Choice Questions</h5> <br>
+              </a>
+
+              <div class="card-text">
+                <span class="rating d-flex align-items-center mb-2">
+                  <p class="text-muted fw-semibold m-0 me-2">The MCQ Generator with Options uses advanced AI to create multiple-choice questions with well-structured answer options. Powered by OpenAI’s GPT-3.5 Turbo, it generates accurate, curriculum-aligned MCQs in seconds. Ideal for quizzes, exams, and practice tests, this tool saves time and ensures high-quality, customizable question sets for any subject.</p>
+                  
+                  </span>
+
+                
+                <div class="d-flex flex-wrap mt-2">
+                  
+                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="item photo col-md-4 col-lg-3 my-5">
+          
+          <div class="card position-relative">
+            <a href="courses-details.html"><img src="static/images/timetable.jpg" class="img-fluid rounded-3" alt="image"></a>
+            <div class="card-body p-0">
+
+            
+              <a href="courses-details.html"><br>
+                <h5 class="py-2 m-0">Timetable Generator</h5><br>
+              </a>
+
+              <div class="card-text">
+                <span class="rating d-flex align-items-center mb-2">
+                  <p class="text-muted fw-semibold m-0 me-2">The Timetable Generator is a smart tool that automatically creates efficient, well-structured schedules for schools, colleges, or training programs. With AI-driven optimization, it balances subjects, breaks, and resources, ensuring a smooth and conflict-free timetable. Perfect for educators and institutions, this tool simplifies the scheduling process and maximizes productivity.</p>
+                  </span>
+
+                <div class="d-flex flex-wrap mt-2">
+                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="item web col-md-4 col-lg-3 my-5">
+         
+          <div class="card position-relative">
+            <a href="courses-details.html"><img src="static/images/reportss.jpg" class="img-fluid rounded-3" alt="image"></a>
+            <div class="card-body p-0">
+
+              <!-- <span class="badge text-muted bg-success mt-3 mb-1">Expert</span> -->
+
+              <a href="courses-details.html"><br>
+                <h5 class="py-2 m-0">Reports Dashboard Generator</h5> <br>
+              </a>
+
+              <div class="card-text">
+                <span class="rating d-flex align-items-center mb-2">
+                  <p class="text-muted fw-semibold m-0 me-2">The Reports Dashboard Generator provides AI-driven insights by compiling data into clear, actionable reports. Automatically track performance, question trends, and user engagement with ease. Perfect for educators and admins, this tool delivers data-driven analytics to improve decision-making and optimize learning outcomes.</p>
+                  
+                  </span>
+
+                
+                <div class="d-flex flex-wrap mt-2">
+                  
+                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      
+        
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </section>
+
+
+
+
+  <section id="testimonial">
+    <div class="container padding-medium">
+      <div class="text-center">
+        <h2 class="display-5 fw-semibold">See what our <span class="text-primary">Users say</span></h2>
+        <p class="secondary-font">Here we got the real proof to express our work. Our users expressed our work.</p>
+      </div>
+      <div class="row">
+        <div class="offset-md-1 col-md-10">
+          <div class="swiper testimonial-swiper">
+            <div class="swiper-wrapper">
+
+              <div class="swiper-slide">
+                <div class="text-center my-4">
+                  <img src="static/images/reviewer-1.jpg" alt="img" class="img-fluid rounded-circle">
+                  <h5 class="m-0 mt-2">Mohamed Mafaz</h5>
+                  <p class="text-muted">All in One Developer</p>
+                  <p class="lh-lg fw-bold text-black-50">“Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea. Consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt enim ad minim veniam”</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="text-center my-4">
+                  <img src="static/images/reviewer-3.jpg" alt="img" class="img-fluid rounded-circle">
+                  <h5 class="m-0 mt-2">Abdul Salam M</h5>
+                  <p class="text-muted">Digital Marketer</p>
+                  <p class="lh-lg fw-bold text-black-50">“Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea. Consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt enim ad minim veniam”</p>
+                </div>
+
+              </div>
+              <div class="swiper-slide">
+                <div class="text-center my-4">
+                  <img src="static/images/reviewer-2.jpg" alt="img" class="img-fluid rounded-circle">
+                  <h5 class="m-0 mt-2">Mohammed Hamdan M</h5>
+                  <p class="text-muted">Full Stack Don</p>
+                  <p class="lh-lg fw-bold text-black-50">“Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea. Consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt enim ad minim veniam”</p>
+                </div>
+              </div>
+
+              <div class="swiper-slide">
+                <div class="text-center my-4">
+                  <img src="static/images/reviewer-4.jpg" alt="img" class="img-fluid rounded-circle">
+                  <h5 class="m-0 mt-2">Moohamed Faraazman Bin Farooq S</h5>
+                  <p class="text-muted">Data Analyst</p>
+                  <p class="lh-lg fw-bold text-black-50">“Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea. Consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt enim ad minim veniam”</p>
+                </div>
+                
+              </div>
+
+
+            </div>
+
+            <div class="swiper-pagination"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+  <footer id="footer">
+    <div class="container padding-medium ">
+      <div class="row">
+        <div class="col-md-4 my-3">
+          <h5 class="text-uppercase fw-bold mb-4">Contact us</h5>
+          <p><iconify-icon class="social-icon text-primary fs-5 me-2" icon="mdi:location"
+              style="vertical-align:text-bottom"></iconify-icon> <span class="fw-bold">Address: </span> 78/8 Purasawalkam,
+            Chennai, IN</p>
+          <p><iconify-icon class="social-icon text-primary fs-5 me-2" icon="solar:phone-bold"
+              style="vertical-align:text-bottom"></iconify-icon> <span class="fw-bold">Phone: </span> +91 9150984174</p>
+          <p><iconify-icon class="social-icon text-primary fs-5 me-2" icon="ic:baseline-email"
+              style="vertical-align:text-bottom"></iconify-icon> <span class="fw-bold">Email: </span>
+            md.faraazman@gmail.com
+          </p>
+        </div>
+        <div class="col-md-2 my-3">
+          <div class="footer-menu">
+            <h5 class="text-uppercase fw-bold mb-4">Links</h5>
+            <ul class="menu-list list-unstyled">
+              <li class="menu-item mb-2">
+                <a href="#" class="footer-link">Home</a>
+              </li>
+              <li class="menu-item mb-2">
+                <a href="#" class="footer-link">About us</a>
+              </li>
+              <li class="menu-item mb-2">
+                <a href="#" class="footer-link">Reports</a>
+              </li>
+              <li class="menu-item mb-2">
+                <a href="#" class="footer-link">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 my-3">
+          <div class="footer-menu">
+            <h5 class="text-uppercase fw-bold mb-4">support</h5>
+            <ul class="menu-list list-unstyled">
+              <li class="menu-item mb-2">
+                <a href="#">FAQs</a>
+              </li>
+              <li class="menu-item mb-2">
+                <a href="#">Support</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3 my-3">
+          <div class="footer-menu">
+            <h5 class="text-uppercase fw-bold mb-4">Follow us</h5>
+            <div class="social-links mt-4">
+              <ul class="d-flex list-unstyled gap-3">
+                <li class="social">
+                  <a href="#">
+                    <iconify-icon class="social-icon fs-4 me-2" icon="ri:facebook-fill"></iconify-icon>
+                  </a>
+                </li>
+                <li class="social">
+                  <a href="#">
+                    <iconify-icon class="social-icon fs-4 me-2" icon="ri:twitter-fill"></iconify-icon>
+                  </a>
+                </li>
+                <li class="social">
+                  <a href="#">
+                    <iconify-icon class="social-icon fs-4 me-2" icon="ri:pinterest-fill"></iconify-icon>
+                  </a>
+                </li>
+                <li class="social">
+                  <a href="#">
+                    <iconify-icon class="social-icon fs-4 me-2" icon="ri:instagram-fill"></iconify-icon>
+                  </a>
+                </li>
+                <li class="social">
+                  <a href="#">
+                    <iconify-icon class="social-icon fs-4 me-2" icon="ri:youtube-fill"></iconify-icon>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="footer-bottom">
+    <hr class="m-0 text-black-50">
+    <div class="container py-3">
+      <div class="row mt-3">
+        <div class="col-md-6 copyright">
+          <p>© 2024 Aura. All rights reserved.</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <p>Designed By Mohamed Faraazman & Mohammed Hamdan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <script src="{{ url_for('static', filename='js/jquery-1.11.0.min.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Check for saved user preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            // Save user preference
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', null);
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

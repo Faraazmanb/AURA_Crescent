@@ -16,6 +16,7 @@ import os
 
 from mcq import generate_mcq_options, generate_mcq_question
 from ciriculam_based_QA import ciriculam_based_QA, generate_pdf
+from openai_conv import generate_mcq_question_image
 
 import ssl
 import certifi
@@ -37,6 +38,7 @@ from werkzeug.utils import secure_filename
 from self_asses import request_plan
 import io
 import plotly
+
 
 app=Flask(__name__)
 
@@ -128,6 +130,18 @@ def role_required(role):
     return wrapper
 
 # Home or dashboard route for all users
+
+@app.route('/')
+def landing_page():
+    return render_template('landingindex.html')
+
+
+@app.route('/loginreg')
+def loginreg():
+    return render_template('loginreg.html')
+
+
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -269,6 +283,12 @@ def quiz_questions():
     session['score'] = 0
     return render_template('questions.html')
 
+
+@app.route('/questions_images')
+def quiz_questions_images():
+    session['score'] = 0
+    return render_template('questions_images.html')
+
 asked_questions = []
 
 
@@ -317,6 +337,36 @@ def get_question():
 
     return jsonify({
         "question": mcq_q,
+        "options": mcq_options,
+        "score": session.get('score', 0)  # Include the current score in the response
+    })
+
+@app.route('/get_question_image')
+def get_question_image():
+    subject = session.get('subject', "default_subject")
+    hardness_level = session.get('hardness_level', 1)
+    num_questions = session.get('total_questions', 10)
+    asked = session.get('asked', [])
+
+    if len(asked) >= num_questions:
+        return jsonify({"redirect": "/report/"})  # Redirect to the report page if done
+
+    global mcq_a
+    mcq_qa = generate_mcq_question_image(subject, hardness_level, "\n".join(asked_questions)).splitlines()
+    print(mcq_qa)
+    mcq_q = mcq_qa[0]
+    asked.append(mcq_q)
+    asked_questions.append(mcq_q)
+    mcq_options = mcq_qa[2:-1]
+    url = mcq_qa[1]
+    print(url)
+    mcq_a = mcq_qa[-1].strip()  # Remove any whitespace
+
+    session['asked'] = asked  # Update the asked questions list
+
+    return jsonify({
+        "question": mcq_q,
+        "image": url,
         "options": mcq_options,
         "score": session.get('score', 0)  # Include the current score in the response
     })

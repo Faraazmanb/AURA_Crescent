@@ -17,3 +17,4 @@ docx
 bson
 certifi
 ssl
+azure-cognitiveservices-search-imagesearch
