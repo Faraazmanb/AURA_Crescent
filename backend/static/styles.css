@@ -1,5 +1,5 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -17,18 +17,18 @@
   --text-color: hsl(var(--hue), 4%, 35%);
   --text-color-light: hsl(var(--hue), 4%, 55%);
   --body-color: hsl(var(--hue), 0%, 100%);
-  --container-color: #FFF;
+  --container-color: #fff;
 
   /*========== Font and typography ==========*/
   /*.5rem = 8px | 1rem = 16px ...*/
-  --body-font: 'Poppins', sans-serif;
+  --body-font: "Poppins", sans-serif;
   --big-font-size: 2rem;
   --h1-font-size: 1.5rem;
   --h2-font-size: 1.25rem;
   --h3-font-size: 1rem;
-  --normal-font-size: .938rem;
-  --small-font-size: .813rem;
-  --smaller-font-size: .75rem;
+  --normal-font-size: 0.938rem;
+  --small-font-size: 0.813rem;
+  --smaller-font-size: 0.75rem;
 
   /*========== Font weight ==========*/
   --font-medium: 500;
@@ -36,8 +36,8 @@
 
   /*========== Margenes Bottom ==========*/
   /*.5rem = 8px | 1rem = 16px ...*/
-  --mb-0-5: .5rem;
-  --mb-0-75: .75rem;
+  --mb-0-5: 0.5rem;
+  --mb-0-75: 0.75rem;
   --mb-1: 1rem;
   --mb-1-5: 1.5rem;
   --mb-2: 2rem;
@@ -56,8 +56,8 @@
     --h2-font-size: 1.5rem;
     --h3-font-size: 1.25rem;
     --normal-font-size: 1rem;
-    --small-font-size: .875rem;
-    --smaller-font-size: .813rem;
+    --small-font-size: 0.875rem;
+    --smaller-font-size: 0.813rem;
   }
 }
 
@@ -84,7 +84,7 @@ body {
   margin: var(--header-height) 0 0 0;
   background-color: var(--body-color);
   color: var(--text-color);
-  transition: .4s;
+  transition: 0.4s;
   /*For animation dark mode*/
 }
 
@@ -153,7 +153,7 @@ the website, in dark theme
 }
 
 .dark-theme .scroll-header {
-  box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+  box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, 0.3);
 }
 
 /*=============== REUSABLE CSS CLASSES ===============*/
@@ -195,7 +195,7 @@ the website, in dark theme
   top: 0;
   left: 0;
   z-index: var(--z-fixed);
-  transition: .4s;
+  transition: 0.4s;
   /*For animation dark mode*/
 }
 
@@ -220,8 +220,8 @@ the website, in dark theme
   letter-spacing: -1px;
   display: inline-flex;
   align-items: center;
-  column-gap: .5rem;
-  transition: .3s;
+  column-gap: 0.5rem;
+  transition: 0.3s;
 }
 
 .nav__logo-icon {
@@ -247,10 +247,10 @@ the website, in dark theme
     height: 100%;
     top: 0;
     right: -100%;
-    box-shadow: -2px 0 4px hsla(var(--hue), 24%, 15%, .1);
+    box-shadow: -2px 0 4px hsla(var(--hue), 24%, 15%, 0.1);
     padding: 4rem 0 0 3rem;
     border-radius: 1rem 0 0 1rem;
-    transition: .3s;
+    transition: 0.3s;
     z-index: var(--z-fixed);
   }
 }
@@ -272,7 +272,7 @@ the website, in dark theme
 .nav__link {
   color: var(--title-color);
   font-weight: var(--font-medium);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .nav__link:hover {
@@ -286,7 +286,7 @@ the website, in dark theme
 
 /* Change background header */
 .scroll-header {
-  box-shadow: 0 1px 4px hsla(var(--hue), 4%, 15%, .1);
+  box-shadow: 0 1px 4px hsla(var(--hue), 4%, 15%, 0.1);
 }
 
 /* Active link */
@@ -296,9 +296,9 @@ the website, in dark theme
 }
 
 .active-link::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -.5rem;
+  bottom: -0.5rem;
   left: 0;
   width: 50%;
   height: 2px;
@@ -349,7 +349,7 @@ the website, in dark theme
 }
 
 .home__social-follow::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 1rem;
   height: 2px;
@@ -361,28 +361,28 @@ the website, in dark theme
 .home__social-links {
   display: inline-flex;
   flex-direction: column;
-  row-gap: .25rem;
+  row-gap: 0.25rem;
 }
 
 .home__social-link {
   font-size: 1rem;
   color: var(--first-color);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .home__social-link:hover {
-  transform: translateX(.25rem);
+  transform: translateX(0.25rem);
 }
 
 /*=============== BUTTONS ===============*/
 .button {
   display: inline-block;
   background-color: var(--first-color);
-  color: #FFF;
+  color: #fff;
   padding: 1rem 1.75rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   font-weight: var(--font-medium);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .button:hover {
@@ -390,17 +390,17 @@ the website, in dark theme
 }
 
 .button__icon {
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .button:hover .button__icon {
-  transform: translateX(.25rem);
+  transform: translateX(0.25rem);
 }
 
 .button--flex {
   display: inline-flex;
   align-items: center;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
 }
 
 .button--link {
@@ -409,7 +409,7 @@ the website, in dark theme
 }
 
 .button--link:hover .button__icon {
-  transform: translateX(.25rem);
+  transform: translateX(0.25rem);
 }
 
 /*=============== ABOUT ===============*/
@@ -439,14 +439,14 @@ the website, in dark theme
 
 .about__details-description {
   display: inline-flex;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
   font-size: var(--small-font-size);
 }
 
 .about__details-icon {
   font-size: 1rem;
   color: var(--first-color);
-  margin-top: .15rem;
+  margin-top: 0.15rem;
 }
 
 /*=============== STEPS ===============*/
@@ -462,7 +462,7 @@ the website, in dark theme
 }
 
 .steps__title {
-  color: #FFF;
+  color: #fff;
 }
 
 .steps__card {
@@ -474,12 +474,12 @@ the website, in dark theme
 .steps__card-number {
   display: inline-block;
   background-color: var(--first-color-alt);
-  color: #FFF;
-  padding: .5rem .75rem;
-  border-radius: .25rem;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
   font-size: var(--h2-font-size);
   margin-bottom: var(--mb-1-5);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .steps__card-title {
@@ -492,7 +492,7 @@ the website, in dark theme
 }
 
 .steps__card:hover .steps__card-number {
-  transform: translateY(-.25rem);
+  transform: translateY(-0.25rem);
 }
 
 /*=============== PRODUCTS ===============*/
@@ -509,7 +509,6 @@ the website, in dark theme
   gap: 2.5rem 3rem;
   align-items: center;
   margin-left: -3rem;
-
 }
 
 .product__card {
@@ -522,7 +521,7 @@ the website, in dark theme
   width: 220px;
   justify-self: center;
   margin-bottom: var(--mb-0-75);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .product__title,
@@ -533,7 +532,7 @@ the website, in dark theme
 }
 
 .product__title {
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
   text-align: center;
   margin-top: 1rem;
 }
@@ -543,9 +542,9 @@ the website, in dark theme
   right: 0;
   bottom: 0;
   background-color: var(--first-color);
-  color: #FFF;
-  padding: .25rem;
-  border-radius: .35rem;
+  color: #fff;
+  padding: 0.25rem;
+  border-radius: 0.35rem;
   font-size: 1.15rem;
 }
 
@@ -564,7 +563,7 @@ the website, in dark theme
 }
 
 .product__card:hover .product__img {
-  transform: translateY(-.5rem);
+  transform: translateY(-0.5rem);
 }
 
 /*=============== QUESTIONS ===============*/
@@ -584,7 +583,7 @@ the website, in dark theme
 
 .questions__item {
   background-color: var(--container-color);
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .questions__item-title {
@@ -605,8 +604,8 @@ the website, in dark theme
 .questions__header {
   display: flex;
   align-items: center;
-  column-gap: .5rem;
-  padding: .75rem .5rem;
+  column-gap: 0.5rem;
+  padding: 0.75rem 0.5rem;
   cursor: pointer;
 }
 
@@ -621,11 +620,11 @@ the website, in dark theme
 .questions__icon,
 .questions__description,
 .questions__content {
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .questions__item:hover {
-  box-shadow: 0 2px 8px hsla(var(--hue), 4%, 15%, .15);
+  box-shadow: 0 2px 8px hsla(var(--hue), 4%, 15%, 0.15);
 }
 
 /*Rotate icon, change color of titles and background*/
@@ -637,7 +636,7 @@ the website, in dark theme
 .accordion-open .questions__item-title,
 .accordion-open .questions__description,
 .accordion-open .questions__icon {
-  color: #FFF;
+  color: #fff;
 }
 
 .accordion-open .questions__icon {
@@ -664,7 +663,7 @@ the website, in dark theme
 .contact__description {
   display: inline-flex;
   align-items: center;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
   color: var(--title-color);
   font-weight: var(--font-medium);
 }
@@ -696,7 +695,6 @@ the website, in dark theme
 
   color: var(--text-color);
 
-
   border: none;
   outline: none;
   z-index: 1;
@@ -704,11 +702,11 @@ the website, in dark theme
 
 .contact__label {
   position: absolute;
-  top: .75rem;
+  top: 0.75rem;
   width: 100%;
   font-size: var(--small-font-size);
   color: var(--text-color-light);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .contact__area {
@@ -720,16 +718,17 @@ the website, in dark theme
 }
 
 /*Input focus move up label*/
-.contact__input:focus+.contact__label {
-  top: -.75rem;
+.contact__input:focus + .contact__label {
+  top: -0.75rem;
   left: 0;
   font-size: var(--smaller-font-size);
   z-index: 10;
 }
 
 /*Input focus sticky top label*/
-.contact__input:not(:placeholder-shown).contact__input:not(:focus)+.contact__label {
-  top: -.75rem;
+.contact__input:not(:placeholder-shown).contact__input:not(:focus)
+  + .contact__label {
+  top: -0.75rem;
   font-size: var(--smaller-font-size);
   z-index: 10;
 }
@@ -742,13 +741,13 @@ the website, in dark theme
 .footer__logo {
   display: inline-flex;
   align-items: center;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
   color: var(--title-color);
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: -1px;
   margin-bottom: var(--mb-2-5);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .footer__logo-icon {
@@ -767,15 +766,15 @@ the website, in dark theme
 
 .footer__subscribe {
   background-color: var(--first-color-lighten);
-  padding: .75rem;
+  padding: 0.75rem;
   display: flex;
   justify-content: space-between;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 
 .footer__input {
   width: 70%;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   background: none;
   color: var(--text-color);
   border: none;
@@ -788,7 +787,7 @@ the website, in dark theme
 
 .footer__data {
   display: grid;
-  row-gap: .75rem;
+  row-gap: 0.75rem;
 }
 
 .footer__information {
@@ -797,23 +796,23 @@ the website, in dark theme
 
 .footer__social {
   display: inline-flex;
-  column-gap: .75rem;
+  column-gap: 0.75rem;
 }
 
 .footer__social-link {
   font-size: 1rem;
   color: var(--text-color);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .footer__social-link:hover {
-  transform: translateY(-.25rem);
+  transform: translateY(-0.25rem);
 }
 
 .footer__cards {
   display: inline-flex;
   align-items: center;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
 }
 
 .footer__card {
@@ -834,16 +833,16 @@ the website, in dark theme
   right: 1rem;
   bottom: -30%;
   display: inline-flex;
-  padding: .5rem;
-  border-radius: .25rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
   z-index: var(--z-tooltip);
-  opacity: .8;
-  transition: .4s;
+  opacity: 0.8;
+  transition: 0.4s;
 }
 
 .scrollup__icon {
   font-size: 1rem;
-  color: #FFF;
+  color: #fff;
 }
 
 .scrollup:hover {
@@ -858,13 +857,13 @@ the website, in dark theme
 
 /*=============== SCROLL BAR ===============*/
 ::-webkit-scrollbar {
-  width: .6rem;
+  width: 0.6rem;
   background: hsl(var(--hue), 4%, 53%);
 }
 
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--hue), 4%, 29%);
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 
 /*=============== BREAKPOINTS ===============*/
@@ -892,7 +891,7 @@ the website, in dark theme
   }
 
   .product__container {
-    grid-template-columns: .6fr;
+    grid-template-columns: 0.6fr;
     justify-content: center;
   }
 }
@@ -1110,15 +1109,13 @@ the website, in dark theme
   }
 }
 
-
 /* logo-img */
 
 .img-logo {
   width: 10rem;
   margin-top: 1rem;
+  margin-left: 0rem;
 }
-
-
 
 .product__img {
   width: 22rem;
@@ -1128,7 +1125,6 @@ the website, in dark theme
 .product__card {
   width: 22rem;
 }
-
 
 .product__circle {
   width: 23rem;
@@ -1148,8 +1144,6 @@ the website, in dark theme
   top: 39%;
   font-family: var(--body-font);
 }
-
-
 
 .about__data {
   margin-top: 5rem;

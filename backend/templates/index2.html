@@ -3,727 +3,1344 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"
-      integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS"
-      crossorigin="anonymous"
-    />
+  
 
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap"
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
+
+
+ 
     <!--  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/index2.css') }}"
     />
+
+
     <title>Aura Automated Question Builder</title>
   </head>
 
+  <style>
+      .button-flexx{
+        background-color: white;
+        transition: all .5s;
+    }
+    .button-flexx:hover{
+       background-color: darkcyan;
+    }
+    .brand-name{
+        font-weight: 600;
+
+    }
+    .section__title-center {
+        color: black; /* Default to black for light mode */
+    }
+
+    /* Styles for dark mode */
+    @media (prefers-color-scheme: dark) {
+        .section__title-center {
+            color: white; /* Change to white for dark mode */
+        }
+    }
+</style>
   <body>
     <!--========== HEADER ==========-->
-    <header class="header">
-      <div class="header_container">
-        <div class="none"></div>
-        <div class="search">
-          <input type="search" placeholder="Search" />
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-
-        <div class="user">
-          <div class="icon">
-            <i class="fa-solid fa-bell"></i>
-            <form
-              action="{{ url_for('logout') }}"
-              method="POST"
-              style="display: inline"
-              onsubmit="return confirmLogout()"
-            >
-              <button type="submit" class="logout btn btn-danger">
-                Logout
-              </button>
-            </form>
-          </div>
-          <div class="img">
-            <img src="{{url_for('static',filename='images/logo.png')}}" />
-          </div>
-        </div>
-
-        <div class="toggle">
-          <i class="fa-solid fa-bars" id="header-toggle"></i>
-        </div>
-      </div>
-    </header>
+   
 
     <!--========== NAV ==========-->
-    <section class="nav" id="navbar">
-      <nav class="nav_container">
-        <div>
-          <a href="#" class="nav_link nav_logo">
-            <i class="fa-solid fa-bars nav_icon"></i>
-            <span class="logo_name">
-              <img src="images/logo.png" />
-            </span>
-          </a>
-
-          <div class="nav_list">
-            <div class="nav_items navtop">
-              <a
-                href="/{{ role.capitalize() }}_dashboard/"
-                class="nav_link active"
-              >
-                <i class="fa fa-house nav_icon"></i>
-                <span class="nav_name">Dashboard</span>
-              </a>
-
-              <a href="#" class="nav_link">
-                <i class="fa fa-compass nav_icon"></i>
-                <span class="nav_name">Statistics</span>
-              </a>
-
-              <a href="#" class="nav_link">
-                <i class="fa-solid fa-users nav_icon"></i>
-                <span class="nav_name">Accounts </span>
-              </a>
-
-              <a href="#" class="nav_link">
-                <i class="fa-solid fa-clock-rotate-left nav_icon"></i>
-                <span class="nav_name">Data History </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </section>
 
     <!--========== CONTENTS ==========-->
     <main>
-      <section>
-        <div class="container">
-          <h1 style="font-family: 'Poppins', sans-serif; margin-bottom: 0.5rem">
-            Hello,
-            <span style="color: #fd5757; font-family: 'Poppins', sans-serif"
-              >{{ username.capitalize() }}</span
-            >
-            !
-          </h1>
-          <h3 style="margin-bottom: 0.5rem">
-            You are logged in as a
-            <span style="color: #ff0000; font-family: 'Poppins', sans-serif"
-              >{{ role }}</span
-            >.
-          </h3>
-        </div>
-
+     
         {% if role == 'Administrator' %}
         <!-- Admin-specific content -->
+      
+        <header class="header" id="header">
+          <nav class="nav container">
+              <!-- <a href="#" class="nav__logo">
+                  <img src="/static/logo.png" alt="">
+              </a> -->
+              
+              <div style="display: flex; gap: 1rem;">
+                  
+                <img style="width: 7rem; height: 3em; margin-top: .1rem;"  class="img-logo" src="/static/images/logoaura.png" alt="">
+                
 
-        <!-- Admin-specific content -->
-        <p
-          style="
-            color: white;
-            font-size: 1.4rem;
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-          "
-        >
-          Welcome to the admin section where you can manage users and settings.
-        </p>
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-            outline: none;
-            text-align: center;
-          "
-          href="/{{ role.capitalize() }}_dashboard/"
-        >
-          Go to {{ role.capitalize() }} Dashboard
-        </a>
-        <section class="section-services">
-          <div class="container">
-            <div class="row justify-content-center text-center">
-              <div class="col-md-10 col-lg-8">
-                <div class="header-section">
-                  <h2 class="title">Exclusive Services</h2>
-                  <p class="description">
-                    Delivering tailored solutions designed to meet your unique
-                    needs. Experience unparalleled quality and commitment with
-                    every interaction.
-                  </p>
                 </div>
+              <!-- <p>OXYGEN ORCHARD</p> -->
+
+
+              <div class="nav__menu" id="nav-menu">
+                  <ul class="nav__list">
+                      <li class="nav__item">
+                          <a href="#home" class="nav__link active-link">Home</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#about" class="nav__link">About</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#products" class="nav__link">Products</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#faqs" class="nav__link">FAQs</a>
+                      </li>
+                      <li class="nav__item">
+                        <a href="#faqs" class="nav__link">Demo</a>
+                      </li>
+                     
+                  </ul>
+<!-- 
+                  <div class="nav__close" id="nav-close">
+                      <i class="ri-close-line"></i>
+                  </div> -->
+                  
               </div>
+              <div class="model-upload nav__link nav__item">
+                  <button class="model-upload-btn"><strong>{{role}}</strong></button>
+              </div>
+
+
+              <div class="nav__btns">
+                  <!-- Theme change button -->
+                  <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+                  <div class="nav__toggle" id="nav-toggle">
+                      <i class="ri-menu-line"></i>
+                  </div>
+                  <form
+                  action="{{ url_for('logout') }}"
+                  method="POST"
+                  style="display: inline"
+                  onsubmit="return confirmLogout()"
+                >
+                  <button  style="background: none; border: 2px solid green ; padding: .5rem; border-radius: .4rem;" type="submit" class="nav__link">
+                    Logout
+                  </button>
+                </form>
+           
+              </div>
+
+
+              
+          </nav>
+      </header>
+
+      <main class="main">
+          <!--==================== HOME ====================-->
+          <section class="home" id="home">
+              <div class="home__container container grid">
+                  <!-- <img style="width: 30rem; height: 30rem;" src="/static/ch2.png" alt="" class="home__img"> -->
+                  <video style="width: 30rem; height: 30rem;" class="home__img" src="/static/vid.mp4" autoplay muted loop playsinline>
+                    Your browser does not support the video tag.
+                  </video>
+                
+
+                  <div class="home__data">
+                    <div class="username-container" style="position: absolute; top: 1rem; left: 1rem;">
+                        <h2 class="greeting" style="font-weight: 600;">
+                            Hello <span class="username" style="font-weight: bold; color:  #4f897b;">
+                                {{username.capitalize()}}
+                            </span>
+                        </h2>
+                        <br>
+                    </div>
+                    <br>
+                      <h2 class="home__title">
+                        Administrator Control Center
+                      </h2>
+                      <h4 class="home__description">
+                          
+                        Manage users, monitor system performance, and generate reports efficiently" gives a brief overview of the key functionalities available to administrators.
+                      </h4>
+                      <a href="#about" class="button button--flex">
+                          Explore <i class="ri-arrow-right-down-line button__icon"></i>
+                      </a>
+                  </div>
+
+                 
+              </div>
+          </section>
+
+          <!--==================== ABOUT ====================-->
+          <section class="about section container" id="about">
+              <div class="about__container grid">
+                  <img style="width: 30rem; height: 30rem;" src="/static/admin.png" alt="" class="about__img">
+                 
+
+                  <div class="about__data">
+                      <h2 class="section__title about__title">
+                          Role Description
+                      </h2>
+
+                      <p class="about__description">
+                        The admin dashboard offers real-time insights into user behavior, including reports on study time, question attempts, user activity distribution, and system performance. Easily track network load and monitor daily uptime, ensuring smooth operations.
+                      </p>
+                      
+                      <a   href="/{{ role.capitalize() }}_dashboard/" class="button--link button--flex">
+                          Admin Dashboard<i class="ri-arrow-right-down-line button__icon"></i>
+                      </a>
+                  </div>
+              </div>
+          </section>
+
+          <!--==================== STEPS ====================-->
+          {#<section class="steps section container">
+              <div class="steps__bg">
+                  <h2 class="section__title-center steps__title">
+                      Steps to estimate Co2 absorption <br> and O2 emission
+                  </h2>
+
+                  <div class="steps__container grid">
+                      <div class="steps__card">
+                          <div class="steps__card-number">01</div>
+                          <h3 class="steps__card-title">Upload Satellite Image</h3>
+                          <p class="steps__card-description">
+                              Provide a high-resolution satellite image of your area.  We'll identify suitable <br> sites for tree planting.
+                          </p>
+                      </div>
+
+                      <div class="steps__card">
+                          <div class="steps__card-number">02</div>
+                          <h3 class="steps__card-title">Receive Analysis Results</h3>
+                          <p class="steps__card-description">
+                              We'll analyze building carbon emissions and suggest potential tree planting areas.
+                          </p>
+                      </div>
+
+                      <div class="steps__card">
+                          <div class="steps__card-number">03</div>
+                          <h3 class="steps__card-title">Plan Your Green Space</h3>
+                          <p class="steps__card-description">
+                              Use our recommendations to plan tree planting, including the number of trees and suitable species.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </section>#}
+
+          <!--==================== PRODUCTS ====================-->
+          <section class="product section container" id="products">
+             
+
+              <p class="product__description">
+                The Admin Dashboard provides real-time insights into user activity, system performance, and platform health. Key features include tracking questions attempted over time, user study patterns, and engagement trends. It also displays network load, active users, and daily uptime. AI-driven analytics offer predictive insights, detect anomalies, and generate alerts for proactive platform management, ensuring efficient and smooth operation.
+              </p>
+
+              <div class="product__container grid">
+                <article class="product__card">
+                  <div class="product__circle"></div>
+
+                  <img src="/static/adminpngmm.jpg" alt="" class="product__img">
+
+                  <h3 class="product__title">Reports</h3>
+
+
+                  <!-- <button class="button--flex product__button">
+                      <i class="ri-shopping-bag-line"></i>
+                  </button> -->
+              </article>
+                  <article class="product__card">
+                      <div class="product__circle"></div>
+
+                      <img src="/static/orge.jpg" alt="" class="product__img">
+
+                      <h3 class="product__title">Dasboards</h3>
+
+
+                      <!-- <button class="button--flex product__button">
+                          <i class="ri-shopping-bag-line"></i>
+                      </button> -->
+                  </article>
+
+                  
+
+
+                
+
+                 
+              </div>
+          </section>
+
+         
+
+          <!--==================== QUESTIONS ====================-->
+          {#<section class="questions section" id="faqs">
+              <h2 class="section__title-center questions__title container">
+                  Some common questions <br> were often asked
+              </h2>
+
+              <div class="questions__container container grid">
+                  <div class="questions__group">
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  My flowers are falling off or dying?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  What causes leaves to become pale?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  What causes brown crispy leaves?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="questions__group">
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  How do i choose a plant?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  How do I change the pots?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  Why are gnats flying around my plant?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>#}
+
+          
+
+          <!--==================== CONTACT ====================-->
+       
+      </main>
+
+      <!--==================== FOOTER ====================-->
+      <footer class="footer section">
+        <div class="footer__container container grid">
+            <div class="footer__content">
+                <a href="#" class="footer__logo">
+                  AURA
+                </a>
+
+                <h3 class="footer__title">
+                    Have Queries  <br> Connect with us
+                </h3>
+
+                <div class="footer__subscribe">
+                    <input style="width: 15rem;" type="email" placeholder="Your email" class="footer__input">
+
+                    <button class="button button--flex footer__button">
+                        Connect
+                        <i class="ri-arrow-right-up-line button__icon"></i>
+                    </button>
+                </div>
             </div>
-            <div class="row">
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-battle-net"></i>
-                    </span>
-                    <h3 class="title">GPT-3.5 Integration</h3>
-                    <p class="description">
-                      Leverage the advanced capabilities of OpenAI's latest
-                      model to create insightful and varied questions
-                      effortlessly.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-asymmetrik"></i>
-                    </span>
-                    <h3 class="title">Customizable Prompts</h3>
-                    <p class="description">
-                      Empower users to input diverse text, enabling the
-                      generation of tailored questions relevant to their
-                      specific needs.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-artstation"></i>
-                    </span>
-                    <h3 class="title">Flexible Use Cases</h3>
-                    <p class="description">
-                      Designed for a wide range of educational applications,
-                      this system can adapt to various subjects and contexts by
-                      simply modifying the input.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-500px"></i>
-                    </span>
-                    <h3 class="title">User-Friendly Interface</h3>
-                    <p class="description">
-                      Enjoy a simple and intuitive design that ensures a smooth
-                      experience for users, making question generation
-                      accessible to everyone.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fas fa-chart-pie"></i>
-                    </span>
-                    <h3 class="title">Secure Management</h3>
-                    <p class="description">
-                      Ensure the safety of your OpenAI API key and other
-                      sensitive information through efficient environment
-                      variable management.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fas fa-laptop-code"></i>
-                    </span>
-                    <h3 class="title">Future Enhancemnt</h3>
-                    <p class="description">
-                      Stay tuned for exciting upgrades and additional features
-                      that will expand functionality and improve user
-                      engagement.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
+
+            <div class="footer__content">
+                <h3 class="footer__title">Team Members</h3>
+
+                <ul class="footer__data">
+                    <li class="footer__information">Mohammed Mafaz</li>
+                    <li class="footer__information">Abdul Salam</li>
+                    <li class="footer__information">Mohammed Hamdan</li>
+                    <li class="footer__information">Faraazman</li>
+
+
+                </ul>
             </div>
-          </div>
-        </section>
+
+            <div class="footer__content">
+                <h3 class="footer__title">Contact Us</h3>
+
+                <ul class="footer__data">
+                    <li class="footer__information">+91 9150984174</li>
+                    <li class="footer__information">+91 9445587067</li>
+                    
+
+
+                    
+                    <div class="footer__social">
+                        <a href="https://www.facebook.com/" class="footer__social-link">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" class="footer__social-link">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="https://twitter.com/" class="footer__social-link">
+                            <i class="ri-twitter-fill"></i>
+                        </a>
+                    </div>
+                </ul>
+            </div>
+
+            <!-- <div class="footer__content">
+                <h3 class="footer__title">
+                    We accept all credit cards
+                </h3>
+
+                <div class="footer__cards">
+                    <img src="assets/img/card1.png" alt="" class="footer__card">
+                    <img src="assets/img/card2.png" alt="" class="footer__card">
+                    <img src="assets/img/card3.png" alt="" class="footer__card">
+                    <img src="assets/img/card4.png" alt="" class="footer__card">
+                </div>
+            </div> -->
+        </div>
+
+        <p class="footer__copy">&#169; Aura (HEXAWARE CODE & RISE) . All rights reserved</p>
+    </footer>
+      
+
+
+
+      <!-- --------------_End of adminnnnnnn -->
 
         {% elif role == 'Trainer' %}
 
-        <p
-          style="
-            color: white;
-            font-size: 1.4rem;
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-          "
-        >
-          Welcome to the {{role}} section where you can Upload Curriculum and
-          Generate Question Bank.
-        </p>
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-            outline: none;
-          "
-          href="/{{ role.capitalize() }}_dashboard/"
-        >
-          Go to {{ role.capitalize() }} Dashboard
-        </a>
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-          "
-          class="btn-primary"
-          href="{{ url_for('serve_question_form') }}"
-          class="btn btn-primary"
-        >
-          Generate Question Bank
-        </a>
-        <section class="section-services">
-          <div class="container">
-            <div class="row justify-content-center text-center">
-              <div class="col-md-10 col-lg-8">
-                <div class="header-section">
-                  <h2 class="title">Exclusive Services</h2>
-                  <p class="description">
-                    Delivering tailored solutions designed to meet your unique
-                    needs. Experience unparalleled quality and commitment with
-                    every interaction.
-                  </p>
+        <header class="header" id="header">
+          <nav class="nav container">
+              <!-- <a href="#" class="nav__logo">
+                  <img src="/static/logo.png" alt="">
+              </a> -->
+              
+              <div style="display: flex; gap: 1rem;">
+                  
+                <img style="width: 7rem; height: 3em; margin-top: .1rem;"  class="img-logo" src="/static/images/logoaura.png" alt="">
+                
+
                 </div>
+              <!-- <p>OXYGEN ORCHARD</p> -->
+
+
+              <div class="nav__menu" id="nav-menu">
+                  <ul class="nav__list">
+                      <li class="nav__item">
+                          <a href="#home" class="nav__link active-link">Home</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#about" class="nav__link">About</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#products" class="nav__link">Products</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#faqs" class="nav__link">FAQs</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#demo" class="nav__link">Demo</a>
+                      </li>
+                     
+                  </ul>
+<!-- 
+                  <div class="nav__close" id="nav-close">
+                      <i class="ri-close-line"></i>
+                  </div> -->
+                  
               </div>
+              <div class="model-upload nav__link nav__item">
+                  <button class="model-upload-btn"><strong>{{role}}</strong></button>
+              </div>
+
+
+              <div class="nav__btns">
+                  <!-- Theme change button -->
+                  <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+                  <div class="nav__toggle" id="nav-toggle">
+                      <i class="ri-menu-line"></i>
+                  </div>
+                  <form
+                  action="{{ url_for('logout') }}"
+                  method="POST"
+                  style="display: inline"
+                  onsubmit="return confirmLogout()"
+                >
+                  <button  style="background: none; border: 2px solid green ; padding: .5rem; border-radius: .4rem;" type="submit" class="nav__link">
+                    Logout
+                  </button>
+                </form>
+              </div>
+
+
+              
+          </nav>
+      </header>
+
+      <main class="main">
+          <!--==================== HOME ====================-->
+          <section class="home" id="home">
+              <div class="home__container container grid">
+                  <!-- <img style="width: 30rem; height: 30rem;" src="/static/ch2.png" alt="" class="home__img"> -->
+                  <video style="width: 30rem; height: 30rem;" class="home__img" src="/static/vid.mp4" autoplay muted loop playsinline>
+                    Your browser does not support the video tag.
+                  </video>
+                
+
+                  <div class="home__data">
+
+                    <div class="username-container" style="position: absolute; top: 1rem; left: 1rem;">
+                        <h2 class="greeting" style="font-weight: 600;">
+                            Hello <span class="username" style="font-weight: bold; color:  #4f897b;">
+                                {{username.capitalize()}}
+                            </span>
+                        </h2>
+                        <br>
+                    </div>
+                    <br>
+                      <h3 class="home__title">
+                        Empower Learning with Your Expertise
+                      </h3>
+                      <h4 class="home__description">
+                          
+                        Manage Curriculum, Generate Questions, and Shape the Future of Learning.
+                      </h4>
+                      <a href="#about" class="button button--flex">
+                          Explore <i class="ri-arrow-right-down-line button__icon"></i>
+                      </a>
+                  </div>
+
+                 
+              </div>
+          </section>
+
+          <!--==================== ABOUT ====================-->
+          <section class="about section container" id="about">
+              <div class="about__container grid">
+                  <img style="width: 30rem; height: 30rem;" src="/static/images/trainerRole.png" alt="" class="about__img">
+                 
+
+                  <div class="about__data">
+                      <h2 class="section__title about__title">
+                          Role Description
+                      </h2>
+
+                      <p class="about__description">
+                        As a Trainer, you guide learners through personalized learning paths, creating engaging content, conducting assessments, and providing valuable feedback to help them succeed. Empower your students with the tools and knowledge they need to excel.
+                      </p>
+                      
+                      <a   href="/{{ role.capitalize() }}_dashboard/" class="button--link button--flex">
+                          Trainer Dashboard<i class="ri-arrow-right-down-line button__icon"></i>
+                      </a>
+                  </div>
+              </div>
+          </section>
+
+          <!--==================== STEPS ====================-->
+          <section class="steps section container"> 
+            <div class="steps__bg">
+                <h2 class="section__title-center steps__title">
+                    Steps to Upload Curriculum <br> and Generate Question Bank
+                </h2>
+        
+                <div class="steps__container grid">
+                    <div class="steps__card">
+                        <div class="steps__card-number">01</div>
+                        <h3 class="steps__card-title">Upload Curriculum</h3>
+                        <p class="steps__card-description">
+                            Click the "Upload" button.
+                            <br><br>
+                            Select the PDF file that contains the curriculum to be used for generating questions.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">02</div>
+                        <h3 class="steps__card-title">Set Parameters & Generate Questions</h3>
+                        <p class="steps__card-description">
+                            Enter the Subject, the Number of Questions, and set the Difficulty Level (1-100).
+                            <br><br>
+                            Click the "Generate Questions PDF" button to automatically create a question bank based on the curriculum.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">03</div>
+                        <h3 class="steps__card-title">Select Recipients & Send</h3>
+                        <p class="steps__card-description">
+                            Select/Enter the email of the recipients by checking the boxes.
+                            <br><br>
+                            Click the "Send" button to email the generated question bank PDF to the chosen recipients.
+                        </p>
+                    </div>
+                </div>
+        
+                <!-- Centered Button -->
+                <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                    <a href="{{url_for('serve_question_form')}}" class="button--link button--flex" 
+                       style="padding: 1rem 2rem; border-radius: .4rem; font-weight: 600; 
+                              background-color: #f1bd03; color: #000000; 
+                              text-decoration: none; display: flex; align-items: center; 
+                              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                              transition: background-color 0.3s, transform 0.2s;">
+                        Generate Question Bank
+                        <i class="ri-arrow-right-down-line button__icon" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="row">
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-battle-net"></i>
-                    </span>
-                    <h3 class="title">GPT-3.5 Integration</h3>
-                    <p class="description">
-                      Leverage the advanced capabilities of OpenAI's latest
-                      model to create insightful and varied questions
-                      effortlessly.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-asymmetrik"></i>
-                    </span>
-                    <h3 class="title">Customizable Prompts</h3>
-                    <p class="description">
-                      Empower users to input diverse text, enabling the
-                      generation of tailored questions relevant to their
-                      specific needs.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-artstation"></i>
-                    </span>
-                    <h3 class="title">Flexible Use Cases</h3>
-                    <p class="description">
-                      Designed for a wide range of educational applications,
-                      this system can adapt to various subjects and contexts by
-                      simply modifying the input.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-500px"></i>
-                    </span>
-                    <h3 class="title">User-Friendly Interface</h3>
-                    <p class="description">
-                      Enjoy a simple and intuitive design that ensures a smooth
-                      experience for users, making question generation
-                      accessible to everyone.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fas fa-chart-pie"></i>
-                    </span>
-                    <h3 class="title">Secure Management</h3>
-                    <p class="description">
-                      Ensure the safety of your OpenAI API key and other
-                      sensitive information through efficient environment
-                      variable management.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fas fa-laptop-code"></i>
-                    </span>
-                    <h3 class="title">Future Enhancemnt</h3>
-                    <p class="description">
-                      Stay tuned for exciting upgrades and additional features
-                      that will expand functionality and improve user
-                      engagement.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-            </div>
-          </div>
         </section>
+        
+
+          <!--==================== PRODUCTS ====================-->
+          <section class="product section container" id="products">
+             
+
+              <p class="product__description">
+                The Trainer UI of the Automated Question Builder Application facilitates seamless curriculum management and question bank creation for educators. Trainers can easily upload curriculum files and generate customized question banks by specifying parameters such as topics, the number of questions, and difficulty levels. The interface allows trainers to review and edit generated questions before finalizing them. Additionally, a feedback mechanism helps improve the question banks over time. This user-friendly design ensures that trainers can efficiently create and manage assessments, enhancing the overall learning experience.
+              </p>
+
+              <div class="product__container grid">
+                <article class="product__card">
+                  <div class="product__circle"></div>
+
+                  <img src="/static/1.png" alt="" class="product__img">
+
+                  <h3 class="product__title">Demo</h3>
+
+                  
+
+
+                  <!-- <button class="button--flex product__button">
+                      <i class="ri-shopping-bag-line"></i>
+                  </button> -->
+              </article>
+
+              
+                  <article class="product__card">
+                      <div class="product__circle"></div>
+
+                      <img src="/static/2.png" alt="" class="product__img">
+
+                      <h3 class="product__title">Demo</h3>
+
+
+                      <!-- <button class="button--flex product__button">
+                          <i class="ri-shopping-bag-line"></i>
+                      </button> -->
+                  </article>
+
+                  
+
+
+                
+
+                 
+              </div>
+          </section>
+
+         
+
+          <!--==================== QUESTIONS ====================-->
+          {#<section class="questions section" id="faqs">
+              <h2 class="section__title-center questions__title container">
+                  Some common questions <br> were often asked
+              </h2>
+
+              <div class="questions__container container grid">
+                  <div class="questions__group">
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  My flowers are falling off or dying?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  What causes leaves to become pale?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  What causes brown crispy leaves?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="questions__group">
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  How do i choose a plant?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  How do I change the pots?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+
+                      <div class="questions__item">
+                          <header class="questions__header">
+                              <i class="ri-add-line questions__icon"></i>
+                              <h3 class="questions__item-title">
+                                  Why are gnats flying around my plant?
+                              </h3>
+                          </header>
+
+                          <div class="questions__content">
+                              <p class="questions__description">
+                                  Plants are easy way to add color energy and transform your 
+                                  space but which planet is for you. Choosing the right plant.
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>#}
+
+          <!--==================== CONTACT ====================-->
+       
+      </main>
+
+      <!--==================== FOOTER ====================-->
+      <footer class="footer section">
+        <div class="footer__container container grid">
+            <div class="footer__content">
+                <a href="#" class="footer__logo">
+                  AURA
+                </a>
+
+                <h3 class="footer__title">
+                    Have Queries  <br> Connect with us
+                </h3>
+
+                <div class="footer__subscribe">
+                    <input style="width: 15rem;" type="email" placeholder="Your email" class="footer__input">
+
+                    <button class="button button--flex footer__button">
+                        Connect
+                        <i class="ri-arrow-right-up-line button__icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="footer__content">
+                <h3 class="footer__title">Team Members</h3>
+
+                <ul class="footer__data">
+                    <li class="footer__information">Mohammed Mafaz</li>
+                    <li class="footer__information">Abdul Salam</li>
+                    <li class="footer__information">Mohammed Hamdan</li>
+                    <li class="footer__information">Faraazman</li>
+
+
+                </ul>
+            </div>
+
+            <div class="footer__content">
+                <h3 class="footer__title">Contact Us</h3>
+
+                <ul class="footer__data">
+                    <li class="footer__information">+91 9150984174</li>
+                    <li class="footer__information">+91 9445587067</li>
+                    
+
+
+                    
+                    <div class="footer__social">
+                        <a href="https://www.facebook.com/" class="footer__social-link">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" class="footer__social-link">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="https://twitter.com/" class="footer__social-link">
+                            <i class="ri-twitter-fill"></i>
+                        </a>
+                    </div>
+                </ul>
+            </div>
+
+            <!-- <div class="footer__content">
+                <h3 class="footer__title">
+                    We accept all credit cards
+                </h3>
+
+                <div class="footer__cards">
+                    <img src="assets/img/card1.png" alt="" class="footer__card">
+                    <img src="assets/img/card2.png" alt="" class="footer__card">
+                    <img src="assets/img/card3.png" alt="" class="footer__card">
+                    <img src="assets/img/card4.png" alt="" class="footer__card">
+                </div>
+            </div> -->
+        </div>
+
+        <p class="footer__copy">&#169; Aura (HEXAWARE CODE & RISE) . All rights reserved</p>
+    </footer>
 
         {% elif role == 'Employee' %}
 
-        <p
-          style="
-            color: white;
-            font-size: 1.4rem;
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-          "
-        >
-          Welcome to the {{role}} section where you can Upload Curriculum and
-          Generate Question Bank.
-        </p>
+        <header class="header" id="header">
+          <nav class="nav container">
+              <!-- <a href="#" class="nav__logo">
+                  <img src="/static/logo.png" alt="">
+              </a> -->
+              
+              <div style="display: flex; gap: 1rem;">
+                  
+                  <img style="width: 7rem; height: 3em; margin-top: .1rem;"  class="img-logo" src="/static/images/logoaura.png" alt="">
+                  
+              </div>
 
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-            outline: none;
-          "
-          href="/{{ role.capitalize() }}_dashboard/"
-        >
-          Go to {{ role.capitalize() }} Dashboard
-        </a>
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-          "
-          class=""
-          href="{{ url_for('quiz_questions') }}"
-          class="btn btn-primary"
-        >
-          Self Assessment
-        </a>
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-          "
-          class=""
-          href="{{ url_for('quiz_questions_images') }}"
-          class="btn btn-primary"
-        >
-          Assessment with Images
-        </a>
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-          "
-          href="{{url_for('upload_file')}}"
-          >Generate TimeTable</a
-        >
-        <a
-          style="
-            padding: 0.5rem;
-            margin: auto;
-            border-radius: 0.5rem;
-            background-color: #ff0000;
-            color: black;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            justify-content: center;
-            width: 15rem;
-            margin-top: 2rem;
-          "
-          class=""
-          href="{{ url_for('index') }}"
-          class="btn btn-primary"
-        >
-          Attend Test Given by Trainer
-        </a>
-        <section class="section-services">
-          <div class="container">
-            <div class="row justify-content-center text-center">
-              <div class="col-md-10 col-lg-8">
-                <div class="header-section">
-                  <h2 class="title">Exclusive Services</h2>
-                  <p class="description">
-                    Delivering tailored solutions designed to meet your unique
-                    needs. Experience unparalleled quality and commitment with
-                    every interaction.
-                  </p>
-                </div>
+              
+              <!-- <p>OXYGEN ORCHARD</p> -->
+
+
+              <div class="nav__menu" id="nav-menu">
+                  <ul class="nav__list">
+                      <li class="nav__item">
+                          <a href="#home" class="nav__link active-link">Home</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#about" class="nav__link">About</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#products" class="nav__link">Products</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#faqs" class="nav__link">FAQs</a>
+                      </li>
+                      <li class="nav__item">
+                          <a href="#demo" class="nav__link">Demo</a>
+                      </li>
+                     
+                  </ul>
+<!-- 
+                  <div class="nav__close" id="nav-close">
+                      <i class="ri-close-line"></i>
+                  </div> -->
+                  
               </div>
+              <div class="model-upload nav__link nav__item">
+                  <button class="model-upload-btn"><strong>{{role}}<strong></button>
+              </div>
+
+
+              <div class="nav__btns">
+                  <!-- Theme change button -->
+                  <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+                  <div class="nav__toggle" id="nav-toggle">
+                      <i class="ri-menu-line"></i>
+                  </div>
+                  <form
+                  action="{{ url_for('logout') }}"
+                  method="POST"
+                  style="display: inline"
+                  onsubmit="return confirmLogout()"
+                >
+                  <button  style="background: none; border: 2px solid green ; padding: .5rem; border-radius: .4rem;" type="submit" class="nav__link">
+                    Logout
+                  </button>
+                </form>
+              </div>
+
+
+              
+          </nav>
+      </header>
+
+      <main class="main">
+          <!--==================== HOME ====================-->
+          <section class="home" id="home">
+              <div class="home__container container grid">
+                  <!-- <img style="width: 30rem; height: 30rem;" src="/static/ch2.png" alt="" class="home__img"> -->
+                  <video style="width: 30rem; height: 30rem;" class="home__img" src="/static/vid.mp4" autoplay muted loop playsinline>
+                    Your browser does not support the video tag.
+                  </video>
+                
+
+                  <div class="home__data">
+                    <div class="username-container" style="position: absolute; top: 1rem; left: 1rem;">
+                        <h2 class="greeting" style="font-weight: 600;">
+                            Hello <span class="username" style="font-weight: bold; color:  #4f897b;">
+                                {{username.capitalize()}}
+                            </span>
+                        </h2>
+                        <br>
+                    </div>
+                    <br>
+                    <h2 class="home__title" style="font-size: 2.5rem; margin: 0;">
+                        Unlocking Opportunities for Continuous Learning
+
+
+                    </h2>
+                    <br>
+                    
+                    
+                      <h1 class="home__description"  style=" font-weight: normal; font-size: 1.3rem; margin: 0;">
+                          
+                        Stay on top of your self-assessment and continue to grow your skills with personalized question banks tailored just for you.
+                      </h1>
+                      <br>
+                      <a href="#about" class="button button--flex">
+                          Explore <i class="ri-arrow-right-down-line button__icon"></i>
+                      </a>
+                  </div>
+
+                 
+              </div>
+          </section>
+
+          <!--==================== ABOUT ====================-->
+          <section class="about section container" id="about">
+              <div class="about__container grid">
+                  <img style="width: 30rem; height: 30rem;" src="/static/images/emp.png" alt="" class="about__img">
+                 
+
+                  <div class="about__data">
+                      <h2 class="section__title about__title">
+                        Role Description
+                      </h2>
+
+                      <p class="about__description">
+                        Employees utilize the Automated Question Builder Application to access question banks for self-assessment and training. They can request specific question sets based on their learning needs, enabling them to enhance their skills and knowledge in various technologies.
+                      </p>
+                      
+                      <a   href="/{{ role.capitalize() }}_dashboard/" class="button--link button--flex">
+                         Employee Dashboard<i class="ri-arrow-right-down-line button__icon"></i>
+                      </a>
+                  </div>
+              </div>
+          </section>
+
+          <!--==================== STEPS ====================-->
+          <section class="steps section container">
+            <div class="steps__bg">
+                <h2 class="section__title-center steps__title">
+                    Steps to Generate Your Self-Assessment Quiz
+                </h2>
+        
+                <div class="steps__container grid">
+                    <div class="steps__card">
+                        <div class="steps__card-number">01</div>
+                        <h3 class="steps__card-title">Click on Self-Assessment</h3>
+                        <p class="steps__card-description">
+                            To begin the process, navigate to the self-assessment section of the platform. 
+                            By clicking on the designated "Self-Assessment" button, the quiz panel will open up, 
+                            providing you with access to various quizzes tailored to different subjects.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">02</div>
+                        <h3 class="steps__card-title">Enter the Subject with Difficulty Level and Number of Questions</h3>
+                        <p class="steps__card-description">
+                            Once the quiz panel is open, you will need to specify the subject you want to assess yourself on. 
+                            Additionally, select the difficulty level (easy, medium, or hard) that best fits your current knowledge. 
+                            Finally, indicate how many questions you would like to attempt in the quiz. 
+                            This customization ensures that the quiz is aligned with your learning needs and preferences.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">03</div>
+                        <h3 class="steps__card-title">Start the Quiz Finally</h3>
+                        <p class="steps__card-description">
+                            After setting your preferences, it’s time to start the quiz! 
+                            Click the “Start Quiz” button to begin answering the questions. 
+                            Ensure you read each question carefully and submit your answers. 
+                            Your results will be evaluated at the end, providing insights into your understanding of the subject matter.
+                        </p>
+                    </div>
+                </div>
+        
+                
+
+                <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                    <a href="{{url_for('quiz_questions')}}" class="button--link button--flex" 
+                       style="padding: 1rem 2rem; border-radius: .4rem; font-weight: 600; 
+                              background-color: #f1bd03; color: #000000; 
+                              text-decoration: none; display: flex; align-items: center; 
+                              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                              transition: background-color 0.3s, transform 0.2s;">
+                        Self-Assessment
+                        <i class="ri-arrow-right-down-line button__icon" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="row">
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-battle-net"></i>
-                    </span>
-                    <h3 class="title">GPT-3.5 Integration</h3>
-                    <p class="description">
-                      Leverage the advanced capabilities of OpenAI's latest
-                      model to create insightful and varied questions
-                      effortlessly.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-asymmetrik"></i>
-                    </span>
-                    <h3 class="title">Customizable Prompts</h3>
-                    <p class="description">
-                      Empower users to input diverse text, enabling the
-                      generation of tailored questions relevant to their
-                      specific needs.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-artstation"></i>
-                    </span>
-                    <h3 class="title">Flexible Use Cases</h3>
-                    <p class="description">
-                      Designed for a wide range of educational applications,
-                      this system can adapt to various subjects and contexts by
-                      simply modifying the input.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fab fa-500px"></i>
-                    </span>
-                    <h3 class="title">User-Friendly Interface</h3>
-                    <p class="description">
-                      Enjoy a simple and intuitive design that ensures a smooth
-                      experience for users, making question generation
-                      accessible to everyone.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fas fa-chart-pie"></i>
-                    </span>
-                    <h3 class="title">Secure Management</h3>
-                    <p class="description">
-                      Ensure the safety of your OpenAI API key and other
-                      sensitive information through efficient environment
-                      variable management.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-              <!-- Single Service -->
-              <div class="col-md-6 col-lg-4">
-                <div class="single-service">
-                  <div class="content">
-                    <span class="icon">
-                      <i class="fas fa-laptop-code"></i>
-                    </span>
-                    <h3 class="title">Future Enhancemnt</h3>
-                    <p class="description">
-                      Stay tuned for exciting upgrades and additional features
-                      that will expand functionality and improve user
-                      engagement.
-                    </p>
-                    <a href="#" class="learn-more">Learn More</a>
-                  </div>
-                  <span class="circle-before"></span>
-                </div>
-              </div>
-              <!-- / End Single Service -->
-            </div>
-          </div>
         </section>
+
+        <section class="steps section container">
+            <div class="steps__bg">
+                <h2 class="section__title-center steps__title">
+                    Steps to Complete Assessment by Trainer
+                </h2>
+        
+                <div class="steps__container grid">
+                    <div class="steps__card">
+                        <div class="steps__card-number">01</div>
+                        <h3 class="steps__card-title">Click on Assessment by Trainer</h3>
+                        <p class="steps__card-description">
+                            To initiate the assessment process, click on the "Assessment by Trainer" button on the platform. 
+                            This will take you to the assessment section where you can view the available assessments set by your trainer.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">02</div>
+                        <h3 class="steps__card-title">Attend the MCQs Provided by the Trainer</h3>
+                        <p class="steps__card-description">
+                            After selecting the assessment, you will find multiple-choice questions (MCQs) prepared by your trainer. 
+                            Take your time to read each question carefully and select the answer you believe is correct. 
+                            Ensure you complete all the questions within the allotted time frame.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">03</div>
+                        <h3 class="steps__card-title">Reports Will Be Generated</h3>
+                        <p class="steps__card-description">
+                            Once you have submitted your answers, a report will be generated summarizing your performance in the assessment. 
+                            This report will help you identify areas of strength and opportunities for improvement based on your responses.
+                        </p>
+                    </div>
+                </div>
+        
+                
+
+                <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                    <a href="{{url_for('index')}}" class="button--link button--flex" 
+                       style="padding: 1rem 2rem; border-radius: .4rem; font-weight: 600; 
+                              background-color: #f1bd03; color: #000000; 
+                              text-decoration: none; display: flex; align-items: center; 
+                              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                              transition: background-color 0.3s, transform 0.2s;">
+                        Assessment by Trainer
+                        <i class="ri-arrow-right-down-line button__icon" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        
+
+          <!--==================== PRODUCTS ====================-->
+          {#<section class="product section container" id="products">
+             
+
+              <p class="product__description">
+                  We're developing a machine learning model that analyzes satellite imagery to predict CO2 emissions. The model then offers tailored recommendations for reducing emissions, based on the identified patterns and factors influencing CO2 production. Our goal is to provide actionable insights to mitigate environmental impact and promote sustainability.
+              </p>
+
+              <div class="product__container grid">
+                <article class="product__card">
+                  <div class="product__circle"></div>
+
+                  <img src="/static/boundingbox.jpeg" alt="" class="product__img">
+
+                  <h3 class="product__title">Bounding</h3>
+
+
+                  <!-- <button class="button--flex product__button">
+                      <i class="ri-shopping-bag-line"></i>
+                  </button> -->
+              </article>
+                  <article class="product__card">
+                      <div class="product__circle"></div>
+
+                      <img src="/static/boundingbox.jpeg" alt="" class="product__img">
+
+                      <h3 class="product__title">Bounding</h3>
+
+
+                      <!-- <button class="button--flex product__button">
+                          <i class="ri-shopping-bag-line"></i>
+                      </button> -->
+                  </article>
+
+                  <article class="product__card">
+                      <div class="product__circle"></div>
+
+                      <img src="/static/imagesegmentation.jpeg" alt="" class="product__img">
+
+                      <h3 class="product__title">Image Segmentation</h3>
+                      <!-- <span class="product__price">$7.99</span> -->
+
+                      <!-- <button class="button--flex product__button">
+                          <i class="ri-shopping-bag-line"></i>
+                      </button> -->
+                  </article>
+
+
+                
+
+                 
+              </div>
+          </section>#}
+
+         
+          <section class="steps section container">
+            <div class="steps__bg">
+                <h2 class="section__title-center steps__title">
+                    Steps to Generate Your Customized Timetable
+                </h2>
+        
+                <div class="steps__container grid">
+                    <div class="steps__card">
+                        <div class="steps__card-number">01</div>
+                        <h3 class="steps__card-title">Click on Customize Timetable Button</h3>
+                        <p class="steps__card-description">
+                            To initiate the process of creating your personalized timetable, locate and click on the "Customize Timetable" button. 
+                            This will direct you to the section where you can upload your syllabus and specify your scheduling preferences.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">02</div>
+                        <h3 class="steps__card-title">Upload Your Syllabus</h3>
+                        <p class="steps__card-description">
+                            After clicking the button, you will be prompted to upload your syllabus file. 
+                            Ensure that the syllabus is in an accepted format (such as PDF or DOCX) and includes all the necessary details for the modules. 
+                            This information is crucial for generating an accurate and personalized timetable.
+                        </p>
+                    </div>
+        
+                    <div class="steps__card">
+                        <div class="steps__card-number">03</div>
+                        <h3 class="steps__card-title">Personalized Module-wise Schedule Will Be Generated</h3>
+                        <p class="steps__card-description">
+                            Once your syllabus is uploaded, our system will automatically generate a personalized module-wise schedule for you. 
+                            This timetable will outline your classes, study sessions, and any other important deadlines, helping you manage your time effectively. 
+                            You can then review and make adjustments as needed to ensure it fits your preferences.
+                        </p>
+                    </div>
+                </div>
+        
+                <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                    <a href="{{url_for('upload_file')}}" class="button--link button--flex" 
+                       style="padding: 1rem 2rem; border-radius: .4rem; font-weight: 600; 
+                              background-color: #f1bd03; color: #000000; 
+                              text-decoration: none; display: flex; align-items: center; 
+                              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                              transition: background-color 0.3s, transform 0.2s;">
+                        Customize TimeTable
+                        <i class="ri-arrow-right-down-line button__icon" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        
+        
+          <section class="about section container" id="about">
+            <div class="about__container grid ">
+                
+                
+                {#<div class="about__data">
+                    <h2 class="section__title about__title">
+                        Who we really are?
+                    </h2>
+                    
+                    <p class="about__description">
+                        Group of 5 Friends trying <br> 
+                        to make the world a better place.
+                    </p>
+                    
+                    <a    href="{{url_for('upload_file')}}" class="button--link button--flex">
+                        Customize TimeTable<i class="ri-arrow-right-down-line button__icon"></i>
+                    </a>
+                </div>
+            <img style="width: 30rem; height: 30rem;" src="/static/images/timetable.png" alt="" class="about__img">#} </div>
+        </section>
+        
+
+          <!--==================== CONTACT ====================-->
+       
+      </main>
+
+      <!--==================== FOOTER ====================-->
+      <footer class="footer section">
+          <div class="footer__container container grid">
+              <div class="footer__content">
+                  <a href="#" class="footer__logo">
+                    AURA
+                  </a>
+
+                  <h3 class="footer__title">
+                      Have Queries  <br> Connect with us
+                  </h3>
+
+                  <div class="footer__subscribe">
+                      <input style="width: 15rem;" type="email" placeholder="Your email" class="footer__input">
+
+                      <button class="button button--flex footer__button">
+                          Connect
+                          <i class="ri-arrow-right-up-line button__icon"></i>
+                      </button>
+                  </div>
+              </div>
+
+              <div class="footer__content">
+                  <h3 class="footer__title">Team Members</h3>
+
+                  <ul class="footer__data">
+                      <li class="footer__information">Mohammed Mafaz</li>
+                      <li class="footer__information">Abdul Salam</li>
+                      <li class="footer__information">Mohammed Hamdan</li>
+                      <li class="footer__information">Faraazman</li>
+
+
+                  </ul>
+              </div>
+
+              <div class="footer__content">
+                  <h3 class="footer__title">Contact Us</h3>
+
+                  <ul class="footer__data">
+                      <li class="footer__information">+91 9150984174</li>
+                      <li class="footer__information">+91 9445587067</li>
+                      
+
+
+                      
+                      <div class="footer__social">
+                          <a href="https://www.facebook.com/" class="footer__social-link">
+                              <i class="ri-facebook-fill"></i>
+                          </a>
+                          <a href="https://www.instagram.com/" class="footer__social-link">
+                              <i class="ri-instagram-line"></i>
+                          </a>
+                          <a href="https://twitter.com/" class="footer__social-link">
+                              <i class="ri-twitter-fill"></i>
+                          </a>
+                      </div>
+                  </ul>
+              </div>
+
+              <!-- <div class="footer__content">
+                  <h3 class="footer__title">
+                      We accept all credit cards
+                  </h3>
+
+                  <div class="footer__cards">
+                      <img src="assets/img/card1.png" alt="" class="footer__card">
+                      <img src="assets/img/card2.png" alt="" class="footer__card">
+                      <img src="assets/img/card3.png" alt="" class="footer__card">
+                      <img src="assets/img/card4.png" alt="" class="footer__card">
+                  </div>
+              </div> -->
+          </div>
+
+          <p class="footer__copy">&#169; Aura (HEXAWARE CODE & RISE) . All rights reserved</p>
+      </footer>
         {% else %}
         <p>You have an unknown role. Please contact support.</p>
         {% endif %}
@@ -731,13 +1348,11 @@
     </main>
 
     <!--FOOTER-->
-    <footer>
-      <div class="top_header"></div>
-      <span class="border-shape"></span>
-      <div class="copyright">Copyright © 2024 AURA - All rights reserved</div>
-    </footer>
+ 
 
     <!--========== MAIN JS ==========-->
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scrollreveal.min.js') }}"></script>
   </body>
 </html>

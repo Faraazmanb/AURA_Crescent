@@ -10,6 +10,15 @@
       rel="stylesheet"
     />
     <style>
+      #question-image {
+        max-width: 150%;
+        max-height: 450px;
+        display: block;
+        margin: 20px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
       /* Global Styles */
       body {
         font-family: "Poppins", sans-serif;
@@ -269,6 +278,11 @@
     <!-- Question Display -->
     <div class="container" id="question-container"></div>
 
+    <!-- Image Display (New) -->
+    <div class="container" id="image-container">
+      <img id="question-image" alt="Question Image" style="display: none" />
+    </div>
+
     <!-- Options Display -->
     <div class="container" id="options-container"></div>
 
@@ -342,7 +356,7 @@
       }
 
       function loadQuestion() {
-        fetch("/get_question")
+        fetch("/get_question_image")
           .then((response) => response.json())
           .then((data) => {
             if (data.redirect) {
@@ -358,6 +372,15 @@
             document.getElementById(
               "question-container"
             ).innerHTML = `<h2>Question ${currentQuestionNumber} of ${totalQuestions}</h2><p>${data.question}</p>`;
+
+            // Display image if available
+            const imageElement = document.getElementById("question-image");
+            if (data.image) {
+              imageElement.src = data.image;
+              imageElement.style.display = "block";
+            } else {
+              imageElement.style.display = "none";
+            }
 
             const optionsContainer =
               document.getElementById("options-container");
@@ -386,7 +409,7 @@
       }
 
       function checkAnswer(answer) {
-        fetch("/check_answer", {
+        fetch("/check_answer_image", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

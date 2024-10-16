@@ -13,51 +13,60 @@
 
       body {
         font-family: Arial, sans-serif;
-        background-color: #121212;
-        color: #fff;
+        background-color: #ffffff;
+        color: #3e6553;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        overflow: hidden;
       }
 
       h1 {
-        font-size: 2rem;
-        color: #f1f1f1;
+        font-size: 2.5rem;
+        color: #3e6553;
         margin-bottom: 10px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
+      h2 {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+        color: #3e6553;
+      }
+
       form {
-        background: rgba(255, 255, 255, 0.1);
+        background-color: rgba(62, 101, 83, 0.1);
         border-radius: 15px;
         padding: 30px;
         text-align: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(62, 101, 83, 0.2);
         position: relative;
+        width: 100%;
+        max-width: 400px;
       }
 
       input[type="file"] {
         margin-bottom: 20px;
         padding: 10px;
-        background-color: #333;
-        color: #fff;
-        border: none;
+        background-color: #f1f1f1;
+        color: #3e6553;
+        border: 2px solid #3e6553;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
       }
 
       input[type="file"]:hover {
-        background-color: #444;
+        background-color: #e7e7e7;
+        border-color: #3e6553;
       }
 
       input[type="submit"] {
         padding: 10px 20px;
-        background-color: #ff6f61;
+        background-color: #3e6553;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -67,14 +76,14 @@
       }
 
       input[type="submit"]:hover {
-        background-color: #ff4b3a;
+        background-color: #2d5142;
       }
 
       /* Loader animation */
       .loader {
-        border: 6px solid rgba(255, 255, 255, 0.3);
+        border: 6px solid rgba(62, 101, 83, 0.3);
         border-radius: 50%;
-        border-top: 6px solid #ff6f61;
+        border-top: 6px solid #3e6553;
         width: 50px;
         height: 50px;
         animation: spin 1s linear infinite;
@@ -103,14 +112,7 @@
   </head>
   <body>
     <h1>Upload PDF Document</h1>
-    <h2
-      style="
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin-bottom: 0.5rem;
-      "
-    >
-      Get Customized TimeTable
-    </h2>
+    <h2>Get Your Customized Timetable</h2>
     <form id="uploadForm" method="post" enctype="multipart/form-data">
       <input type="file" name="file" accept=".pdf" required />
       <input type="submit" value="Upload" />
@@ -121,8 +123,7 @@
       const form = document.getElementById("uploadForm");
       const loader = document.getElementById("loader");
 
-      form.addEventListener("submit", function (event) {
-        // Show the loader when the form is submitted
+      form.addEventListener("submit", function () {
         form.classList.add("loading");
       });
     </script>

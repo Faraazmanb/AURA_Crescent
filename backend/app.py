@@ -129,8 +129,7 @@ def role_required(role):
         return wrapped
     return wrapper
 
-# Home or dashboard route for all users
-
+#landing page 
 @app.route('/')
 def landing_page():
     return render_template('landingindex.html')
@@ -142,6 +141,9 @@ def loginreg():
 
 
 
+
+
+# Home or dashboard route for all users
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -278,10 +280,10 @@ all = []
 mcq_a = ""
 
 
-@app.route('/questions')
-def quiz_questions():
-    session['score'] = 0
-    return render_template('questions.html')
+# @app.route('/questions')
+# def quiz_questions():
+#     session['score'] = 0
+#     return render_template('questions.html')
 
 
 @app.route('/questions_images')
@@ -291,23 +293,130 @@ def quiz_questions_images():
 
 asked_questions = []
 
+@app.route('/questions')
+def quiz_questions():
+    # Initialize session variables
+    session.clear()  # Clear any existing session data
+    session['score'] = 0
+    session['current_question'] = 0
+    session['start_time'] = time()  # Track when the quiz started
+    return render_template('questions.html')
 
 @app.route('/start_quiz', methods=['POST'])
 def start_quiz():
     data = request.json
-    subject = data.get('subject')
-    hardness_level = data.get('hardness_level')
-    num_questions = data.get('num_questions', 10)  # Default to 10 if not provided
-
-    # Store values in session or other storage
-    session['subject'] = subject
-    session['hardness_level'] = hardness_level
-    session['total_questions'] = num_questions
+    session.clear()  # Clear any existing session data
+    
+    # Store quiz configuration in session
+    session['subject'] = data.get('subject')
+    session['hardness_level'] = data.get('hardness_level')
+    session['total_questions'] = data.get('num_questions', 10)
+    session['current_question'] = 0
     session['asked'] = []
     session['score'] = 0
+    session['points'] = []
+    session['time_taken'] = []
+    session['quiz_start_time'] = time()
+    session['question_start_time'] = time()  # Track when the first question starts
+    
+    return jsonify({
+        "message": "Quiz started",
+        "subject": session['subject'],
+        "hardness_level": session['hardness_level'],
+        "total_questions": session['total_questions']
+    })
+
+@app.route('/get_question')
+def get_question():
+    # Check if we've reached the end of the quiz
+    if session.get('current_question', 0) >= session.get('total_questions', 10):
+        return jsonify({"redirect": "/report"})
+    
+    # Generate new question
+    mcq_qa = generate_mcq_question(
+        session['subject'],
+        session['hardness_level'],
+        "\n".join(session.get('asked', []))
+    ).splitlines()
+    
+    # Store question data in session
+    session['current_mcq_q'] = mcq_qa[0]
+    session['current_mcq_options'] = mcq_qa[1:-1]
+    session['current_mcq_a'] = mcq_qa[-1].strip()
+    session['question_start_time'] = time()  # Track when this question started
+    
+    # Add to asked questions
+    asked = session.get('asked', [])
+    asked.append(session['current_mcq_q'])
+    session['asked'] = asked
+    
+    return jsonify({
+        "question": session['current_mcq_q'],
+        "options": session['current_mcq_options'][:4],
+        "score": session['score'],
+        "current_question": session['current_question'] + 1,
+        "total_questions": session['total_questions']
+    })
+
+@app.route('/check_answer', methods=['POST'])
+def check_answer():
+    data = request.json
+    user_answer = data.get('answer')
+    
+    if not user_answer:
+        return jsonify({"error": "Invalid answer"}), 400
+    
+    # Calculate time taken for this question
+    question_time = time() - session.get('question_start_time', time())
+    session['time_taken'].append(question_time)
+    
+    # Check if the answer is correct
+    correct_answer = session.get('current_mcq_a')
+    is_correct = user_answer == correct_answer[0] if correct_answer else False
+    
+    # Update score and points
+    if is_correct:
+        session['score'] = session.get('score', 0) + 1
+        session['points'].append(1)
+    else:
+        session['points'].append(0)
+    
+    # Increment question counter
+    session['current_question'] = session.get('current_question', 0) + 1
+    
+    # Update database
+    update_or_insert_score(
+        session['score'],
+        session['points'],
+        session['time_taken']
+    )
+    
+    return jsonify({
+        "correct": is_correct,
+        "correct_answer": correct_answer,
+        "score": session['score'],
+        "current_question": session['current_question'],
+        "total_questions": session['total_questions'],
+        "quiz_complete": session['current_question'] >= session['total_questions']
+    })
 
 
-    return jsonify({"message": "Quiz started", "subject": subject, "hardness_level": hardness_level})
+# @app.route('/start_quiz', methods=['POST'])
+# def start_quiz():
+#     data = request.json
+#     subject = data.get('subject')
+#     hardness_level = data.get('hardness_level')
+#     num_questions = data.get('num_questions', 10)  # Default to 10 if not provided
+
+#     # Store values in session or other storage
+#     session['subject'] = subject
+#     session['hardness_level'] = hardness_level
+#     session['total_questions'] = num_questions
+#     session['asked'] = []
+#     session['score'] = 0
+
+
+#     return jsonify({"message": "Quiz started", "subject": subject, "hardness_level": hardness_level})
 
 points = []
 time_taken = []
@@ -315,31 +424,31 @@ all.append([points, time_taken])
 
 p = []
 
-@app.route('/get_question')
-def get_question():
-    subject = session.get('subject', "default_subject")
-    hardness_level = session.get('hardness_level', 1)
-    num_questions = session.get('total_questions', 10)
-    asked = session.get('asked', [])
+# @app.route('/get_question')
+# def get_question():
+#     subject = session.get('subject', "default_subject")
+#     hardness_level = session.get('hardness_level', 1)
+#     num_questions = session.get('total_questions', 10)
+#     asked = session.get('asked', [])
 
-    if len(asked) >= num_questions:
-        return jsonify({"redirect": "/report/"})  # Redirect to the report page if done
+#     if len(asked) >= num_questions:
+#         return jsonify({"redirect": "/report/"})  # Redirect to the report page if done
 
-    global mcq_a
-    mcq_qa = generate_mcq_question(subject, hardness_level, "\n".join(asked_questions)).splitlines()
-    mcq_q = mcq_qa[0]
-    asked.append(mcq_q)
-    asked_questions.append(mcq_q)
-    mcq_options = mcq_qa[1:-1]
-    mcq_a = mcq_qa[-1].strip()  # Remove any whitespace
+#     global mcq_a
+#     mcq_qa = generate_mcq_question(subject, hardness_level, "\n".join(asked_questions)).splitlines()
+#     mcq_q = mcq_qa[0]
+#     asked.append(mcq_q)
+#     asked_questions.append(mcq_q)
+#     mcq_options = mcq_qa[1:-1]
+#     mcq_a = mcq_qa[-1].strip()  # Remove any whitespace
 
-    session['asked'] = asked  # Update the asked questions list
+#     session['asked'] = asked  # Update the asked questions list
 
-    return jsonify({
-        "question": mcq_q,
-        "options": mcq_options,
-        "score": session.get('score', 0)  # Include the current score in the response
-    })
+#     return jsonify({
+#         "question": mcq_q,
+#         "options": mcq_options,
+#         "score": session.get('score', 0)  # Include the current score in the response
+#     })
 
 @app.route('/get_question_image')
 def get_question_image():
@@ -438,8 +547,8 @@ def retrieve_data(unique_id="your_unique_id"):
     return data
     
 
-@app.route('/check_answer', methods=['POST'])
-def check_answer():
+@app.route('/check_answer_image', methods=['POST'])
+def check_answer_image():
     # Ensure 'points' and 'time_taken' are in the session
     if 'points' not in session:
         session['points'] = []
@@ -949,10 +1058,10 @@ def admin_generate_question():
 @app.route('/admin_get_question', methods=['GET'])
 def serve_question():
     # Retrieve or generate the current question
-    current_question = session.get('current_question')
+    # current_question = session.get('current_question')
 
-    if current_question is None:
-        current_question = admin_generate_question()
+    # if current_question is None:
+    current_question = admin_generate_question()
 
     if current_question is None:
         print("lol")

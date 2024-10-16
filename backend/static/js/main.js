@@ -143,9 +143,9 @@ themeButton.addEventListener("click", () => {
 
 function toggleMode() {
   if (logo.src.includes("logo_light")) {
-    logo.src = "/static/logo_dark.png";
+    logo.src = "/static/images/logo_dark.png";
   } else {
-    logo.src = "/static/logo_light.png";
+    logo.src = "/static/images/logo_light.png";
   }
 }
 

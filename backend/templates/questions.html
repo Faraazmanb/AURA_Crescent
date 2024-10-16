@@ -13,8 +13,8 @@
       /* Global Styles */
       body {
         font-family: "Poppins", sans-serif;
-        background: #121212;
-        color: #e0e0e0;
+        background: #f8f9fa;
+        color: #3e6553;
         max-width: 900px;
         margin: 0 auto;
         padding: 30px;
@@ -22,9 +22,9 @@
 
       /* Container Styles */
       .container {
-        background: #1e1e1e;
+        background: white;
         border-radius: 15px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         padding: 40px;
         margin-bottom: 30px;
         transition: transform 0.3s, box-shadow 0.3s;
@@ -32,13 +32,13 @@
 
       .container:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
       }
 
       /* Heading Styles */
       h1 {
         text-align: center;
-        color: #ffffff;
+        color: #3e6553;
         font-size: 3rem;
         margin-bottom: 30px;
         letter-spacing: 2px;
@@ -46,11 +46,20 @@
       }
 
       h2 {
-        color: #bc731a; /* Updated to Teal */
+        color: #3e6553;
         font-size: 2rem;
         margin-bottom: 20px;
-        border-bottom: 2px solid #bc731a; /* Updated to Teal */
+        border-bottom: 2px solid #3e6553;
         padding-bottom: 10px;
+      }
+
+      /* Timer Styles */
+      #timer {
+        font-size: 1.5rem;
+        color: #f44336; /* Red for countdown */
+        text-align: center;
+        margin-top: -10px;
+        margin-bottom: 15px;
       }
 
       /* Form Styles */
@@ -65,26 +74,21 @@
       #start-form input[type="number"] {
         width: 100%;
         padding: 14px;
-        border: 1px solid #333;
+        border: 1px solid #ccc;
         border-radius: 8px;
         margin-bottom: 20px;
-        background: #2c2c2c;
-        color: #e0e0e0;
+        background: #f1f1f1;
+        color: #3e6553;
         transition: border-color 0.3s, background 0.3s;
         font-size: 1rem;
       }
 
-      #start-form input[type="text"]::placeholder,
-      #start-form input[type="number"]::placeholder {
-        color: #757575;
-      }
-
       #start-form input[type="text"]:focus,
       #start-form input[type="number"]:focus {
-        border-color: #1abc9c; /* Updated to Teal */
-        background: #3a3a3a;
+        border-color: #3e6553;
+        background: #f9f9f9;
         outline: none;
-        box-shadow: 0 0 8px rgba(26, 188, 156, 0.5); /* Updated to Teal */
+        box-shadow: 0 0 8px rgba(62, 101, 83, 0.5);
       }
 
       /* Button Styles */
@@ -93,8 +97,8 @@
         padding: 14px;
         border: none;
         border-radius: 8px;
-        background-color: #bc731a; /* Updated to Teal */
-        color: #121212;
+        background-color: #3e6553;
+        color: white;
         font-size: 1.2rem;
         cursor: pointer;
         transition: background-color 0.3s, transform 0.2s;
@@ -103,7 +107,7 @@
       }
 
       button:hover {
-        background-color: #9d6016; /* Darker Teal */
+        background-color: #345243;
         transform: translateY(-3px);
       }
 
@@ -132,7 +136,7 @@
         font-weight: bold;
         font-size: 1.4rem;
         text-align: center;
-        min-height: 1.4rem; /* Ensures space is reserved even when empty */
+        min-height: 1.4rem;
       }
 
       #score-container {
@@ -140,16 +144,6 @@
         font-weight: bold;
         margin-bottom: 25px;
         text-align: center;
-      }
-
-      /* Report Button */
-      #report-button {
-        background-color: #ff9800;
-        margin-top: 20px;
-      }
-
-      #report-button:hover {
-        background-color: #fb8c00;
       }
 
       /* Animations */
@@ -237,7 +231,7 @@
         required
       />
 
-      <label for="hardness_level">Difficulty Level (1-100):</label>
+      <label for="hardness_level">Difficulty Level (1-10):</label>
       <input
         type="number"
         id="hardness_level"
@@ -267,7 +261,10 @@
     </div>
 
     <!-- Question Display -->
-    <div class="container" id="question-container"></div>
+    <div class="container" id="question-container">
+      <!-- Timer -->
+      <div id="timer">Time left: 30s</div>
+    </div>
 
     <!-- Options Display -->
     <div class="container" id="options-container"></div>
@@ -280,8 +277,10 @@
     <button id="report-button" onclick="goToReport()">Go to Report</button>
 
     <script>
-      let currentQuestionNumber = 1; // Initialize question number
-      let totalQuestions = 0; // To track the total number of questions
+      let currentQuestionNumber = 1;
+      let totalQuestions = 0;
+      let timeLeft = 30;
+      let timerInterval;
 
       // Function to show an element
       function showElement(elementId) {
@@ -291,6 +290,33 @@
       // Function to hide an element
       function hideElement(elementId) {
         document.getElementById(elementId).style.display = "none";
+      }
+
+      // Function to start the timer for each question
+      function startTimer() {
+        timeLeft = 30; // Reset time to 30 seconds
+        document.getElementById(
+          "timer"
+        ).textContent = `Time left: ${timeLeft}s`;
+
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          document.getElementById(
+            "timer"
+          ).textContent = `Time left: ${timeLeft}s`;
+
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById("result").innerHTML = "Time's up!";
+            document.getElementById("result").style.color = "#f44336"; // Red color for time's up
+            showElement("next-button");
+          }
+        }, 1000);
+      }
+
+      // Function to stop the timer
+      function stopTimer() {
+        clearInterval(timerInterval);
       }
 
       document.getElementById("start-button").onclick = () => {
@@ -304,7 +330,7 @@
           return;
         }
 
-        totalQuestions = parseInt(num_questions); // Set total number of questions
+        totalQuestions = parseInt(num_questions);
 
         fetch("/start_quiz", {
           method: "POST",
@@ -341,50 +367,6 @@
         document.getElementById("score").textContent = score;
       }
 
-      function loadQuestion() {
-        fetch("/get_question")
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.redirect) {
-              window.location.href = data.redirect;
-              return;
-            }
-            if (data.error) {
-              alert(data.error);
-              return;
-            }
-
-            // Display current question number and question text
-            document.getElementById(
-              "question-container"
-            ).innerHTML = `<h2>Question ${currentQuestionNumber} of ${totalQuestions}</h2><p>${data.question}</p>`;
-
-            const optionsContainer =
-              document.getElementById("options-container");
-            optionsContainer.innerHTML = ""; // Clear existing options
-
-            // Filter out any empty or undefined options
-            const validOptions = data.options.filter((option) => option);
-
-            validOptions.forEach((option) => {
-              const button = document.createElement("button");
-              button.textContent = option.slice(3); // Remove the prefix (A), B, C, etc.
-              button.onclick = () => checkAnswer(option[0]);
-              optionsContainer.appendChild(button);
-            });
-
-            document.getElementById("result").innerHTML = "";
-            document
-              .getElementById("result")
-              .classList.remove("animate-bounce", "animate-shake");
-            hideElement("next-button");
-          })
-          .catch((error) => {
-            console.error("Error loading question:", error);
-            alert("An error occurred while loading the question.");
-          });
-      }
-
       function checkAnswer(answer) {
         fetch("/check_answer", {
           method: "POST",
@@ -405,15 +387,21 @@
             const resultElement = document.getElementById("result");
             if (data.correct) {
               resultElement.innerHTML = "Correct!";
-              resultElement.style.color = "#4caf50"; // Green
-              resultElement.classList.add("animate-bounce"); // Add bounce animation
+              resultElement.style.color = "#4caf50";
             } else {
               resultElement.innerHTML = `Incorrect. The correct answer is: ${data.correct_answer}`;
-              resultElement.style.color = "#f44336"; // Red
-              resultElement.classList.add("animate-shake"); // Add shake animation
+              resultElement.style.color = "#f44336";
             }
-            showElement("next-button");
+
             updateScore(data.score);
+
+            if (data.quiz_complete) {
+              showElement("report-button");
+              hideElement("next-button");
+              resultElement.innerHTML += "<br>Quiz completed!";
+            } else {
+              showElement("next-button");
+            }
           })
           .catch((error) => {
             console.error("Error checking answer:", error);
@@ -422,14 +410,43 @@
       }
 
       document.getElementById("next-button").onclick = () => {
-        currentQuestionNumber++; // Increment the question number
-        if (currentQuestionNumber <= totalQuestions) {
-          loadQuestion(); // Load the next question
-        } else {
-          alert("Quiz completed!");
-          hideElement("next-button");
-        }
+        loadQuestion();
       };
+
+      function loadQuestion() {
+        fetch("/get_question")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.redirect) {
+              window.location.href = data.redirect;
+              return;
+            }
+
+            document.getElementById(
+              "question-container"
+            ).innerHTML = `<h2>Question ${data.current_question} of ${data.total_questions}</h2>
+                 <p>${data.question}</p>`;
+
+            const optionsContainer =
+              document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+
+            data.options.forEach((option) => {
+              const button = document.createElement("button");
+              button.textContent = option.slice(3);
+              button.onclick = () => checkAnswer(option[0]);
+              optionsContainer.appendChild(button);
+            });
+
+            document.getElementById("result").innerHTML = "";
+            hideElement("next-button");
+            startTimer(); // If you're using a timer
+          });
+        // .catch((error) => {
+        //     console.error("Error loading question:", error);
+        //     alert("An error occurred while loading the question.");
+        // });
+      }
 
       function goToReport() {
         window.location.href = "/report";

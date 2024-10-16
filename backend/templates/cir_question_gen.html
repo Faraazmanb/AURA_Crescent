@@ -5,124 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Curriculum Based QA Generator</title>
     <style>
+      :root {
+        --primary-color: rgb(62, 101, 83); /* Your chosen color */
+        --secondary-color: #ffffff;
+        --background-color: #f8f9fa; /* Light background for the form */
+        --text-color: #333;
+        --button-hover-color: rgb(48, 81, 66); /* Darker variant of primary color */
+        --border-color: rgba(0, 0, 0, 0.1); /* Subtle border color */
+        --shadow-color: rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      }
+
       body {
         font-family: "Arial", sans-serif;
-
-        background-color: #1b181a;
+        background-color: var(--background-color);
         margin: 0;
         padding: 20px;
-        color: #333;
+        color: var(--text-color);
       }
 
       h1 {
-        color: white;
+        color: var(--primary-color);
         text-align: center;
         margin-bottom: 20px;
         font-size: 2.5rem;
         letter-spacing: 1px;
+        font-weight: 600;
       }
+
       h2 {
-        color: white;
+        color: var(--primary-color);
         margin-top: 40px;
         font-size: 1.8rem;
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid var(--primary-color);
         padding-bottom: 10px;
+        font-weight: 500;
       }
+
       form {
-        background: #ffffff;
+        background: var(--secondary-color);
         border-radius: 12px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        padding: 30px;
+        box-shadow: 0 8px 16px var(--shadow-color);
+        padding: 40px;
         margin: 0 auto 40px;
         max-width: 600px;
       }
+
       label {
         font-weight: bold;
         font-size: 1.1rem;
-        color: black;
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 8px;
       }
+
       input[type="text"],
       input[type="email"],
       input[type="number"],
       input[type="file"] {
-        width: calc(100% - 22px);
+        width: calc(100% - 20px);
         padding: 12px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
+        margin: 10px 0 20px;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         transition: border-color 0.3s;
+        font-size: 1rem;
+        color: var(--text-color);
       }
+
       input[type="text"]:focus,
       input[type="email"]:focus,
       input[type="number"]:focus,
       input[type="file"]:focus {
-        border-color: #3498db;
+        border-color: var(--primary-color);
         outline: none;
       }
 
       .button {
-        min-width: 120px;
-        font: bold;
-
-        position: relative;
+        display: inline-block;
+        min-width: 150px;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: 8px;
+        text-align: center;
         cursor: pointer;
-
-        padding: 12px 17px;
-        border: 0;
-        border-radius: 7px;
-
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-        background: radial-gradient(
-          ellipse at bottom,
-          rgba(71, 81, 92, 1) 0%,
-          rgba(11, 21, 30, 1) 45%
-        );
-
-        color: rgb(255, 255, 255, 0.66);
-
-        transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
-      }
-
-      .button::before {
-        content: "";
-        width: 70%;
-        height: 1px;
-
-        position: absolute;
-        bottom: 0;
-        left: 15%;
-
-        background: rgb(255, 255, 255);
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 1) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
-        opacity: 0.2;
-
-        transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 10px var(--shadow-color);
       }
 
       .button:hover {
-        color: rgb(255, 255, 255, 1);
-        transform: scale(1.1) translateY(-3px);
-      }
-
-      .button:hover::before {
-        opacity: 1;
+        background-color: var(--button-hover-color);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px var(--shadow-color);
       }
 
       .spinner {
         display: none;
         border: 4px solid #f3f3f3;
         border-radius: 50%;
-        border-top: 4px solid #3498db;
+        border-top: 4px solid var(--primary-color);
         width: 40px;
         height: 40px;
         animation: spin 1s linear infinite;
         margin: 20px auto;
       }
+
       @keyframes spin {
         0% {
           transform: rotate(0deg);
@@ -131,64 +121,106 @@
           transform: rotate(360deg);
         }
       }
+
       table {
         border-collapse: collapse;
         width: 100%;
         margin-top: 20px;
-        background: #ffffff;
+        background: var(--secondary-color);
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 10px var(--shadow-color);
       }
+
       th,
       td {
-        border: 1px solid #ddd;
-        padding: 12px;
+        padding: 12px 15px;
         text-align: left;
+        font-size: 1rem;
       }
+
       th {
-        background-color: #1e1c1d;
+        background-color: var(--primary-color);
         color: white;
-        font-size: 1.2rem;
+        font-weight: bold;
       }
-      #pdfOptions {
-        display: none;
-        margin-top: 20px;
+
+      td {
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-color);
       }
-      #pdfOptions button {
-        color: white;
-        background-color: #fe1803;
-        style: bold;
-      }
-      #pdfOptions button:hover {
-        background-color: #219653;
+
+      table tr:last-child td {
+        border-bottom: none;
       }
 
       #pdfOptions {
-        display: flex;
-        align-items: center;
+        display: none;
+        margin-top: 20px;
         justify-content: center;
         gap: 1rem;
       }
-      #viewPdf {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border: none;
-        transition: all 0.5s;
-      }
+
+      #viewPdf,
       #downloadPdf {
-        padding: 1rem;
-        border-radius: 0.5rem;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
         border: none;
-        transition: all 0.5s;
+        background-color: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 10px var(--shadow-color);
+      }
+
+      #viewPdf:hover,
+      #downloadPdf:hover {
+        background-color: var(--button-hover-color);
+        transform: translateY(-2px);
+      }
+
+      #addRow,
+      #sendEmails {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.7rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px var(--shadow-color);
+        margin-top: 20px;
+      }
+
+      #addRow:hover,
+      #sendEmails:hover {
+        background-color: var(--button-hover-color);
+        transform: translateY(-2px);
       }
 
       @media (max-width: 600px) {
         h1 {
           font-size: 2rem;
         }
+
         h2 {
           font-size: 1.5rem;
+        }
+
+        form {
+          padding: 20px;
+        }
+
+        .button {
+          min-width: 100px;
+          font-size: 1rem;
+        }
+
+        #viewPdf,
+        #downloadPdf {
+          font-size: 1rem;
         }
       }
     </style>
@@ -208,14 +240,7 @@
       <label for="difficulty">Difficulty (1-100):</label>
       <input type="number" id="difficulty" name="difficulty" required />
 
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-top: 0.5rem;
-        "
-      >
+      <div style="display: flex; align-items: center; justify-content: center; margin-top: 1.5rem;">
         <button type="submit" class="button">Generate Questions PDF</button>
       </div>
     </form>
@@ -242,11 +267,11 @@
         </tr>
       </tbody>
     </table>
-    <br />
 
     <button id="addRow" class="button">Add Row</button>
     <br />
-    <button id="sendEmails" style="display: none">Send PDF to Email</button>
+    <button id="sendEmails" class="button" style="display: none">Send PDF to Email</button>
+  </body>
 
     <script>
       let generatedPdfBlob = null;
@@ -302,7 +327,7 @@
               generatedPdfBlob = blob;
 
               document.getElementById("spinner").style.display = "none";
-              document.getElementById("pdfOptions").style.display = "block";
+              document.getElementById("pdfOptions").style.display = "flex";
               document.getElementById("sendEmails").style.display = "block";
 
               const url = window.URL.createObjectURL(blob);

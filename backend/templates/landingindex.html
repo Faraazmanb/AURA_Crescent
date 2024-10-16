@@ -181,6 +181,35 @@ body.dark-mode .bg-white {
   background-color: #2a2a2a !important;
 }
 
+.animate-charcter
+{
+   text-transform:normal;
+  background-image: linear-gradient(
+    -225deg,
+    #9f54e6 0%,
+    #44107a 29%,
+    #ff1361 67%,
+    #f6ecc4 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+      font-size: 60px;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
 </style>
 
 </head>
@@ -286,7 +315,7 @@ body.dark-mode .bg-white {
 
             <li class="nav-item dropdown">
               <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="pages"
-                data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                data-bs-toggle="dropdown" aria-expanded="false">About</a>
               <ul class="dropdown-menu" aria-labelledby="pages">
                 <li><a href="about.html" class="dropdown-item">About Us<span
                       class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
@@ -297,7 +326,7 @@ body.dark-mode .bg-white {
 
             <li class="nav-item dropdown">
               <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="events"
-                data-bs-toggle="dropdown" aria-expanded="false">Exam</a>
+                data-bs-toggle="dropdown" aria-expanded="false">Products</a>
               <ul class="dropdown-menu" aria-labelledby="courses">
                 <li><a href="event.html" class="dropdown-item">Subject<span
                       class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
@@ -308,7 +337,7 @@ body.dark-mode .bg-white {
 
             <li class="nav-item dropdown">
               <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="blog"
-                data-bs-toggle="dropdown" aria-expanded="false">blog</a>
+                data-bs-toggle="dropdown" aria-expanded="false">FAQ's</a>
               <ul class="dropdown-menu" aria-labelledby="blog">
                 <li><a href="blog.html" class="dropdown-item">blog<span
                       class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
@@ -319,7 +348,7 @@ body.dark-mode .bg-white {
 
             <li class="nav-item dropdown">
               <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="shop"
-                data-bs-toggle="dropdown" aria-expanded="false">Trainer</a>
+                data-bs-toggle="dropdown" aria-expanded="false">Demo</a>
               <ul class="dropdown-menu" aria-labelledby="shop">
                 <li><a href="shop.html" class="dropdown-item">College<span
                       class="badge bg-secondary-subtle text-dark ms-2">PRO</span></a></li>
@@ -328,9 +357,19 @@ body.dark-mode .bg-white {
               </ul>
             </li>
 
-            <li class="nav-item">
-              <a href="contact.html" class="nav-link mx-2">contact</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle align-items-center" role="button" id="shop"
+                data-bs-toggle="dropdown" aria-expanded="false">A/E/T</a>
+              <ul class="dropdown-menu" aria-labelledby="shop">
+                <li><a href="shop.html" class="dropdown-item">Admin</a></li>
+                <li><a href="single-product.html" class="dropdown-item">Employee
+                      </a></li>
+                <li><a href="single-product.html" class="dropdown-item">Trainer
+                      </a></li>
+              </ul>
             </li>
+
+            
             
           </ul>
 
@@ -395,9 +434,17 @@ body.dark-mode .bg-white {
   <section id="hero">
     <div class="container-fluid">
       <div class="row">
+
+        
         <div class="col-md-8 col-lg-3 offset-md-2 padding-large ps-lg-0 pe-lg-5">
-          <h3 class="display-2 fw-semibold">Welcome to Automated Question Builder!</h3>
-          <p class="secondary-font my-4 pb-2">Harness the power of AI to generate dynamic, curriculum-based, and general-purpose questions that can transform the way you learn, teach, and assess knowledge. </p>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <h3 class="animate-charcter"> Welcome to Automated Question Builder!</h3>
+              </div>
+            </div>
+          </div>
+                <p class="secondary-font my-4 pb-2">Harness the power of AI to generate dynamic, curriculum-based, and general-purpose questions that can transform the way you learn, teach, and assess knowledge. </p>
           
         </div>
         <div class="col-md-6 col-lg-7 d-block d-md-none d-lg-block p-0">
@@ -503,17 +550,20 @@ body.dark-mode .bg-white {
         </div>
         <div class="col-md-4 ">
           <div class="mb-5 mt-5 mt-lg-0">
-            <h2 class="display-5 fw-semibold"><span class="text-primary">Admin Dashboard</span></h2>
-            <p class="secondary-font">Seamlessly manage AI-powered question generation and gain valuable insights through comprehensive reports. Take full control of the learning process, track performance, and make informed decisions that optimize education and drive success.
+            <h5 class="display-5 fw-semibold">Pioneering the Future of Automation <span class="text-primary">Hexaware</span></h5>
+            <p class="secondary-font">Hexaware, a global leader in digital transformation and automation, brings you a revolutionary project aimed at redefining efficiency and boosting productivity across industries. Our solutions harness the power of AI and machine learning to automate critical processes, reduce manual effort, and provide powerful insights through dynamic reports.
             </p>
           </div>
 
           <div class="d-flex">
-            <button class="btn btn-primary px-5 py-3 mt-2"> Go to Dashboard</button>  </div>
+            <a href="https://www.hexaware.com" target="_blank">
+              <button class="btn btn-primary px-5 py-3 mt-2">Join us</button>
+            </a>
+          </div>
+          <br>
+          <br>
+          <br>
           
-          
-
-        </div>
 
       </div>
     </div>
@@ -579,10 +629,10 @@ body.dark-mode .bg-white {
                   </span>
 
                 
-                <div class="d-flex flex-wrap mt-2">
-                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  <div class="d-flex flex-wrap mt-2">
+                    <a href="{{ url_for('loginreg') }}" class="btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  </div>
                   
-                </div>
 
               </div>
 
@@ -608,10 +658,9 @@ body.dark-mode .bg-white {
                   </span>
 
                 
+                
                 <div class="d-flex flex-wrap mt-2">
-                  
-                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
-                  
+                  <a href="{{ url_for('loginreg') }}" class="btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
                 </div>
 
               </div>
@@ -636,11 +685,9 @@ body.dark-mode .bg-white {
                   <p class="text-muted fw-semibold m-0 me-2">The Timetable Generator is a smart tool that automatically creates efficient, well-structured schedules for schools, colleges, or training programs. With AI-driven optimization, it balances subjects, breaks, and resources, ensuring a smooth and conflict-free timetable. Perfect for educators and institutions, this tool simplifies the scheduling process and maximizes productivity.</p>
                   </span>
 
-                <div class="d-flex flex-wrap mt-2">
-                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
-                  
-                </div>
-
+                  <div class="d-flex flex-wrap mt-2">
+                    <a href="{{ url_for('loginreg') }}" class="btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  </div>
               </div>
 
             </div>
@@ -666,11 +713,9 @@ body.dark-mode .bg-white {
                   </span>
 
                 
-                <div class="d-flex flex-wrap mt-2">
-                  
-                  <a href="#" class=" btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
-                  
-                </div>
+                  <div class="d-flex flex-wrap mt-2">
+                    <a href="{{ url_for('loginreg') }}" class="btn btn-outline-dark text-capitalize me-2 px-4 py-3">Try Now</a>
+                  </div>
 
               </div>
 
@@ -854,7 +899,7 @@ body.dark-mode .bg-white {
     <div class="container py-3">
       <div class="row mt-3">
         <div class="col-md-6 copyright">
-          <p>© 2024 Aura. All rights reserved.</p>
+          <p>© 2024 Aura (HEXAWARE CODE AND RISE). All rights reserved.</p>
         </div>
         <div class="col-md-6 text-md-end">
           <p>Designed By Mohamed Faraazman & Mohammed Hamdan</p>
