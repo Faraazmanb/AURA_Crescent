@@ -33,13 +33,15 @@ example:
 Study Plan for B.Tech. Information Technology - Materials Science for Engineering
 
 Week 1-2:
-Module I - Intro to Course
+Module I - Intro to Course:
 Introduction to the course and its objectives. Understanding the basics of materials science and engineering. 
 
-Week 3-4: 
-Module II - Classification of Materials
+Week 3-4:
+Module II - Classification of Materials:
 Focus on the concept of amorphous, single crystals, and polycrystalline materials. Understand the effects of crystallinity on physical properties.
 
+NOTES on prompt:
+Do not deviate from this formatting
 add how many weeks needed.
 format:
 Week (no new lines)

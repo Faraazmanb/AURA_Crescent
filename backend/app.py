@@ -910,6 +910,7 @@ def upload_file():
             file.save(file_path)
             return redirect(url_for('display_figure', filename=filename))
     return render_template('upload.html')
+
 @app.route('/display/<filename>')
 def display_figure(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -920,88 +921,26 @@ def display_figure(filename):
     
     if not text:
         return "Error: Unable to process the PDF file."
-    
-    start_idx = 0
-    split = text.splitlines()
-    for idx, i in enumerate(split):
-        if i.lower().startswith("week"):
-            start_idx = idx
-            break
+   
+    week_start, week_end, module, description, title = text_analysis(text)    
 
-    text_split = text.splitlines()
-
-    if len(text_split) > 2:
-        text_split = text_split[start_idx:]
-    else:
-        return "Error: Insufficient data in the processed text."
-    
-    weeks_ranges = []
-    module = []
-    descriptions = []
-
-    i = 0
-    for i in range(0, len(text_split), 4):
-        if i + 3 < len(text_split):  # Check if indices are within bounds
-            weeks_ranges.append(text_split[i])
-            module.append(text_split[i + 1])
-            descriptions.append(text_split[i + 2])
-        else:
-            # Handle the case where there are not enough elements
-            break  # or return an error message
-
-    if not weeks_ranges or not module or not descriptions:
-        return "Error: Unable to extract necessary information from the PDF."
-    
-    print(text)
-    print("")
-    print(weeks_ranges)
-    print("")
-    print(module)
-    print("")
-    print(descriptions)
-    print("")
-    print(start_idx)
-    print(text_split)
-    
-    weeks_start, weeks_end = convert_week_ranges(weeks_ranges)
-    print(weeks_start)
-    print(weeks_end)
-    
     # Create Plotly figure
-    fig = create_plotly_figure(weeks_start, weeks_end, module, descriptions)
+    fig = create_plotly_figure(week_start, week_end, module, description, title = title)
     
     # Convert the figure to JSON
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
     return render_template('figure.html', graphJSON=graphJSON)
 
-def create_plotly_figure(weeks_start, weeks_end, module, descriptions):
-    # Create a trace for each module
-    data = []
-    for i, (start, end, mod, desc) in enumerate(zip(weeks_start, weeks_end, module, descriptions)):
-        trace = go.Bar(
-            x=[start.strftime('%b %d, %Y'), end.strftime('%b %d, %Y')],
-            y=[mod],
-            text=[desc],
-            name=mod,
-            marker=dict(
-                color=f'rgb({i*20}, {i*30}, {i*40})'
-            )
-        )
-        data.append(trace)
+def create_plotly_figure(weeks_start, weeks_end, module, descriptions, title):
 
-    # Create the layout
-    layout = go.Layout(
-        title='Course Schedule',
-        xaxis_title='Week',
-        yaxis_title='Module',
-        barmode='stack',
-        bargap=0.1,
-        xaxis_type='category'
-    )
+    data = [{'Task': mod, 'Start': ws, 'Finish': we, 'description': des} 
+        for ws, we, mod, des in zip(weeks_start, weeks_end, module, descriptions)]
 
-    # Create the figure
-    fig = go.Figure(data=data, layout=layout)
+    df = pd.DataFrame(data)
+
+    fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", hover_data=["description"], title=title)
+    fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
 
     return fig
 

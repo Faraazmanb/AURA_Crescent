@@ -55,3 +55,27 @@ def convert_week_ranges(week_ranges, start_date=None):
         weeks_end.append(week_end_date)
 
     return weeks_start, weeks_end
+
+def text_analysis(text):
+    data = {}
+    split_output = text.split('\n\n')
+    data["title"] = split_output[0]
+    split_output = split_output[1:]
+    for idx, sub_data in enumerate(split_output):
+        sub_data_split = sub_data.split('\n')
+        if sub_data_split[0].lower().startswith("week") and sub_data_split[1].lower().startswith("module"):
+            week_start, week_end = convert_week_ranges([sub_data_split[0]])
+            data[idx] = dict(week_start = week_start, week_end = week_end, module = sub_data_split[1], description = "\n".join(sub_data_split[2:]))
+
+    week_start = []
+    week_end = []
+    module = []
+    description = []
+
+    for i in range(len(data)-1):
+        week_start.append(data[i]['week_start'][0])
+        week_end.append(data[i]['week_end'][0])
+        module.append(data[i]['module'])
+        description.append(data[i]['description'])
+    
+    return week_start, week_end, module, description, data['title']
