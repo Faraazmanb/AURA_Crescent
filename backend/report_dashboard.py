@@ -59,8 +59,8 @@ def drawFigure_Average_score_Report(data):
     return return_html(fig)
 
 
-def drawFigure_Leaderbaord_Report():
-    fig = report_leaderboard()
+def drawFigure_Leaderbaord_Report(mongo_client):
+    fig = report_leaderboard(mongo_client)
     fig.update_layout(
         template='plotly_dark',
         plot_bgcolor='rgba(0, 0, 0, 0)',

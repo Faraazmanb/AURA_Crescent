@@ -109,6 +109,7 @@ class User(UserMixin):
 
             return User(user_data['username'], user_data['role'], user_data['password'], str(user_data['_id']))
         return None
+        
 # User loader for Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
@@ -194,23 +195,23 @@ def employee_dashboard():
 
 #     return render_template('register.html')
 
-# # Login route
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
+# Login route
+# @app.route('/loginreg', methods=['POST'])
+# def handle_login():
+#     print("username and password function called")
+    
 #     if request.method == 'POST':
+#         # Use request.form.get() to access form data
 #         username = request.form.get('username')
 #         password = request.form.get('password')
-#         user = User.find_by_username(username)
         
-#         if user and user.check_password(password):
-#             login_user(user)
-#             flash('Logged in successfully!', 'success')
-#             return redirect(url_for('dashboard'))
-#         else:
-#             flash('Invalid username or password','error')
-#             return redirect(url_for('login'))
+#         print("username and password received")
+#         print(f"Username: {username}")
+#         print(f"Password: {password}")
 
-#     return render_template('login.html')
+#     return redirect(url_for('dashboard'))
+        
+
 
 # Logout route
 @app.route('/logout',methods=['POST'])
@@ -224,6 +225,7 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    global username
     if request.method == 'POST':
         # Determine which form was submitted based on the presence of 'email'
         if 'email' in request.form:
@@ -251,6 +253,8 @@ def home():
             # Login form was submitted
             username = request.form.get('username')
             password = request.form.get('password')
+
+            # print("username: ", session['username'])
             user = User.find_by_username(username)
             
             if user and user.check_password(password):
@@ -261,6 +265,7 @@ def home():
             else:
                 flash('Invalid username or password', 'error')
                 return redirect(url_for('home'))
+        
 
     # GET request renders the combined form
     return render_template('loginreg.html')
@@ -391,6 +396,18 @@ def check_answer():
         session['time_taken']
     )
     
+    db = mongo.db.user_scores
+    data = {
+            'username': username,
+            'score': int(session['score'])  # Assuming score is numeric
+        }
+    db.update_one(
+            {'username': username},  # Filter by username
+            {'$set': data},           # Update the score for the username
+            upsert=True               # Insert new document if username doesn't exist
+        )
+
+
     return jsonify({
         "correct": is_correct,
         "correct_answer": correct_answer,
@@ -583,6 +600,17 @@ def check_answer_image():
         session.modified = True
 
         update_or_insert_score(session['score'], session['points'], session['time_taken'])
+
+        db = mongo.db.user_scores
+        data = {
+                'username': username,
+                'score': int(session['score'])  # Assuming score is numeric
+            }
+        db.update_one(
+                {'username': username},  # Filter by username
+                {'$set': data},           # Update the score for the username
+                upsert=True               # Insert new document if username doesn't exist
+            )
 
         return jsonify({
             "correct": is_correct,
@@ -890,7 +918,7 @@ def update_figures(n_intervals):
         drawFigure_Correct_incorrect(data),
         drawFigure_Average_score_Report(data),
         drawFigure_Time_Taken(data),
-        drawFigure_Leaderbaord_Report()
+        drawFigure_Leaderbaord_Report(mongo)
     )
 
 
@@ -1069,4 +1097,4 @@ def submit_answer():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)

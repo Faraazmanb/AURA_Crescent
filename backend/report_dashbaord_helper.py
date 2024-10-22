@@ -58,17 +58,23 @@ def report_avg_score(data):
     return fig
 
 # 4. Leaderboard (Separate from the main data)
-def report_leaderboard():
-    leader = pd.DataFrame([
-        ["Rahoul", 560],
-        ["Ronak", 234],
-        ["Joe", 154],
-        ["Tony", 123],
-        ["Shane", 112],
-        ["Gillis", 83],
-        ["Kam", 83],
-        ["Patterson", 81],
-    ], columns=["Name", "Points"])
+def report_leaderboard(mongo_client):
+    # leader = pd.DataFrame([
+    #     ["Rahoul", 560],
+    #     ["Ronak", 234],
+    #     ["Joe", 154],
+    #     ["Tony", 123],
+    #     ["Shane", 112],
+    #     ["Gillis", 83],
+    #     ["Kam", 83],
+    #     ["Patterson", 81],
+    # ], columns=["Name", "Points"])
+
+    db = mongo_client.db.user_scores
+    data = db.find({}, {'_id': 0, 'username': 1, 'score': 1})
+    leader_data = [(entry['username'], entry['score']) for entry in data]
+    leader = pd.DataFrame(leader_data, columns=["Name", "Points"])
+    leader.sort_values(by="Points", ascending=True).reset_index(drop=True)
     
     fig = px.bar(leader, x='Name', y='Points', title="Leaderboard")
     
