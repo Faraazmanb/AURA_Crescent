@@ -74,7 +74,7 @@ def report_leaderboard(mongo_client):
     data = db.find({}, {'_id': 0, 'username': 1, 'score': 1})
     leader_data = [(entry['username'], entry['score']) for entry in data]
     leader = pd.DataFrame(leader_data, columns=["Name", "Points"])
-    leader.sort_values(by="Points", ascending=True).reset_index(drop=True)
+    leader = leader.sort_values(by="Points", ascending=False).reset_index(drop=True)
     
     fig = px.bar(leader, x='Name', y='Points', title="Leaderboard")
     
