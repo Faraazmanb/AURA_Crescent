@@ -296,6 +296,7 @@ def quiz_questions_images():
     session['score'] = 0
     return render_template('questions_images.html')
 
+
 asked_questions = []
 
 @app.route('/questions')
