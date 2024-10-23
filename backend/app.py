@@ -954,14 +954,18 @@ def display_figure(filename):
     week_start, week_end, module, description, title = text_analysis(text)    
 
     # Create Plotly figure
-    fig = create_plotly_figure(week_start, week_end, module, description, title = title)
+    fig_1 = create_plotly_figure_grant(week_start, week_end, module, description, title = title)
+    fig_2 = create_plotly_figure_tt(week_start, week_end, module, description)
     
     # Convert the figure to JSON
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    
-    return render_template('figure.html', graphJSON=graphJSON)
+    graphJSON_1 = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
+    graphJSON_2 = json.dumps(fig_2, cls=plotly.utils.PlotlyJSONEncoder)
 
-def create_plotly_figure(weeks_start, weeks_end, module, descriptions, title):
+    graph_JSON = {"graphJSON1": graphJSON_1, "graphJSON2": graphJSON_2}
+    
+    return render_template('figure.html', graphJSON=graph_JSON)
+
+def create_plotly_figure_grant(weeks_start, weeks_end, module, descriptions, title):
 
     data = [{'Task': mod, 'Start': ws, 'Finish': we, 'description': des} 
         for ws, we, mod, des in zip(weeks_start, weeks_end, module, descriptions)]
@@ -970,6 +974,54 @@ def create_plotly_figure(weeks_start, weeks_end, module, descriptions, title):
 
     fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", hover_data=["description"], title=title)
     fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
+
+    return fig
+
+def create_plotly_figure_tt(weeks_start, weeks_end, module, descriptions):
+
+    # Updated values with additional columns
+    values = [
+        weeks_start, weeks_end, module, descriptions
+    ]
+
+    fig = go.Figure(data=[go.Table(
+        columnorder=[1, 2, 3, 4],  # Ordering of the columns
+        columnwidth=[80, 80, 80, 500],  # Width of the columns
+        header=dict(
+            values=[['<b>WEEK START</b>'],  # 1st column header
+                    ['<b>WEEK END</b>'],                 # 2nd column header
+                    ['<b>MODULE</b>'],                      # 3rd column header
+                    ['<b>DESCRIPTION</b>']],                     # 4th column header
+            line_color='darkslategray',
+            fill_color='royalblue',
+            align=['left', 'center'],
+            font=dict(color='white', size=20),
+            height=40
+        ),
+        cells=dict(
+            values=values,  # Use updated values
+            line_color='darkslategray',
+            fill=dict(color=['paleturquoise', 'white']),
+            align=['left', 'center'],
+            font_size=15,
+            height=40
+        )
+    )])
+
+    # Dynamically calculate the total height based on number of rows
+    num_rows = len(weeks_start)  # Number of rows is based on the length of the data
+    row_height = 40  # Height for each row
+    header_height = 40  # Height for the header
+    buffer = 70  # Additional space for padding/margin
+
+    # Calculate total height dynamically
+    total_height = header_height + num_rows * row_height + buffer
+
+    # Set the height in the layout
+    fig.update_layout(
+        height=total_height,  # Set the total height based on number of rows
+        margin=dict(l=10, r=10, t=10, b=10)  # Adjust margins as needed
+    )
 
     return fig
 

@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Plotly Figure</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Combined Figures</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  </head>
-  <body>
-    <div id="graph"></div>
-    <script>
-      var graphData = {{ graphJSON | safe }};
-      Plotly.newPlot('graph', graphData);
+</head>
+<body>
+
+    <h1>Gantt Chart</h1>
+    <div id="plot1"></div> <!-- Div for the first figure -->
+
+    <h1>Time Table</h1>
+    <div id="plot2"></div> <!-- Div for the second figure -->
+
+    <script type="text/javascript">
+        // Access the graphJSON dictionary
+        var graphJSON = {{ graphJSON | tojson }};
+
+        // Load the first figure
+        var graphJSON_1 = JSON.parse(graphJSON.graphJSON1);
+        Plotly.newPlot('plot1', graphJSON_1.data, graphJSON_1.layout);
+
+        // Load the second figure
+        var graphJSON_2 = JSON.parse(graphJSON.graphJSON2);
+        Plotly.newPlot('plot2', graphJSON_2.data, graphJSON_2.layout);
     </script>
-  </body>
+
+</body>
 </html>
