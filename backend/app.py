@@ -555,11 +555,11 @@ def retrieve_data(unique_id="your_unique_id"):
     # Create a DataFrame from the document data
     data = pd.DataFrame({
         'Time Taken (seconds)': document['time_spent'],
-        'Points': document['points'],  # 0 = Correct, 1 = Incorrect
+        'Points': document['points'],  # 0 = Inorrect, 1 = correct
     })
 
     # Add a new column for correctness
-    data['Correct or Incorrect'] = data['Points'].map({0: 'Correct', 1: 'Incorrect'})
+    data['Correct or Incorrect'] = data['Points'].map({0: 'Incorrect', 1: 'Correct'})
 
     print(document)
     return data
@@ -937,12 +937,15 @@ def upload_file():
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
+            print("File Saved")
             return redirect(url_for('display_figure', filename=filename))
     return render_template('upload.html')
 
 @app.route('/display/<filename>')
 def display_figure(filename):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    # file_path = os.path.join('backend/uploads', filename)
+    file_path = 'uploads/' + filename
+    # uploads\Deep_learning_techniques-_csdx530.pdf
     
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     

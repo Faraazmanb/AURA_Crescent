@@ -1,4 +1,5 @@
 from fpdf import FPDF
+import re
 
 def add_section(pdf, section_title, section_content=""):
     pdf.set_font("Arial", 'B', 16)
@@ -29,8 +30,14 @@ def create_learning_plan(analysis_text, output):
     
     add_section(pdf, "End of Plan", "Thank you for using Aura's Learning Plan Generator!")
 
+    # Final filename with timestamp
     final_filename = f"{output}.pdf"
-    safe_filename = final_filename.encode('latin-1', 'replace').decode('latin-1')
+
+    # Sanitize the filename by replacing invalid characters (such as colons) with an underscore or hyphen
+    safe_filename = re.sub(r'[^\w\-_. ]', '_', final_filename)
+
+    # Now use the sanitized filename to save the PDF
+    pdf.output(safe_filename, 'F')
 
     pdf.output(safe_filename, 'F')  # Ensure you're saving as a file
     print(f"Document has been saved as '{safe_filename}'")
