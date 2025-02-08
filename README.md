@@ -5,6 +5,7 @@
 This project leverages OpenAI’s GPT-3.5 model to generate curriculum-based questions and general-purpose questions. The system is capable of taking a prompt, processing it via the OpenAI API, and returning questions or other relevant outputs.
 
 ### Features:
+
 - **GPT-3.5 Turbo Integration**: Uses OpenAI's GPT-3.5 Turbo model to generate responses based on the input prompt.
 - **Customizable Prompts**: Users can input any text, and the model will generate relevant questions based on the context provided.
 - **Flexible Use Case**: Designed for generating questions for educational purposes, this system can be tailored to various domains or tasks by modifying the input prompt.
@@ -58,6 +59,7 @@ To run this project, you will need:
 4. **Set up environment variables:**
 
    Create a `.env` file in the root directory of your project and add your OpenAI API key:
+
    ```
    OPENAI=your-openai-api-key
    ```
@@ -74,8 +76,9 @@ To run this project, you will need:
 
 ### Core Functions
 
-- **`chat_with_gpt(prompt)`**: 
+- **`chat_with_gpt(prompt)`**:
   This function sends a user prompt to OpenAI's GPT-3.5 Turbo and returns the model's response. It's a simple interaction function, useful for getting quick answers from the GPT model.
+
   ```python
   def chat_with_gpt(prompt):
       chat_completion = client.chat.completions.create(
@@ -85,8 +88,8 @@ To run this project, you will need:
       return chat_completion.choices[0].message.content.strip()
   ```
 
-- **`chatgpt_for_qa_cir(prompt)`**: 
-  This function is more specific and structured for question generation. It uses a system message to define the role of the assistant (as a helpful assistant) and then processes the user’s prompt to generate a question. 
+- **`chatgpt_for_qa_cir(prompt)`**:
+  This function is more specific and structured for question generation. It uses a system message to define the role of the assistant (as a helpful assistant) and then processes the user’s prompt to generate a question.
   ```python
   def chatgpt_for_qa_cir(prompt):
       response = client.chat.completions.create(
@@ -102,7 +105,7 @@ To run this project, you will need:
 
 ### Example Usage:
 
-1. **Generating Questions with GPT:**
+1. **Generating the Questions with GPT:**
 
    This example demonstrates how you can call the `chat_with_gpt` function to generate content from a prompt:
 
@@ -133,6 +136,7 @@ To use the OpenAI API, you'll need to set up your API key as an environment vari
 1. **Creating a `.env` File:**
 
    Create a `.env` file in the root directory and add the following:
+
    ```
    OPENAI=your_openai_api_key
    ```
@@ -140,6 +144,7 @@ To use the OpenAI API, you'll need to set up your API key as an environment vari
 2. **Loading Environment Variables:**
 
    The API key is loaded into the application using `dotenv`:
+
    ```python
    from dotenv import load_dotenv
    import os
@@ -152,15 +157,3 @@ To use the OpenAI API, you'll need to set up your API key as an environment vari
    ```
 
 ---
-
-## License
-
-This project is licensed under the MIT License.
-
----
-
-## Author
-
-- Tiger
-
-Feel free to reach out for any questions or contributions to this project.
