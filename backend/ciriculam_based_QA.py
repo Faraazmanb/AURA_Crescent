@@ -18,7 +18,6 @@ ssl._create_default_https_context = ssl.create_default_context(cafile=certifi.wh
 from pymongo import MongoClient
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://hamdanaveed07:hexaware@cluster0.gew2p.mongodb.net', tlsCAFile=certifi.where())  
 db = client['users'] 
 collection = db['trainer_question']
 

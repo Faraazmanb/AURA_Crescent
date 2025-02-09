@@ -42,9 +42,9 @@ import plotly
 
 app=Flask(__name__)
 
-# Other cluster until hamdan gives access
+# Other cluster until user gives access
 app.config['SECRET_KEY']=str(random.random())
-app.config['MONGO_URI']="mongodb+srv://hamdanaveed07:hexaware@cluster0.gew2p.mongodb.net/users"
+app.config['MONGO_URI']=""
 
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -58,7 +58,6 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 mail = Mail(app)
 
 
-# app.config['MONGO_URI']="mongodb+srv://hamdanaveed07:hexaware@cluster0.gew2p.mongodb.net/users"
 
 
 mongo=PyMongo(app, tlsCAFile=certifi.where())
