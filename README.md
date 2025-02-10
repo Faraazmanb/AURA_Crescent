@@ -6,7 +6,7 @@ This project leverages OpenAI’s GPT-3.5 model to generate curriculum-based que
 
 ### Features:
 
-- **GPT-3.5 Turbo Integration**: Uses OpenAI's GPT-3.5 Turbo model to generate responses based on the input prompt.
+
 - **Customizable Prompts**: Users can input any text, and the model will generate relevant questions based on the context provided.
 - **Flexible Use Case**: Designed for generating questions for educational purposes, this system can be tailored to various domains or tasks by modifying the input prompt.
 
@@ -14,7 +14,7 @@ This project leverages OpenAI’s GPT-3.5 model to generate curriculum-based que
 
 ## Technologies Used
 
-- **OpenAI GPT-3.5 Turbo**: Used for generating questions and other content from provided prompts.
+- **Azure OpenAI**: Used for generating questions and other content from provided prompts.
 - **Python**: The core language used to interact with the OpenAI API.
 - **dotenv**: Used for managing environment variables, specifically the OpenAI API key.
 
