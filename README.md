@@ -1,11 +1,7 @@
 # **Automated Question Answer Builder Application**  
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Faraazman/Automated-Question-Builder)  
-![GitHub last commit](https://img.shields.io/github/last-commit/Faraazman/Automated-Question-Builder)  
-
-
 ## **📌 Overview**  
-The **Automated Question Answer Builder** is an AI-powered application that generates curriculum-based and general-purpose questions from user-provided text prompts. Built using OpenAI’s 4.0 Turbo, this tool helps educators, students, and content creators streamline question creation.  
+The **Automated Question Answer Builder** designed to enhance the assessment experience by leveraging AI-powered tools. The system enables seamless question generation, automated hinting, and intelligent feedback mechanisms for users. With features like dynamic chat memory (using LangChain) and the ability to reset or tailor responses, AURA provides an intuitive and interactive platform for educational and assessment purposes. It combines cutting-edge NLP and machine learning techniques to deliver precise, context-aware solutions for diverse use cases in education and training.
 
 ---
 
@@ -48,3 +44,8 @@ OPENAI_API_KEY=your_api_key_here
 
 5️⃣ Run the Application
 python main.py
+
+
+⭐ Show Your Support
+If you like this project, give it a star ⭐ on GitHub! 🚀
+
