@@ -34,8 +34,8 @@ The system supports three types of logins:
 
 ### **1️⃣ Clone the Repository**  
 ```sh
-git clone https://github.com/Faraazman/Automated-Question-Builder.git
-cd Automated-Question-Builder
+git clone https://github.com/Faraazman/AURA_Crescent.git
+cd AURA_Crescent
 
 2️⃣ Create a Virtual Environment (Optional but Recommended)
 python -m venv venv
