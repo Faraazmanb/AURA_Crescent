@@ -14,6 +14,14 @@ The **Automated Question Answer Builder** designed to enhance the assessment exp
 
 ---
 
+## **👤 User Roles**  
+The system supports three types of logins:  
+- **Admin** – Manages users, oversees the platform, and ensures smooth operations.  
+- **Trainer** – Generates and customizes questions for students.  
+- **Student** – Accesses and interacts with generated questions for learning.  
+
+---
+
 ## **🔧 Tech Stack**  
 - **OpenAI GPT-3.5 Turbo** – AI model for question generation  
 - **Python** – Backend implementation  
